@@ -1554,10 +1554,15 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 
 # CORS Middleware
+allow_credentials = True
+if "*" in settings.cors_origins:
+    allow_credentials = False
+    logger.warning("⚠️ CORS set to '*' - disabling credentials for safety")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.cors_origins,
-    allow_credentials=True,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -2412,8 +2417,9 @@ async def chat_endpoint(
         # ─────────────────────────────────────────────────────────────────────────────
         # 🔍 DEBUG: מידע על system_prompt (אפשר להסיר בפרודקשן)
         # ─────────────────────────────────────────────────────────────────────────────
-        logger.info(f"🔍 System prompt length: {len(system_prompt)} chars")
-        logger.info(f"🔍 First 200 chars: {system_prompt[:200]}")
+        if settings.debug:
+            logger.info(f"🔍 System prompt length: {len(system_prompt)} chars")
+            logger.info(f"🔍 First 200 chars: {system_prompt[:200]}")
 
         # ╔══════════════════════════════════════════════════════════════════════════════╗
         # ║  🚀 קריאה ל-OpenAI GPT-4o (❌ אל תשנה!)                                     ║
@@ -3253,9 +3259,15 @@ async def api_proxy(endpoint: str, request: Request):
     }
 
     try:
-        async with httpx.AsyncClient() as client:
+        async with httpx.AsyncClient(timeout=10.0) as client:
             response = await client.get(url, params=params, headers=headers)
-            return response.json()
+        if response.status_code >= 400:
+            return {
+                "success": False,
+                "status_code": response.status_code,
+                "error": response.text
+            }
+        return response.json()
     except Exception as e:
         return {
             "success": False,
@@ -3290,16 +3302,11 @@ async def get_live_api_stats():
 
 @app.get("/api/config/sports-api-key", tags=["Configuration"])
 async def get_sports_api_key():
-    """🔑 קבלת מפתח API-Sports (מוסתר מהמשתמש)"""
-    api_key = os.getenv("API_SPORTS_KEY", "")
-
-    if not api_key:
-        raise HTTPException(
-            status_code=500,
-            detail="API_SPORTS_KEY not configured in environment"
-        )
-
-    return {"api_key": api_key}
+    """🔑 הוצא משימוש: אין לחשוף API keys ללקוח"""
+    raise HTTPException(
+        status_code=403,
+        detail="API keys are not exposed. Use the server proxy endpoints."
+    )
 
 
 @app.get("/api/stats/leagues", tags=["Sports Data"])
@@ -3434,8 +3441,6 @@ async def get_team_stats(team_id: int, league_id: int = Query(271)):
 
     return {"success": False, "message": "No data available"}
 
-    return {"success": False, "error": "Sports API not loaded"}
-
 
 @app.get("/api/stats/teams/{league_code}", tags=["Sports Data"])
 async def get_league_teams(league_code: str):
@@ -3472,7 +3477,7 @@ async def get_team_statistics(team: str):
         logger.info(f"📊 Getting statistics for team: {team}")
 
         # אם יש API מחובר, ננסה לקבל נתונים אמיתיים
-        if SPORTS_API_LOADED and sports_api and sports_api.api_key != "DEMO_KEY":
+        if SPORTS_API_LOADED and sports_api and getattr(sports_api, "api_key", "DEMO_KEY") != "DEMO_KEY":
             try:
                 # קבלת משחקים אחרונים של הקבוצה
                 # בגרסה עתידית: sports_api.get_team_fixtures(team, last=10)
@@ -3554,7 +3559,9 @@ async def get_team_statistics(team: str):
                 "losses": random.randint(2, 10)
             },
             "note": "Statistics based on current season data. For real-time data, API key required.",
-            "data_source": "Smart calculation" if sports_api.api_key == "DEMO_KEY" else "API-Sports"
+            "data_source": "Smart calculation"
+            if not SPORTS_API_LOADED or not sports_api or getattr(sports_api, "api_key", "DEMO_KEY") == "DEMO_KEY"
+            else "API-Sports"
         }
 
         logger.info(f"✅ Statistics generated for {team}: {win_percentage}% wins, form: {form_rating}")
@@ -3794,77 +3801,11 @@ async def get_home_data():
 
 @app.get("/api/sports-key", tags=["Frontend"])
 async def get_sports_api_key():
-    """🔑 קבלת מפתח API-Sports בצורה מאובטחת"""
-    import os
-    api_key = os.getenv("API_SPORTS_KEY", "")
-
-    if not api_key:
-        raise HTTPException(
-            status_code=500,
-            detail="API_SPORTS_KEY not configured"
-        )
-
-    return {
-        "success": True,
-        "key": api_key
-    }
-
-
-@app.get("/api/live-matches", tags=["Sports"])
-async def get_live_matches():
-    """⚽ קבלת משחקים חיים"""
-    import os
-    import aiohttp
-
-    api_key = os.getenv("API_SPORTS_KEY", "")
-    if not api_key:
-        return {"success": False, "matches": [], "error": "API key not configured"}
-
-    try:
-        url = "https://v3.football.api-sports.io/fixtures"
-        headers = {
-            'x-rapidapi-key': api_key,
-            'x-rapidapi-host': 'v3.football.api-sports.io'
-        }
-        params = {
-            'live': 'all'  # Get all live matches
-        }
-
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=headers, params=params, timeout=10) as response:
-                if response.status == 200:
-                    data = await response.json()
-
-                    # Extract and format matches
-                    matches = []
-                    if data.get('response'):
-                        for fixture in data['response'][:20]:  # Limit to 20 matches
-                            match = {
-                                'id': fixture['fixture']['id'],
-                                'league': fixture['league']['name'],
-                                'country': fixture['league']['country'],
-                                'home_team': fixture['teams']['home']['name'],
-                                'home_logo': fixture['teams']['home']['logo'],
-                                'away_team': fixture['teams']['away']['name'],
-                                'away_logo': fixture['teams']['away']['logo'],
-                                'score_home': fixture['goals']['home'],
-                                'score_away': fixture['goals']['away'],
-                                'status': fixture['fixture']['status']['short'],
-                                'elapsed': fixture['fixture']['status']['elapsed']
-                            }
-                            matches.append(match)
-
-                    return {
-                        "success": True,
-                        "matches": matches,
-                        "count": len(matches)
-                    }
-                else:
-                    return {"success": False, "matches": [], "error": f"API returned {response.status}"}
-
-    except Exception as e:
-        logger.error(f"Error fetching live matches: {e}")
-        return {"success": False, "matches": [], "error": str(e)}
+    """🔑 הוצא משימוש: אין לחשוף API keys ללקוח"""
+    raise HTTPException(
+        status_code=403,
+        detail="API keys are not exposed. Use the server proxy endpoints."
+    )
 
 
 @app.get("/favicon.ico", tags=["Frontend"])
