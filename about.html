@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTSPORTS | אודות המערכת</title>
+    <meta name="theme-color" content="#020617">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="global-styles.css">
+
+    <style>
+        :root {
+            --bg-body: #0a0e1a;
+            --bg-panel: #111827;
+            --bg-glass: rgba(26, 35, 50, 0.5);
+            --bg-card-hover: rgba(26, 35, 50, 0.85);
+            --primary: #60a5fa;
+            --primary-glow: rgba(96, 165, 250, 0.5);
+            --secondary: #93c5fd;
+            --accent: #22d3ee;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gold: #fbbf24;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: 1px solid rgba(255,255,255,0.08);
+            --border-glow: 1px solid rgba(59, 130, 246, 0.3);
+            --font-ui: 'Assistant', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text);
+            font-family: var(--font-ui);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                    radial-gradient(ellipse at 15% 20%, rgba(96, 165, 250, 0.12), transparent 50%),
+                    radial-gradient(ellipse at 85% 80%, rgba(147, 197, 253, 0.08), transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, rgba(34, 211, 238, 0.05), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Floating Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+            animation: float 20s ease-in-out infinite;
+        }
+        .orb-1 { width: 400px; height: 400px; background: var(--primary); top: -10%; left: -5%; animation-delay: 0s; }
+        .orb-2 { width: 300px; height: 300px; background: var(--secondary); bottom: -10%; right: -5%; animation-delay: -7s; }
+        .orb-3 { width: 200px; height: 200px; background: var(--accent); top: 50%; left: 50%; animation-delay: -14s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            width: 280px;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(30px) saturate(150%);
+            border-left: var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            padding: 28px;
+            position: relative;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 45px;
+            padding-bottom: 25px;
+            border-bottom: var(--border);
+            cursor: pointer;
+        }
+        .logo-icon {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+        }
+        .logo-text { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; color: #fff; }
+        .logo-text span { color: var(--primary); }
+
+        .nav-group { margin-bottom: 30px; }
+        .nav-title {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+            padding-right: 12px;
+            opacity: 0.7;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 6px;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-item i { width: 20px; text-align: center; font-size: 16px; }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            transform: translateX(-4px);
+        }
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.05));
+            color: var(--primary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15), inset 0 0 20px rgba(59, 130, 246, 0.05);
+        }
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 60%;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 3px 0 0 3px;
+            box-shadow: -3px 0 15px var(--primary);
+        }
+
+        .user-mini {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(0,0,0,0.25);
+            border-radius: 18px;
+            border: var(--border);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .user-mini:hover {
+            border-color: var(--primary);
+            background: rgba(59,130,246,0.08);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .logout-btn {
+            margin-top: 12px;
+            background: rgba(239, 68, 68, 0.08);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        /* ─── MAIN CONTENT ─── */
+        .main-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 35px 45px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── HERO SECTION ─── */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 50px;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+            animation: slideUp 1.2s ease-out;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: slideUp 1.4s ease-out;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 8px 25px var(--primary-glow);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px var(--primary-glow);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ─── STATS GRID ─── */
+        .stats-section { padding: 20px 0; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 22px;
+            animation: fadeIn 0.8s ease-out 0.1s backwards;
+        }
+
+        .stat-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            padding: 26px;
+            border-radius: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+        .stat-card:hover::before { opacity: 1; }
+
+        .stat-num {
+            font-family: var(--font-mono);
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #fff;
+            display: block;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* ─── SECTION TITLES ─── */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        .section-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .section-title i { color: var(--accent); }
+
+        /* ─── TIMELINE ─── */
+        .timeline-section {
+            padding: 40px 0;
+        }
+
+        .timeline-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-year {
+            min-width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+        .timeline-content:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .timeline-content h3 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .timeline-content p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* ─── FEATURES SECTION ─── */
+        .features-section { padding: 60px 0; }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        .feature-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: 22px;
+            padding: 28px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .feature-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+        .feature-card:hover::before { opacity: 1; }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        .feature-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* ─── TECH STACK SECTION ─── */
+        .tech-section { padding: 40px 0; }
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+        }
+        .tech-item {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: 18px;
+            padding: 22px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        .tech-item.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .tech-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .tech-item i {
+            font-size: 32px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .tech-item span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* ─── TEAM SECTION ─── */
+        .team-section { padding: 40px 0; }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .team-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .team-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .team-card:hover::before { opacity: 1; }
+
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.1));
+            border: 2px solid var(--primary);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--primary);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.2);
+        }
+        .team-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+        .team-role {
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .team-bio {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            border-top: var(--border);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .footer p { margin-bottom: 8px; }
+        .footer i { color: var(--danger); }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 1400px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 1100px) {
+            .sidebar { display: none; }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .main-area { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2rem; }
+            .timeline-item { flex-direction: column; gap: 12px; }
+            .timeline-year { width: 100%; height: auto; padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Floating Orbs Background -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="logo-area" onclick="window.location.href='index.html'">
+        <i class="fa-solid fa-brain logo-icon"></i>
+        <div class="logo-text">SMART<span>SPORTS</span></div>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">ראשי</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i> דף הבית</a>
+        <a href="predictions.html" class="nav-item"><i class="fa-solid fa-microchip"></i> תחזיות ספורט AI</a>
+        <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i> בוט ספורט AI</a>
+        <a href="news.html" class="nav-item"><i class="fa-solid fa-newspaper"></i> חדשות ספורט AI</a>
+        <a href="stats.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> סטטיסטיקות ספורט AI</a>
+        <a href="differentiation.html" class="nav-item"><i class="fa-solid fa-scale-balanced"></i> במה אנחנו שונים AI</a>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">תיק השקעות</div>
+        <a href="profile.html" class="nav-item"><i class="fa-solid fa-wallet"></i> פרופיל אישי</a>
+    </div>
+
+    <!-- Logout Button -->
+    <div id="logout-area" style="display:none;">
+        <button class="logout-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> התנתק</button>
+    </div>
+
+    <!-- Login Button -->
+    <div id="login-area" style="margin-top:auto;">
+        <a href="login.html" style="text-decoration:none; text-align:center; display:flex; justify-content:center; align-items:center; gap:8px; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; padding:14px; border-radius:14px; font-weight:700; box-shadow: 0 8px 25px var(--primary-glow); transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> התחברות למערכת
+        </a>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-area">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div style="max-width: 800px; z-index: 10;">
+            <div class="hero-badge"><i class="fa-solid fa-rocket"></i> ניתוח ספורט מבוסס בינה מלאכותית</div>
+            <h1 class="hero-title">פלטפורמת אנליטיקה<br>מתקדמת לניתוח ספורט</h1>
+            <p class="hero-subtitle">
+                SmartSports משלבת אלגוריתמי Machine Learning מתקדמים, עיבוד נתונים בזמן אמת וניתוח סטטיסטי מעמיק. המערכת מספקת תחזיות מבוססות נתונים עם שקיפות מלאה לגבי המתודולוגיה והלוגיקה מאחורי כל חיזוי.
+            </p>
+            <div class="hero-cta">
+                <a href="live.html" class="btn btn-primary">התנסה במערכת <i class="fa-solid fa-arrow-left"></i></a>
+                <a href="#story" class="btn btn-secondary"><i class="fa-solid fa-book-open"></i> קרא את הסיפור שלנו</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-num" data-target="50" data-suffix="+">0</span>
+                <span class="stat-label">ליגות מכוסות</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" data-target="10000" data-suffix="+">0</span>
+                <span class="stat-label">משחקים מנותחים</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" data-target="5">0</span>
+                <span class="stat-label">זוויות ניתוח AI</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-num" data-target="24" data-suffix="/7">0</span>
+                <span class="stat-label">עדכון בזמן אמת</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-star"></i> תכונות מתקדמות</h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-brain" style="color: var(--primary);"></i></div>
+                <h3>תחזיות מבוססות ML</h3>
+                <p>אלגוריתמים מתקדמים המנתחים נתוני ביצועים היסטוריים, פורמה עדכנית, סטטיסטיקות H2H ופרמטרים נוספים. כל תחזית מלווה בהסברים מפורטים לשקיפות מלאה</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-dice" style="color: var(--accent);"></i></div>
+                <h3>סימולציות הסתברותיות</h3>
+                <p>שימוש בשיטת Monte Carlo לחישוב התפלגות תוצאות אפשריות. המערכת מריצה אלפי תרחישים לחישוב רמת ביטחון סטטיסטית לכל חיזוי</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-comments" style="color: var(--secondary);"></i></div>
+                <h3>עוזר AI אינטראקטיבי</h3>
+                <p>צ'אטבוט מבוסס GPT שמספק ניתוח מעמיק של משחקים, מסביר את הגורמים המשפיעים על התחזית ועונה על שאלות באופן מיידי</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-shield-halved" style="color: var(--gold);"></i></div>
+                <h3>אבטחה ושקיפות</h3>
+                <p>כל התחזיות נשמרות עם חותמות זמן לאימות. המערכת מספקת דוחות ביצועים היסטוריים וניתוח מתמשך של דיוק המודלים</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-chart-line" style="color: var(--success);"></i></div>
+                <h3>ניתוח סטטיסטי מתקדם</h3>
+                <p>ויזואליזציות מקצועיות של נתוני ביצועים, טרנדים, xG, heat maps וכל המטריקות הרלוונטיות לניתוח ספורט מעמיק</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon"><i class="fa-solid fa-newspaper" style="color: var(--danger);"></i></div>
+                <h3>עדכוני חדשות</h3>
+                <p>אגרגציה אוטומטית של חדשות ספורט מסביב לעולם עם סינון חכם, תמצות AI וניתוח רלוונטיות למשחקים עתידיים</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-section">
+        <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-code"></i> הטכנולוגיות שלנו</h2>
+        </div>
+
+        <div class="tech-grid">
+            <div class="tech-item reveal" style="transition-delay: 0.1s;">
+                <i class="fa-brands fa-python" style="color: #3776AB;"></i>
+                <span>Python</span>
+            </div>
+            <div class="tech-item reveal" style="transition-delay: 0.15s;">
+                <i class="fa-solid fa-database" style="color: var(--primary);"></i>
+                <span>PostgreSQL</span>
+            </div>
+            <div class="tech-item reveal" style="transition-delay: 0.2s;">
+                <i class="fa-brands fa-react" style="color: #61DAFB;"></i>
+                <span>React</span>
+            </div>
+            <div class="tech-item reveal" style="transition-delay: 0.25s;">
+                <i class="fa-solid fa-robot" style="color: var(--secondary);"></i>
+                <span>OpenAI GPT</span>
+            </div>
+            <div class="tech-item reveal" style="transition-delay: 0.3s;">
+                <i class="fa-solid fa-server" style="color: var(--success);"></i>
+                <span>Flask API</span>
+            </div>
+            <div class="tech-item reveal" style="transition-delay: 0.35s;">
+                <i class="fa-brands fa-docker" style="color: #2496ED;"></i>
+                <span>Docker</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-section" id="story">
+        <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-timeline"></i> המסע שלנו</h2>
+        </div>
+
+        <div class="timeline-grid">
+            <div class="timeline-item reveal">
+                <div class="timeline-year">Q1/24</div>
+                <div class="timeline-content">
+                    <h3><i class="fa-solid fa-lightbulb" style="color: var(--gold); margin-left: 8px;"></i> תכנון ומחקר</h3>
+                    <p>מחקר מעמיק של מקורות נתונים זמינים, בדיקת API זמינים (API-Football, API-Sports), תכנון ארכיטקטורת המערכת ובחירת מודלי ML מתאימים לחיזוי תוצאות ספורט</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-year">Q2-3/24</div>
+                <div class="timeline-content">
+                    <h3><i class="fa-solid fa-microchip" style="color: var(--primary); margin-left: 8px;"></i> פיתוח Backend & ML</h3>
+                    <p>בניית שרת Flask, אינטגרציה עם API חיצוניים, פיתוח pipeline לעיבוד נתונים, אימון מודלי Gradient Boosting ו-Random Forest, ובדיקות על נתונים היסטוריים</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-year">Q4/24</div>
+                <div class="timeline-content">
+                    <h3><i class="fa-solid fa-desktop" style="color: var(--accent); margin-left: 8px;"></i> פיתוח UI/UX</h3>
+                    <p>עיצוב ממשק משתמש מודרני ואינטואיטיבי, בניית דשבורדים אינטראקטיביים, אינטגרציית GPT לצ'אטבוט, יצירת ויזואליזציות נתונים ובדיקות UX מקיפות</p>
+                </div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-year">Q1/25</div>
+                <div class="timeline-content">
+                    <h3><i class="fa-solid fa-rocket" style="color: var(--success); margin-left: 8px;"></i> השקה ושיפורים</h3>
+                    <p>השקת גרסת Beta, איסוף משוב ממשתמשים ראשוניים, שיפורי ביצועים ואופטימיזציה, הוספת תכונות חדשות ושיפור דיוק המודלים על בסיס נתוני ביצועים בפועל</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="section-header">
+            <h2 class="section-title"><i class="fa-solid fa-users"></i> המוחות מאחורי המערכת</h2>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card reveal">
+                <div class="team-avatar"><i class="fa-solid fa-code"></i></div>
+                <h3>צוות פיתוח</h3>
+                <span class="team-role">Full-Stack Development</span>
+                <p class="team-bio">פיתוח ותחזוקה של כל שכבות המערכת - Backend (Flask/Python), Frontend (HTML/CSS/JS), אינטגרציות API ותשתיות Cloud</p>
+            </div>
+            <div class="team-card reveal">
+                <div class="team-avatar"><i class="fa-solid fa-robot"></i></div>
+                <h3>צוות Data Science</h3>
+                <span class="team-role">ML & Analytics</span>
+                <p class="team-bio">פיתוח ואימון מודלי Machine Learning, ניתוח נתונים סטטיסטי, אופטימיזציה של אלגוריתמים ומעקב אחר ביצועי המודלים</p>
+            </div>
+            <div class="team-card reveal">
+                <div class="team-avatar"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>צוות DevOps & Security</h3>
+                <span class="team-role">Infrastructure & Security</span>
+                <p class="team-bio">ניהול תשתיות, CI/CD pipelines, מוניטורינג ביצועים, אבטחת מידע והגנה מפני איומי סייבר. שמירה על זמינות 24/7</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 SmartSports Analytics. All rights reserved.</p>
+        <p>Built with <i class="fa-solid fa-heart"></i> & AI Technology.</p>
+    </footer>
+
+</main>
+
+<script>
+    // ═══════════════════════════════════════════════════════════
+    // AUTHENTICATION LOGIC (Same as other pages)
+    // ═══════════════════════════════════════════════════════════
+    async function initAuth() {
+        const token = localStorage.getItem('token');
+        const loginArea = document.getElementById('login-area');
+        const userWidget = document.getElementById('user-widget');
+        const logoutArea = document.getElementById('logout-area');
+
+        if (!token) {
+            loginArea.style.display = 'block';
+            userWidget.style.display = 'none';
+            logoutArea.style.display = 'none';
+            return;
+        }
+
+        try {
+            const res = await fetch('/api/home', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                loginArea.style.display = 'none';
+                userWidget.style.display = 'flex';
+                logoutArea.style.display = 'block';
+
+                document.getElementById('user-name').textContent = data.user;
+                document.getElementById('user-avatar').textContent = data.user.charAt(0).toUpperCase();
+            } else {
+                handleLogout();
+            }
+        } catch (e) {
+            console.error("Auth Error:", e);
+        }
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('token');
+        window.location.href = 'login.html';
+    }
+
+    function navigateTo(url) {
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = url; }, 300);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // COUNTER ANIMATION
+    // ═══════════════════════════════════════════════════════════
+    function animateCounter(el) {
+        const target = parseFloat(el.getAttribute('data-target'));
+        const suffix = el.getAttribute('data-suffix') || '';
+        const isFloat = target % 1 !== 0;
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            const current = target * easeOut;
+
+            if (isFloat) {
+                el.textContent = current.toFixed(1) + (suffix || '%');
+            } else {
+                el.textContent = Math.round(current) + suffix;
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(update);
+            }
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // SCROLL OBSERVER FOR ANIMATIONS
+    // ═══════════════════════════════════════════════════════════
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Feature cards animation observer
+    const featureObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 100);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.feature-card').forEach(el => featureObserver.observe(el));
+
+    // Tech items animation observer
+    const techObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, index * 80);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.tech-item').forEach(el => techObserver.observe(el));
+
+    // ═══════════════════════════════════════════════════════════
+    // STATS COUNTER OBSERVER
+    // ═══════════════════════════════════════════════════════════
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                entry.target.classList.add('counted');
+                animateCounter(entry.target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    document.querySelectorAll('.stat-num').forEach(el => statsObserver.observe(el));
+
+    // ═══════════════════════════════════════════════════════════
+    // INIT
+    // ═══════════════════════════════════════════════════════════
+    window.onload = () => {
+        initAuth();
+        // About Page Loaded - Enterprise Edition
+    };
+</script>
+</body>
+</html>

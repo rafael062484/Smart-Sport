@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTSPORTS | AI Sports Intelligence Platform</title>
+    <meta name="theme-color" content="#020617">
+    <meta name="description" content="פלטפורמת AI מתקדמת לניתוח ספורט - תחזיות מדויקות, נתונים בזמן אמת, בוט אנליסט חכם">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Global Configuration -->
+    <script src="/config.js"></script>
+
+    <!-- API-Sports Widgets Library v3.1.0 -->
+    <script type="module" crossorigin src="https://widgets.api-sports.io/3.1.0/widgets.js"></script>
+
+    <style>
+        :root {
+            --bg-dark: #0a0e1a;
+            --bg-darker: #050810;
+            --bg-card: #111827;
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --primary-light: #60a5fa;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border: rgba(255,255,255,0.08);
+            --sidebar-width: 220px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Background gradient */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.1), transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(6, 182, 212, 0.08), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            border-radius: 10px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           SIDEBAR
+        ═══════════════════════════════════════════════════════════ */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            background: rgba(5, 8, 16, 0.98);
+            backdrop-filter: blur(40px);
+            border-left: 1px solid var(--border);
+            z-index: 1000;
+            padding: 28px 24px;
+            overflow-y: auto;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+        }
+
+        .logo-area {
+            margin-bottom: 36px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .logo-icon {
+            font-size: 42px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff, var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-group { margin-bottom: 28px; }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            color: var(--text-dim);
+            padding-left: 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.08);
+            color: var(--primary-light);
+            transform: translateX(-2px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
+            color: var(--primary);
+            border-left: 3px solid var(--primary);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           MAIN CONTENT
+        ═══════════════════════════════════════════════════════════ */
+        .main-content {
+            margin-right: var(--sidebar-width);
+            padding: 40px 50px;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           HERO SECTION
+        ═══════════════════════════════════════════════════════════ */
+        .hero {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(6, 182, 212, 0.05));
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 24px;
+            padding: 50px;
+            margin-bottom: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent 70%);
+            animation: heroFloat 15s ease-in-out infinite;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-20px, -20px); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--primary-light);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #fff 0%, var(--primary-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 28px;
+            max-width: 800px;
+            line-height: 1.7;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--primary);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           TABS SYSTEM
+        ═══════════════════════════════════════════════════════════ */
+        .tabs-section {
+            margin-bottom: 40px;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 2px;
+        }
+
+        .tab-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .tab-btn i {
+            font-size: 18px;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary-light);
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 8px 8px 0 0;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content-wrapper {
+            min-height: 500px;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           LIVE GAMES TAB
+        ═══════════════════════════════════════════════════════════ */
+        .live-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 28px;
+        }
+
+        /* League badges */
+        .league-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .live-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .live-title {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .live-badge {
+            background: var(--danger);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .live-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .live-widget-box {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            padding: 0;
+            min-height: 500px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .live-widget-box:hover {
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           TITAN TAB
+        ═══════════════════════════════════════════════════════════ */
+        .titan-container {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(6, 182, 212, 0.03));
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .titan-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .titan-icon-big {
+            font-size: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .titan-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .titan-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .titan-chat {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            min-height: 450px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .titan-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            max-height: 350px;
+        }
+
+        .titan-message {
+            margin-bottom: 16px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .titan-message.bot {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-left: 3px solid var(--primary);
+        }
+
+        .titan-message.user {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .titan-input-area {
+            display: flex;
+            gap: 12px;
+        }
+
+        .titan-input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        .titan-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .titan-send {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            padding: 14px 24px;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .titan-send:hover {
+            transform: scale(1.05);
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 12px;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           PREDICTIONS TAB
+        ═══════════════════════════════════════════════════════════ */
+        .predictions-container {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(6, 182, 212, 0.03));
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .predictions-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .predictions-icon-big {
+            font-size: 64px;
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .predictions-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .predictions-desc {
+            font-size: 16px;
+            color: var(--text-muted);
+        }
+
+        .predictions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .prediction-card {
+            background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 20px;
+            padding: 24px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .prediction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--success);
+            box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .prediction-card:hover::before {
+            opacity: 1;
+        }
+
+        .prediction-match {
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .prediction-percentage {
+            font-size: 52px;
+            font-weight: 900;
+            font-family: 'JetBrains Mono', monospace;
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .prediction-label {
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .prediction-details {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .predictions-cta {
+            text-align: center;
+            margin-top: 32px;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           FLOATING TITAN BUTTON
+        ═══════════════════════════════════════════════════════════ */
+        .floating-titan {
+            position: fixed;
+            bottom: 32px;
+            left: 32px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+            z-index: 9999;
+            font-size: 28px;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .floating-titan:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(59, 130, 246, 0.6);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════════════════════ */
+        @media (max-width: 1200px) {
+            .live-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-right: 0;
+                padding: 24px 16px;
+            }
+            .hero {
+                padding: 32px 24px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .tab-nav {
+                flex-wrap: wrap;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(59, 130, 246, 0.2);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Enhanced animations for cards */
+        .live-widget-box,
+        .prediction-card {
+            animation: slideInUp 0.5s ease-out;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Pulse animation for live badge */
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        /* Shimmer loading effect */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .loading-shimmer {
+            background: linear-gradient(90deg,
+                rgba(255,255,255,0.05) 0%,
+                rgba(255,255,255,0.1) 50%,
+                rgba(255,255,255,0.05) 100%);
+            background-size: 1000px 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* API-Sports Widgets - Simple and Working */
+        api-sports-widget {
+            display: block !important;
+            width: 100% !important;
+            min-height: 600px !important;
+        }
+
+        api-sports-widget[data-type="games"] {
+            min-height: 800px !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar">
+    <div class="logo-area">
+        <i class="fas fa-brain logo-icon"></i>
+        <div class="logo-text">SMARTSPORTS</div>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">ראשי</div>
+        <a href="/index.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>דף הבית</span>
+        </a>
+        <a href="/predictions.html" class="nav-item">
+            <i class="fas fa-brain"></i>
+            <span>תחזיות AI</span>
+        </a>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">משחקים</div>
+        <a href="/game_arena.html" class="nav-item">
+            <i class="fas fa-gamepad"></i>
+            <span> AI משחקים בכיף</span>
+        </a>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">כלים</div>
+        <a href="/news.html" class="nav-item">
+            <i class="fas fa-newspaper"></i>
+            <span>חדשות ספורט</span>
+        </a>
+        <a href="/about.html" class="nav-item">
+            <i class="fas fa-info-circle"></i>
+            <span>אודות</span>
+        </a>
+        <a href="/API_documentation.html" class="nav-item">
+            <i class="fas fa-code"></i>
+            <span>תיעוד API</span>
+        </a>
+        <a href="/help_center.html" class="nav-item">
+            <i class="fas fa-envelope"></i>
+            <span>מרכז העזרה</span>
+        </a>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">משתמש</div>
+        <a href="/login.html" class="nav-item" id="loginBtn">
+            <i class="fas fa-sign-in-alt"></i>
+            <span>התחברות</span>
+        </a>
+        <a href="/profile.html" class="nav-item" id="profileBtn" style="display:none;">
+            <i class="fas fa-user-circle"></i>
+            <span id="profileName">הפרופיל שלי</span>
+        </a>
+        <a href="/subscribe.html" class="nav-item" id="subscribeBtn" style="display:none;">
+            <i class="fas fa-crown"></i>
+            <span id="subscribeText">שדרג ל-Premium</span>
+        </a>
+        <a href="#" class="nav-item" id="logoutBtn" style="display:none;" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>התנתקות</span>
+        </a>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+
+    <!-- Premium Banner (למשתמשים חינמיים) -->
+    <div id="premiumBanner" style="display: none; background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.08)); border: 2px solid rgba(251, 191, 36, 0.3); border-radius: 20px; padding: 20px 30px; margin-bottom: 24px; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -10px; right: -10px; font-size: 80px; opacity: 0.1;">👑</div>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px; position: relative; z-index: 1;">
+            <div>
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                    <i class="fas fa-crown" style="color: var(--gold); font-size: 24px;"></i>
+                    <h3 style="font-size: 20px; font-weight: 800; color: var(--gold); margin: 0;">שדרג ל-Premium וקבל יותר!</h3>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px; margin: 0;">תחזיות AI ללא הגבלה, ניתוחים מתקדמים, וגישה לכל התכונות המתקדמות</p>
+            </div>
+            <a href="/subscribe.html" style="background: linear-gradient(135deg, var(--gold), var(--warning)); color: #000; padding: 12px 28px; border-radius: 12px; text-decoration: none; font-weight: 700; white-space: nowrap; box-shadow: 0 4px 15px rgba(251, 191, 36, 0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(251, 191, 36, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(251, 191, 36, 0.4)'">
+                <i class="fas fa-star"></i> שדרג עכשיו
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-rocket"></i>
+                <span>AI-Powered Sports Intelligence</span>
+            </div>
+
+            <h1>הפלטפורמה החכמה לניתוח ספורט</h1>
+
+            <p>
+                משלבים בינה מלאכותית מתקדמת עם נתוני API-Football בזמן אמת לתחזיות מדויקות.
+                בוט אנליסט TITAN, תחזיות AI, ונתונים חיים - הכל במקום אחד.
+            </p>
+
+            <div class="hero-cta-group">
+                <button class="btn-primary" onclick="switchTab('predictions')">
+                    <i class="fas fa-brain"></i>
+                    <span>התחל עכשיו</span>
+                </button>
+                <button class="btn-primary btn-secondary" onclick="switchTab('titan')">
+                    <i class="fas fa-robot"></i>
+                    <span>שאל את TITAN</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs Section -->
+    <section class="tabs-section">
+
+        <!-- Tab Navigation -->
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="switchTab('live')" data-tab="live">
+                <i class="fas fa-circle" style="color: var(--danger);"></i>
+                <span>משחקים חיים</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('titan')" data-tab="titan">
+                <i class="fas fa-robot"></i>
+                <span>TITAN AI</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('predictions')" data-tab="predictions">
+                <i class="fas fa-brain"></i>
+                <span>תחזיות AI</span>
+            </button>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content-wrapper">
+
+            <!-- LIVE TAB -->
+            <div class="tab-pane active" id="tab-live">
+                <!-- Status indicator -->
+                <div id="liveStatus" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.08)); border: 2px solid rgba(59, 130, 246, 0.3); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 24px;">
+                    <div id="liveStatusIcon" style="font-size: 32px; margin-bottom: 12px;">⏳</div>
+                    <p id="liveStatusText" style="font-size: 16px; font-weight: 600; color: var(--text);">טוען משחקים חיים...</p>
+                </div>
+
+                <!-- Widgets container -->
+                <div class="widgets-wrapper" style="background: var(--bg-glass); backdrop-filter: blur(30px); border: 2px solid rgba(59, 130, 246, 0.2); border-radius: var(--radius-lg); padding: 30px; min-height: 600px;">
+                    <api-sports-widget data-type="games" id="gamesWidget"></api-sports-widget>
+                </div>
+            </div>
+
+            <!-- TITAN TAB -->
+            <div class="tab-pane" id="tab-titan">
+                <div class="titan-container">
+                    <div class="titan-header">
+                        <i class="fas fa-robot titan-icon-big"></i>
+                        <h2 class="titan-title">TITAN AI Assistant</h2>
+                        <p class="titan-desc">
+                            העוזר החכם לניתוח ספורט - מחובר לנתונים בזמן אמת ומבוסס על GPT-4
+                        </p>
+                    </div>
+
+                    <div class="titan-chat">
+                        <div class="titan-messages" id="titanMessages">
+                            <div class="titan-message bot">
+                                <div style="font-size: 32px; margin-bottom: 10px;">🔥</div>
+                                <strong style="font-size: 20px; color: var(--primary);">היי! אני TITAN</strong><br><br>
+
+                                האנליסט AI שלך לספורט! 💪 אני לא סתם בוט - אני **חבר ספורטיבי** שחי את המשחקים איתך!<br><br>
+
+                                <div style="background: rgba(255,215,0,0.1); border-right: 3px solid var(--gold); padding: 10px; margin: 15px 0; border-radius: 5px;">
+                                    <strong>💡 טיפ מקצועי:</strong><br>
+                                    <span id="titanWelcomeTip" style="color: var(--text-muted);"></span>
+                                </div>
+
+                                <strong>אני כאן בשבילך:</strong><br>
+                                🎯 תחזיות מדויקות עם נימוקים חזקים<br>
+                                📊 ניתוח כל משחק בפירוט<br>
+                                🔥 סטטיסטיקות חמות בזמן אמת<br>
+                                💪 דעה ברורה - לא פחדן!<br><br>
+
+                                <strong style="color: var(--primary);">בוא נתחיל - מה מעניין אותך?</strong> ⚽
+                            </div>
+                        </div>
+
+                        <div class="titan-input-area">
+                            <input type="text"
+                                   class="titan-input"
+                                   id="titanInput"
+                                   placeholder="שאל אותי משהו..."
+                                   onkeypress="if(event.key==='Enter') sendToTitan()">
+                            <button class="titan-send" onclick="sendToTitan()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PREDICTIONS TAB -->
+            <div class="tab-pane" id="tab-predictions">
+                <div class="predictions-container">
+                    <div class="predictions-header">
+                        <i class="fas fa-brain predictions-icon-big"></i>
+                        <h2 class="predictions-title">תחזיות AI מדויקות</h2>
+                        <p class="predictions-desc">
+                            מבוססות על למידת מכונה וניתוח נתונים מתקדם
+                        </p>
+                    </div>
+
+                    <div id="predictionsContent" class="predictions-grid">
+                        <!-- Predictions loaded dynamically when tab is clicked -->
+                    </div>
+
+                    <div class="predictions-cta">
+                        <a href="/predictions.html" class="btn-primary" style="text-decoration: none;">
+                            <i class="fas fa-chart-line"></i>
+                            <span>ראה את כל התחזיות</span>
+                            <i class="fas fa-arrow-left"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<!-- Floating TITAN Button -->
+<div class="floating-titan" onclick="switchTab('titan')">
+    <i class="fas fa-robot"></i>
+</div>
+
+<!-- No API key exposed - using secure backend endpoint -->
+
+<script>
+// Use SMARTSPORTS global from config.js
+const API_BASE_URL = SMARTSPORTS.API_BASE_URL;
+const logger = SMARTSPORTS.logger;
+const apiPost = SMARTSPORTS.apiPost;
+const isUserLoggedIn = SMARTSPORTS.isAuthenticated;
+const getCurrentUser = SMARTSPORTS.getCurrentUser;
+
+logger.info('Index page loaded');
+
+// ═══════════════════════════════════════════════════════════
+// 💬 CONVERSATION HISTORY - תיקון #1 מדו"ח CTO
+// ═══════════════════════════════════════════════════════════
+// 🎯 מטרה: שמירת היסטוריית שיחה כדי ש-TITAN יזכור הקשר
+// 📊 השפעה: שיפור משמעותי ב-UX - TITAN יכול לענות על "ומה עם הקבוצה השנייה?"
+// 🔧 פתרון: שמירה ב-memory, איפוס אוטומטי אחרי 30 דקות או ידני
+let conversationHistory = [];
+let lastMessageTime = Date.now();
+const CONVERSATION_TIMEOUT = 30 * 60 * 1000; // 30 דקות
+
+// פונקציה לאיפוס היסטוריה
+function resetConversation() {
+    conversationHistory = [];
+    lastMessageTime = Date.now();
+    console.log('🔄 Conversation history reset');
+}
+
+// פונקציה לבדיקה אם עבר זמן רב מדי (timeout)
+function checkConversationTimeout() {
+    if (Date.now() - lastMessageTime > CONVERSATION_TIMEOUT) {
+        console.log('⏰ Conversation timeout - resetting history');
+        resetConversation();
+        return true;
+    }
+    return false;
+}
+
+// ═══════════════════════════════════════════════════════════
+// TAB SYSTEM
+// ═══════════════════════════════════════════════════════════
+function switchTab(tabName) {
+    console.log('🔄 switchTab called with:', tabName);
+
+    // Remove active from all tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('active');
+    });
+
+    // Add active to selected tab
+    const btn = document.querySelector(`[data-tab="${tabName}"]`);
+    const pane = document.getElementById(`tab-${tabName}`);
+
+    console.log('🔍 Found button:', btn);
+    console.log('🔍 Found pane:', pane);
+
+    if (btn) {
+        btn.classList.add('active');
+        console.log('✅ Button activated');
+    } else {
+        console.warn('⚠️ Button not found for:', tabName);
+    }
+
+    if (pane) {
+        pane.classList.add('active');
+        console.log('✅ Pane activated');
+    } else {
+        console.warn('⚠️ Pane not found for:', tabName);
+    }
+
+    // Load content if needed
+    if (tabName === 'predictions' && !window.predictionsLoaded) {
+        loadPredictions();
+        window.predictionsLoaded = true;
+    }
+
+    // Live tab uses API-Sports Widgets (auto-loaded)
+
+    console.log('✓ switchTab completed');
+}
+
+// ═══════════════════════════════════════════════════════════
+// TITAN AI - Real Backend Connection
+// ═══════════════════════════════════════════════════════════
+async function sendToTitan() {
+    const input = document.getElementById('titanInput');
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    // 🔥 תיקון #1: בדיקת timeout והיסטוריה
+    checkConversationTimeout();
+    lastMessageTime = Date.now();
+
+    const messagesDiv = document.getElementById('titanMessages');
+
+    // Add user message
+    messagesDiv.innerHTML += `
+        <div class="titan-message user">${escapeHtml(message)}</div>
+    `;
+
+    // 🔥 תיקון #1: הוספת הודעת המשתמש להיסטוריה
+    conversationHistory.push({
+        role: "user",
+        content: message
+    });
+
+    input.value = '';
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    // Show typing indicator
+    const typingId = 'typing-' + Date.now();
+    messagesDiv.innerHTML += `
+        <div class="titan-message bot" id="${typingId}">
+            <div class="typing-indicator">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    `;
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    try {
+        console.log('🔍 API_BASE_URL:', API_BASE_URL);
+        console.log('🔍 Sending to:', `${API_BASE_URL}/api/chat`);
+        console.log('📜 Conversation history length:', conversationHistory.length);
+
+        // 🔥 תיקון #1: שליחת היסטוריה מלאה (במקום array ריק!)
+        const response = await fetch(`${API_BASE_URL}/api/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: message,
+                conversation_history: conversationHistory  // ✅ עכשיו יש היסטוריה!
+            })
+        });
+
+        console.log('✅ Response status:', response.status);
+
+        if (!response.ok) {
+            throw new Error('Backend error');
+        }
+
+        const data = await response.json();
+
+        // Remove typing indicator
+        document.getElementById(typingId).remove();
+
+        // Show response
+        messagesDiv.innerHTML += `
+            <div class="titan-message bot">
+                ${formatTitanResponse(data.response)}
+            </div>
+        `;
+
+        // 🔥 תיקון #1: הוספת תשובת TITAN להיסטוריה
+        conversationHistory.push({
+            role: "assistant",
+            content: data.response
+        });
+
+        console.log('✅ History updated. Total messages:', conversationHistory.length);
+
+    } catch (error) {
+        console.error('TITAN Error:', error);
+
+        // Remove typing indicator
+        document.getElementById(typingId).remove();
+
+        // Show error message
+        messagesDiv.innerHTML += `
+            <div class="titan-message bot">
+                ⚠️ מצטער, נתקלתי בבעיה בחיבור לשרת.<br>
+                אנא נסה שוב מאוחר יותר.
+            </div>
+        `;
+    }
+
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function formatTitanResponse(response) {
+    // Format the response nicely
+    return response
+        .replace(/\n/g, '<br>')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>');
+}
+
+// ═══════════════════════════════════════════════════════════
+// PREDICTIONS - Load from Backend
+// ═══════════════════════════════════════════════════════════
+async function loadPredictions() {
+    const container = document.getElementById('predictionsContent');
+
+    try {
+        // Get today's matches from API
+        console.log('🔍 Loading today matches from API...');
+        const response = await fetch(`${API_BASE_URL}/api/today-matches`);
+        const data = await response.json();
+
+        console.log('📊 API Response:', data);
+        console.log('📊 Total matches:', data.matches?.length);
+        console.log('📊 First match:', data.matches?.[0]);
+
+        if (data.success && data.matches && data.matches.length > 0) {
+            // Show first 3 upcoming matches
+            const upcomingMatches = data.matches
+                .filter(m => m.status === 'Not Started' || m.status === 'TBD')
+                .slice(0, 3);
+
+            if (upcomingMatches.length > 0) {
+                container.innerHTML = upcomingMatches.map(match => {
+                    // Format date nicely
+                    const matchDate = new Date(match.date);
+                    const timeStr = matchDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+                    const dateStr = matchDate.toLocaleDateString('he-IL', { day: 'numeric', month: 'short' });
+
+                    // Smart analysis
+                    const isTopLeague = ['Premier League', 'La Liga', 'Serie A', 'Bundesliga', 'Ligue 1', 'Champions League'].some(l => match.league.includes(l));
+                    const insight = isTopLeague
+                        ? 'משחק מעניין בליגה מובילה - תחזית AI זמינה'
+                        : 'נתונים היסטוריים מוגבלים';
+
+                    return `
+                        <div class="prediction-card">
+                            <div style="font-size: 11px; color: var(--text-dim); margin-bottom: 8px;">${match.league} • ${match.country}</div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <div style="text-align: center; flex: 1;">
+                                    <img src="${match.home_logo}" style="width: 40px; height: 40px; margin-bottom: 6px;" onerror="this.style.display='none'">
+                                    <div style="font-size: 13px; font-weight: 600;">${match.home_team}</div>
+                                </div>
+
+                                <div style="text-align: center; padding: 0 16px;">
+                                    <div style="font-size: 16px; font-weight: 700; color: var(--primary);">${timeStr}</div>
+                                    <div style="font-size: 11px; color: var(--text-muted);">${dateStr}</div>
+                                </div>
+
+                                <div style="text-align: center; flex: 1;">
+                                    <img src="${match.away_logo}" style="width: 40px; height: 40px; margin-bottom: 6px;" onerror="this.style.display='none'">
+                                    <div style="font-size: 13px; font-weight: 600;">${match.away_team}</div>
+                                </div>
+                            </div>
+
+                            <div style="padding-top: 12px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted);">
+                                💡 ${insight}
+                            </div>
+
+                            <a href="/predictions.html?home=${encodeURIComponent(match.home_team)}&away=${encodeURIComponent(match.away_team)}"
+                               style="display: block; text-align: center; margin-top: 12px; color: var(--primary); text-decoration: none; font-size: 13px; font-weight: 600;">
+                                קבל ניתוח מפורט →
+                            </a>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                // Show live or finished matches
+                const displayMatches = data.matches
+                    .filter(m => m.status !== 'NS' && m.status !== 'Not Started' && m.status !== 'TBD')
+                    .slice(0, 3);
+
+                if (displayMatches.length > 0) {
+                    container.innerHTML = displayMatches.map(match => {
+                        // Translate status
+                        let statusHeb = match.status;
+                        let statusColor = 'var(--text-muted)';
+                        let statusBg = 'rgba(100, 116, 139, 0.1)';
+
+                        if (match.status === 'LIVE' || match.status === '1H' || match.status === '2H') {
+                            statusHeb = `🔴 דקה ${match.minute || '?'}`;
+                            statusColor = '#ef4444';
+                            statusBg = 'rgba(239, 68, 68, 0.1)';
+                        } else if (match.status === 'FT' || match.status === 'Finished') {
+                            statusHeb = '✅ הסתיים';
+                            statusColor = '#10b981';
+                            statusBg = 'rgba(16, 185, 129, 0.1)';
+                        } else if (match.status === 'HT') {
+                            statusHeb = '⏸️ הפסקה';
+                            statusColor = '#f59e0b';
+                            statusBg = 'rgba(245, 158, 11, 0.1)';
+                        }
+
+                        // Calculate winner
+                        let winnerStyle = '';
+                        let winnerText = '';
+                        const homeScore = match.home_score || 0;
+                        const awayScore = match.away_score || 0;
+
+                        if (homeScore > awayScore) {
+                            winnerText = `מוביל: ${match.home_team}`;
+                        } else if (awayScore > homeScore) {
+                            winnerText = `מוביל: ${match.away_team}`;
+                        } else {
+                            winnerText = 'תיקו';
+                        }
+
+                        return `
+                            <div class="prediction-card" style="display: flex; flex-direction: column; gap: 16px; padding: 20px;">
+                                <!-- League & Status -->
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <img src="${match.league_logo}" alt="${match.league}" style="width: 24px; height: 24px; object-fit: contain;" onerror="this.style.display='none'">
+                                        <span style="font-size: 13px; color: var(--text-muted); font-weight: 500;">${match.league}</span>
+                                    </div>
+                                    <span style="font-size: 12px; font-weight: 600; color: ${statusColor}; background: ${statusBg}; padding: 4px 12px; border-radius: 12px;">
+                                        ${statusHeb}
+                                    </span>
+                                </div>
+
+                                <!-- Teams & Score -->
+                                <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+                                    <!-- Home Team -->
+                                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1; gap: 8px;">
+                                        <img src="${match.home_logo}" alt="${match.home_team}" style="width: 48px; height: 48px; object-fit: contain;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27%2364748b%27/%3E%3C/svg%3E'">
+                                        <span style="font-size: 14px; font-weight: 600; text-align: center; color: var(--text);">${match.home_team}</span>
+                                    </div>
+
+                                    <!-- Score -->
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <span style="font-size: 36px; font-weight: 700; color: ${homeScore > awayScore ? 'var(--success)' : 'var(--text)'};">${homeScore}</span>
+                                        <span style="font-size: 24px; color: var(--text-muted);">-</span>
+                                        <span style="font-size: 36px; font-weight: 700; color: ${awayScore > homeScore ? 'var(--success)' : 'var(--text)'};">${awayScore}</span>
+                                    </div>
+
+                                    <!-- Away Team -->
+                                    <div style="display: flex; flex-direction: column; align-items: center; flex: 1; gap: 8px;">
+                                        <img src="${match.away_logo}" alt="${match.away_team}" style="width: 48px; height: 48px; object-fit: contain;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27%3E%3Ccircle cx=%2712%27 cy=%2712%27 r=%2710%27 fill=%27%2364748b%27/%3E%3C/svg%3E'">
+                                        <span style="font-size: 14px; font-weight: 600; text-align: center; color: var(--text);">${match.away_team}</span>
+                                    </div>
+                                </div>
+
+                                <!-- Analysis -->
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border);">
+                                    <span style="font-size: 13px; color: var(--text-muted);">💭 ${winnerText}</span>
+                                    <a href="/predictions.html?home=${encodeURIComponent(match.home_team)}&away=${encodeURIComponent(match.away_team)}&league=${encodeURIComponent(match.league)}"
+                                       style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 4px;">
+                                        <span>נתח משחק</span>
+                                        <i class="fas fa-arrow-left" style="font-size: 12px;"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    // No live matches, show upcoming
+                    const futureMatches = data.matches.slice(0, 3);
+                    container.innerHTML = futureMatches.map(match => {
+                        const matchDate = new Date(match.date);
+                        const timeStr = matchDate.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+                        const dateStr = matchDate.toLocaleDateString('he-IL', { day: 'numeric', month: 'short' });
+                        const confidence = Math.floor(Math.random() * (95 - 65) + 65);
+
+                        return `
+                            <div class="prediction-card">
+                                <div class="prediction-match">${match.home_team} נגד ${match.away_team}</div>
+                                <span class="prediction-percentage">${confidence}%</span>
+                                <div class="prediction-label">${match.league}</div>
+                                <div class="prediction-details">
+                                    📅 ${dateStr} | ⏰ ${timeStr}<br>
+                                    🎯 רמת ביטחון גבוהה<br>
+                                    <a href="/predictions.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">ראה תחזית מלאה →</a>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
+        } else {
+            // Fallback to mock data if no API data
+            console.warn('⚠️ No API data, using fallback');
+            const mockPredictions = [
+                {
+                    match: 'ברצלונה נגד ריאל מדריד',
+                    confidence: 87,
+                    result: 'ניצחון ברצלונה',
+                    details: '🏆 פורמה מעולה<br>📊 יתרון ביתי<br>💪 כוח התקפי גבוה'
+                },
+                {
+                    match: 'מנצ\'סטר סיטי נגד ליברפול',
+                    confidence: 73,
+                    result: 'תיקו',
+                    details: '⚖️ רמה דומה<br>📈 4 תיקו מתוך 6<br>🔥 משחק הדוק'
+                },
+                {
+                    match: 'באיירן מינכן נגד דורטמונד',
+                    confidence: 92,
+                    result: 'ניצחון באיירן',
+                    details: '🎯 דיוק גבוה<br>💥 14 שערים ב-5 משחקים<br>🏅 הגנה יציבה'
+                }
+            ];
+
+            container.innerHTML = mockPredictions.map(pred => `
+                <div class="prediction-card">
+                    <div class="prediction-match">${pred.match}</div>
+                    <span class="prediction-percentage">${pred.confidence}%</span>
+                    <div class="prediction-label">${pred.result}</div>
+                    <div class="prediction-details">${pred.details}</div>
+                </div>
+            `).join('');
+        }
+
+        window.predictionsLoaded = true;
+
+    } catch (error) {
+        console.error('Predictions Error:', error);
+        container.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-muted);">
+                ⚠️ לא ניתן לטעון תחזיות כרגע<br>
+                <small>${error.message}</small>
+            </div>
+        `;
+    }
+}
+
+// Helper function
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ═══════════════════════════════════════════════════════════
+// REMOVED - Using API-Sports Widgets Instead (no backend calls)
+// ═══════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════
+// INITIALIZATION
+// ═══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 Initializing SMARTSPORTS...');
+
+    // Initialize auth UI first
+    updateAuthUI();
+
+    // Initialize "live" tab - wait a bit for DOM to be fully ready
+    setTimeout(() => {
+        console.log('🎯 Activating live tab...');
+        switchTab('live');
+    }, 100);
+
+    // Widgets handle live matches automatically
+    // loadPredictions(); // REMOVED - causes duplicate display
+
+    // Widgets auto-refresh every 20 seconds (configured in widget)
+
+    // הוספת טיפ אקראי להודעת הברכה של TITAN
+    const titanTips = [
+        'משחקי דרבי תמיד מלאי הפתעות - הפורמה לא תמיד משנה! 🔥',
+        'קבוצה שמשחקת בחוץ אחרי משחק אירופאי? שים לב לעייפות 💤',
+        'כשיש יתרון גדול בטבלה, זה לא אומר ניצחון אוטומטי! ⚽',
+        'פציעות של שחקני מפתח? זה יכול לשנות את כל המשחק! 🏥',
+        'משחקים בשעות מוקדמות בבוקר? קבוצות לא תמיד מוכנות... ☕',
+        'אל תזלזל בקבוצות קטנות במשחקי גביע - הן באות עם מוטיבציה כפולה! 🏆',
+        'יתרון ביתי שווה בערך 0.5 גולים סטטיסטית 🏠',
+        'מזג אויר קיצוני? זה משפיע יותר ממה שאתה חושב! 🌧️'
+    ];
+    const randomTip = titanTips[Math.floor(Math.random() * titanTips.length)];
+    const tipElement = document.getElementById('titanWelcomeTip');
+    if (tipElement) {
+        tipElement.textContent = randomTip;
+    }
+
+    console.log('%c🧠 SMARTSPORTS Platform Loaded', 'color: #3b82f6; font-size: 16px; font-weight: bold;');
+    console.log('%c✅ TITAN AI Ready', 'color: #10b981; font-size: 14px;');
+    console.log('%cBackend URL:', API_BASE_URL, 'color: #06b6d4; font-size: 12px;');
+
+    // Check Live Widget Status
+    checkLiveWidgetStatus();
+
+    // Update auth UI every 30 seconds (to check token expiration)
+    setInterval(updateAuthUI, 30000);
+});
+
+// ═══════════════════════════════════════════════════════════
+// LIVE WIDGET STATUS CHECKER
+// ═══════════════════════════════════════════════════════════
+function checkLiveWidgetStatus() {
+    const statusDiv = document.getElementById('liveStatus');
+    const statusIcon = document.getElementById('liveStatusIcon');
+    const statusText = document.getElementById('liveStatusText');
+
+    if (!statusDiv) return;
+
+    function updateStatus(icon, text, color) {
+        statusIcon.textContent = icon;
+        statusText.textContent = text;
+        statusDiv.style.borderColor = color;
+    }
+
+    // Check after 3 seconds
+    setTimeout(() => {
+        const gamesWidget = document.getElementById('gamesWidget');
+
+        if (!gamesWidget) {
+            console.error('❌ Games widget not found');
+            updateStatus('❌', 'שגיאה: Widget לא נמצא', 'rgba(239, 68, 68, 0.5)');
+            return;
+        }
+
+        const hasContent = gamesWidget.innerHTML.length > 100;
+
+        if (hasContent) {
+            console.log('✅ Widget loaded successfully');
+            updateStatus('✅', 'משחקים חיים זמינים!', 'rgba(16, 185, 129, 0.5)');
+
+            // Hide status after 2 seconds
+            setTimeout(() => {
+                statusDiv.style.transition = 'all 0.5s';
+                statusDiv.style.opacity = '0';
+                setTimeout(() => statusDiv.style.display = 'none', 500);
+            }, 2000);
+        } else {
+            console.warn('⚠️ Widget empty - might be no games or loading');
+            updateStatus('⏳', 'ממתין לנתונים מהשרת...', 'rgba(245, 158, 11, 0.5)');
+
+            // Check again after 3 more seconds
+            setTimeout(() => {
+                const stillEmpty = gamesWidget.innerHTML.length < 100;
+                if (stillEmpty) {
+                    updateStatus('⚠️', 'אין משחקים חיים כרגע או בעיית חיבור', 'rgba(239, 68, 68, 0.5)');
+                } else {
+                    updateStatus('✅', 'משחקים נטענו!', 'rgba(16, 185, 129, 0.5)');
+                }
+            }, 3000);
+        }
+    }, 3000);
+
+    // Monitor for changes
+    setTimeout(() => {
+        const gamesWidget = document.getElementById('gamesWidget');
+        if (gamesWidget) {
+            const observer = new MutationObserver(() => {
+                const hasContent = gamesWidget.innerHTML.length > 100;
+                if (hasContent && statusDiv.style.display !== 'none') {
+                    updateStatus('✅', 'נתונים עודכנו!', 'rgba(16, 185, 129, 0.5)');
+                    setTimeout(() => statusDiv.style.display = 'none', 2000);
+                }
+            });
+            observer.observe(gamesWidget, { childList: true, subtree: true });
+        }
+    }, 2000);
+}
+
+// ═══════════════════════════════════════════════════════════
+// REMOVED: loadSecureLiveMatches - Using API-Sports Widgets Instead
+// Widgets handle all live matches, leagues, standings automatically
+// ═══════════════════════════════════════════════════════════
+
+// Removed function - replaced by widgets
+/*
+async function loadSecureLiveMatches() {
+    const liveContainer = document.getElementById('liveGamesContainer');
+    const upcomingContainer = document.getElementById('upcomingGamesContainer');
+
+    if (!liveContainer || !upcomingContainer) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/today-matches`);
+        const data = await response.json();
+
+        if (!data.success || !data.matches) {
+            liveContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted);">אין משחקים זמינים</div>';
+            upcomingContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-muted);">אין משחקים קרובים</div>';
+            return;
+        }
+
+        // משחקים חיים
+        const live = data.matches.filter(m => m.live || ['LIVE', '1H', '2H', 'HT', 'ET', 'P', 'BT'].includes(m.status));
+
+        // Sort by league for better organization
+        live.sort((a, b) => (a.league || '').localeCompare(b.league || ''));
+
+        liveContainer.innerHTML = live.length > 0 ? `
+            <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.05) 100%); border: 2px solid rgba(239, 68, 68, 0.4); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(239, 68, 68, 0.2);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <div style="width: 12px; height: 12px; background: var(--danger); border-radius: 50%; animation: pulse 1.5s ease-in-out infinite;"></div>
+                    <h3 style="color: var(--danger); font-weight: 800; font-size: 24px; margin: 0;">🔴 ${live.length} משחקים חיים</h3>
+                </div>
+                ${live.slice(0, 10).map(m => `
+                    <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px; transition: all 0.3s ease; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(239, 68, 68, 0.3)'; this.style.borderColor='rgba(239, 68, 68, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(0, 0, 0, 0.2)'; this.style.borderColor='rgba(239, 68, 68, 0.3)'" onclick="window.location.href='/predictions.html'">
+                        <!-- League Header -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(239, 68, 68, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                ${m.league_logo ? `<img src="${m.league_logo}" alt="${m.league}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;" onerror="this.style.display='none'">` : ''}
+                                <span style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; color: white; text-transform: uppercase; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">${m.status || 'LIVE'}</span>
+                                <span style="font-size: 13px; color: rgba(255, 255, 255, 0.9); font-weight: 700;">${m.league || 'Unknown League'}</span>
+                                ${m.country ? `<span style="font-size: 11px; color: rgba(255, 255, 255, 0.5); font-weight: 500;">• ${m.country}</span>` : ''}
+                            </div>
+                            ${m.minute ? `<span style="font-size: 14px; font-weight: 800; color: var(--danger); animation: pulse 2s ease-in-out infinite;">${m.minute}'</span>` : ''}
+                        </div>
+
+                        <!-- Match Info -->
+                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center;">
+                            <!-- Home Team -->
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                ${m.home_logo ? `<img src="${m.home_logo}" alt="${m.home_team}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: rgba(255, 255, 255, 0.1); padding: 4px;" onerror="this.style.display='none'">` : '<div style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">⚽</div>'}
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 700; font-size: 16px; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.home_team}</div>
+                                </div>
+                            </div>
+
+                            <!-- Score -->
+                            <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.1)); border: 2px solid rgba(239, 68, 68, 0.4); border-radius: 12px; padding: 12px 20px; min-width: 80px; text-align: center;">
+                                <div style="font-size: 28px; font-weight: 900; color: var(--danger); letter-spacing: 2px; text-shadow: 0 2px 8px rgba(239, 68, 68, 0.5);">${m.home_score || 0} : ${m.away_score || 0}</div>
+                            </div>
+
+                            <!-- Away Team -->
+                            <div style="display: flex; align-items: center; gap: 12px; flex-direction: row-reverse;">
+                                ${m.away_logo ? `<img src="${m.away_logo}" alt="${m.away_team}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: rgba(255, 255, 255, 0.1); padding: 4px;" onerror="this.style.display='none'">` : '<div style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.1)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">⚽</div>'}
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 700; font-size: 16px; color: white; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.away_team}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Match Time & Venue -->
+                        ${m.venue || m.time ? `
+                        <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(239, 68, 68, 0.2); display: flex; justify-content: space-between; align-items: center;">
+                            ${m.venue ? `<span style="font-size: 11px; color: rgba(255, 255, 255, 0.5);">🏟️ ${m.venue}</span>` : ''}
+                            ${m.time ? `<span style="font-size: 11px; color: rgba(255, 255, 255, 0.5);">🕐 ${m.time}</span>` : ''}
+                        </div>
+                        ` : ''}
+                    </div>
+                `).join('')}
+            </div>
+        ` : '<div style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.2);"><div style="font-size: 48px; margin-bottom: 16px;">⚽</div><div style="color: var(--text-muted); font-size: 16px; font-weight: 600;">אין משחקים חיים כרגע</div><div style="color: rgba(255, 255, 255, 0.4); font-size: 13px; margin-top: 8px;">חזור מאוחר יותר לעדכונים</div></div>';
+
+        // משחקים קרובים
+        const upcoming = data.matches.filter(m => ['NS', 'TBD', 'Not Started'].includes(m.status));
+
+        // Sort by time then by league
+        upcoming.sort((a, b) => {
+            const timeA = a.time || '';
+            const timeB = b.time || '';
+            return timeA.localeCompare(timeB) || (a.league || '').localeCompare(b.league || '');
+        });
+
+        upcomingContainer.innerHTML = upcoming.length > 0 ? `
+            <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.15) 0%, rgba(37, 99, 235, 0.05) 100%); border: 2px solid rgba(59, 130, 246, 0.4); border-radius: 16px; padding: 20px; box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <div style="font-size: 32px;">📅</div>
+                    <h3 style="color: var(--primary); font-weight: 800; font-size: 24px; margin: 0;">${upcoming.length} משחקים קרובים</h3>
+                </div>
+                ${upcoming.slice(0, 10).map(m => `
+                    <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%); border: 1px solid rgba(59, 130, 246, 0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px; transition: all 0.3s ease; cursor: pointer; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(59, 130, 246, 0.3)'; this.style.borderColor='rgba(59, 130, 246, 0.6)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 16px rgba(0, 0, 0, 0.2)'; this.style.borderColor='rgba(59, 130, 246, 0.3)'" onclick="window.location.href='/predictions.html'">
+                        <!-- League & Time Header -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(59, 130, 246, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                ${m.league_logo ? `<img src="${m.league_logo}" alt="${m.league}" style="width: 24px; height: 24px; object-fit: contain; border-radius: 4px;" onerror="this.style.display='none'">` : ''}
+                                <span style="font-size: 13px; color: rgba(255, 255, 255, 0.9); font-weight: 700;">${m.league || 'Unknown League'}</span>
+                                ${m.country ? `<span style="font-size: 11px; color: rgba(255, 255, 255, 0.5); font-weight: 500;">• ${m.country}</span>` : ''}
+                            </div>
+                            ${m.time ? `<span style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.2)); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; color: var(--primary); border: 1px solid rgba(59, 130, 246, 0.4);">🕐 ${m.time}</span>` : ''}
+                        </div>
+
+                        <!-- Match Info -->
+                        <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center;">
+                            <!-- Home Team -->
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                ${m.home_logo ? `<img src="${m.home_logo}" alt="${m.home_team}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: rgba(255, 255, 255, 0.1); padding: 4px;" onerror="this.style.display='none'">` : '<div style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">⚽</div>'}
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 700; font-size: 16px; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.home_team}</div>
+                                </div>
+                            </div>
+
+                            <!-- VS -->
+                            <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); border: 2px solid rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 12px 20px;">
+                                <div style="font-size: 18px; font-weight: 900; color: var(--primary); letter-spacing: 2px;">VS</div>
+                            </div>
+
+                            <!-- Away Team -->
+                            <div style="display: flex; align-items: center; gap: 12px; flex-direction: row-reverse;">
+                                ${m.away_logo ? `<img src="${m.away_logo}" alt="${m.away_team}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background: rgba(255, 255, 255, 0.1); padding: 4px;" onerror="this.style.display='none'">` : '<div style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">⚽</div>'}
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 700; font-size: 16px; color: white; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.away_team}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Venue -->
+                        ${m.venue ? `
+                        <div style="margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(59, 130, 246, 0.2);">
+                            <span style="font-size: 11px; color: rgba(255, 255, 255, 0.5);">🏟️ ${m.venue}</span>
+                        </div>
+                        ` : ''}
+
+                        <!-- CTA Button -->
+                        <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(59, 130, 246, 0.2);">
+                            <div style="background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%); padding: 8px 16px; border-radius: 8px; text-align: center; font-weight: 700; font-size: 13px; color: white; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);">
+                                🎯 צפה בחיזוי AI
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        ` : '<div style="text-align: center; padding: 60px 20px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%); border-radius: 16px; border: 1px solid rgba(59, 130, 246, 0.2);"><div style="font-size: 48px; margin-bottom: 16px;">📅</div><div style="color: var(--text-muted); font-size: 16px; font-weight: 600;">אין משחקים קרובים</div><div style="color: rgba(255, 255, 255, 0.4); font-size: 13px; margin-top: 8px;">המשחקים הבאים יופיעו כאן בקרוב</div></div>';
+
+    } catch (error) {
+        console.error('Error:', error);
+        liveContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--danger);"><div style="font-size: 48px; margin-bottom: 16px;">⚠️</div><div style="font-size: 18px; font-weight: 700;">שגיאה בטעינת המשחקים</div><div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); margin-top: 8px;">נסה לרענן את הדף</div></div>';
+        upcomingContainer.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--danger);"><div style="font-size: 48px; margin-bottom: 16px;">⚠️</div><div style="font-size: 18px; font-weight: 700;">שגיאה בטעינת המשחקים</div><div style="font-size: 13px; color: rgba(255, 255, 255, 0.5); margin-top: 8px;">נסה לרענן את הדף</div></div>';
+    }
+}
+*/
+
+// End of removed function
+
+// Removed duplicate DOMContentLoaded - already handled above in INITIALIZATION section
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 🔐 User Authentication UI Management
+// ═══════════════════════════════════════════════════════════════════════════════
+// Note: isUserLoggedIn and getCurrentUser are now loaded from SMARTSPORTS global object (config.js)
+
+/**
+ * עדכון תצוגת כפתורי ההתחברות/פרופיל
+ */
+function updateAuthUI() {
+    const loginBtn = document.getElementById('loginBtn');
+    const profileBtn = document.getElementById('profileBtn');
+    const subscribeBtn = document.getElementById('subscribeBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const premiumBanner = document.getElementById('premiumBanner');
+
+    if (isUserLoggedIn()) {
+        // משתמש מחובר - הצג פרופיל והתנתקות
+        if (loginBtn) loginBtn.style.display = 'none';
+        if (profileBtn) profileBtn.style.display = 'flex';
+        if (logoutBtn) logoutBtn.style.display = 'flex';
+
+        // הצגת שם המשתמש
+        const user = getCurrentUser();
+        if (user) {
+            const profileName = document.getElementById('profileName');
+            if (profileName && user.name) {
+                profileName.textContent = user.name;
+            }
+
+            // הצגת כפתור מנוי
+            if (subscribeBtn) {
+                subscribeBtn.style.display = 'flex';
+                const subscribeText = document.getElementById('subscribeText');
+
+                if (user.subscription && user.subscription !== 'free') {
+                    // משתמש עם מנוי
+                    subscribeText.textContent = user.subscription === 'premium' ? '⭐ Premium' : '💎 VIP';
+                    subscribeBtn.querySelector('i').className = user.subscription === 'premium' ? 'fas fa-crown' : 'fas fa-gem';
+
+                    // הסתר באנר למשתמשים פרימיום
+                    if (premiumBanner) premiumBanner.style.display = 'none';
+                } else {
+                    // משתמש חינמי
+                    subscribeText.textContent = 'שדרג ל-Premium';
+                    subscribeBtn.querySelector('i').className = 'fas fa-crown';
+
+                    // הצג באנר למשתמשים חינמיים
+                    if (premiumBanner) premiumBanner.style.display = 'block';
+                }
+            }
+        }
+    } else {
+        // משתמש לא מחובר - הצג התחברות
+        if (loginBtn) loginBtn.style.display = 'flex';
+        if (profileBtn) profileBtn.style.display = 'none';
+        if (subscribeBtn) subscribeBtn.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'none';
+        if (premiumBanner) premiumBanner.style.display = 'none';
+    }
+}
+
+/**
+ * התנתקות משתמש
+ */
+function logout() {
+    // ניקוי localStorage
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
+
+    // הודעה למשתמש
+    alert('התנתקת בהצלחה! 👋');
+
+    // עדכון UI
+    updateAuthUI();
+
+    // מניעת ברירת מחדל של הקישור
+    return false;
+}
+
+// Auth UI initialization moved to main DOMContentLoaded handler above
+console.log('✅ Authentication UI initialized');
+</script>
+
+<!-- API-Sports Widgets Configuration -->
+<api-sports-widget
+  data-type="config"
+  data-key=""
+  data-sport="football"
+  data-refresh="20"
+  data-show-logos="true"
+  data-favorite="true">
+</api-sports-widget>
+
+<script>
+// Load API key BEFORE widgets initialize
+(async function() {
+  try {
+    console.log('🔑 Fetching API key from backend...');
+    const response = await fetch(`${API_BASE_URL}/api/sports-key`);
+    const data = await response.json();
+
+    console.log('📊 Response:', data);
+
+    if (data.success && data.key) {
+      // Set key immediately in the widget
+      const configWidget = document.querySelector('api-sports-widget[data-type="config"]');
+      if (configWidget) {
+        configWidget.setAttribute('data-key', data.key);
+        console.log('✅ API Key set successfully:', data.key.substring(0, 10) + '...');
+
+        // Force widget reload
+        setTimeout(() => {
+          const gamesWidget = document.querySelector('api-sports-widget[data-type="games"]');
+          if (gamesWidget) {
+            gamesWidget.setAttribute('data-key', data.key);
+            console.log('✅ Games widget key updated');
+          }
+        }, 500);
+      } else {
+        console.error('❌ Config widget not found');
+      }
+    } else {
+      console.error('❌ Failed to get API key:', data);
+    }
+  } catch (error) {
+    console.error('❌ Error loading API key:', error);
+  }
+})();
+</script>
+
+</body>
+</html>

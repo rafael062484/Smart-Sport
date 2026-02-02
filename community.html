@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קהילת SMARTSPORTS | הקהילה הגדולה בישראל</title>
+    <meta name="theme-color" content="#0a0e1a">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="global-styles.css">
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════════════
+           SMARTSPORTS COMMUNITY - PROFESSIONAL INSTAGRAM-STYLE v4.0
+           🚀 עיצוב מקצועי, צפוף ומתוחכם ברמת Meta/Instagram
+           ═══════════════════════════════════════════════════════════════════ */
+
+        :root {
+            --bg-body: #0a0e1a;
+            --bg-panel: #111827;
+            --bg-glass: rgba(26, 35, 50, 0.75);
+            --bg-card: rgba(26, 35, 50, 0.6);
+            --bg-card-hover: rgba(40, 50, 70, 0.9);
+            --primary: #60a5fa;
+            --primary-glow: rgba(96, 165, 250, 0.6);
+            --secondary: #93c5fd;
+            --accent: #22d3ee;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gold: #fbbf24;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+            --border: 1px solid rgba(96, 165, 250, 0.15);
+            --border-strong: 1px solid rgba(96, 165, 250, 0.3);
+            --font-ui: 'Assistant', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-display: 'Orbitron', sans-serif;
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 30px rgba(96, 165, 250, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--bg-body);
+            color: var(--text);
+            font-family: var(--font-ui);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 20%, rgba(96, 165, 250, 0.25), transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(147, 197, 253, 0.18), transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(34, 211, 238, 0.12), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+
+        /* Floating Particles */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(2px 2px at 20% 30%, rgba(96, 165, 250, 0.4), transparent),
+                radial-gradient(2px 2px at 60% 70%, rgba(147, 197, 253, 0.3), transparent),
+                radial-gradient(1px 1px at 50% 50%, rgba(34, 211, 238, 0.3), transparent);
+            background-size: 200px 200px, 300px 300px, 250px 250px;
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+            animation: particlesFloat 20s linear infinite;
+        }
+
+        @keyframes particlesFloat {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        /* Header with Glassmorphism */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+            padding: 0.75rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .logo:hover {
+            transform: translateX(-3px);
+            text-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .logo i {
+            color: var(--primary);
+            filter: drop-shadow(0 0 10px var(--primary-glow));
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+            background: rgba(96, 165, 250, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a.active {
+            color: var(--primary);
+            background: linear-gradient(90deg, rgba(96, 165, 250, 0.25), transparent);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .main-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+            z-index: 1;
+        }
+
+        /* Page Header - Compact */
+        .page-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            font-family: var(--font-ui);
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .page-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Stats Bar - Compact Professional */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .stat-box {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.15), transparent);
+            transition: left 0.6s;
+        }
+
+        .stat-box:hover::before {
+            left: 100%;
+        }
+
+        .stat-box:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
+        }
+
+        .stat-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Compact Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+            overflow-x: auto;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem 1.25rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: var(--font-ui);
+            cursor: pointer;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+            background: rgba(96, 165, 250, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Discussion Cards - Instagram Style */
+        .discussion-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .discussion-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discussion-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .discussion-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .discussion-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.15);
+        }
+
+        .discussion-header {
+            display: flex;
+            align-items: start;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .discussion-meta {
+            flex: 1;
+        }
+
+        .discussion-author {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .discussion-time {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .discussion-time i {
+            color: var(--primary);
+        }
+
+        .discussion-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            line-height: 1.4;
+        }
+
+        .discussion-preview {
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .discussion-footer {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(96, 165, 250, 0.08);
+        }
+
+        .discussion-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .discussion-stat:hover {
+            color: var(--primary);
+        }
+
+        .discussion-stat i {
+            font-size: 0.95rem;
+        }
+
+        .discussion-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        .tag {
+            background: rgba(96, 165, 250, 0.1);
+            color: var(--primary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            transition: all 0.2s;
+        }
+
+        .tag:hover {
+            background: rgba(96, 165, 250, 0.2);
+        }
+
+        /* Leaderboard - Compact */
+        .leaderboard {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
+            border-radius: 8px;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(96, 165, 250, 0.08);
+            transform: translateX(-3px);
+        }
+
+        .rank {
+            font-size: 1.25rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .rank.gold {
+            color: var(--gold);
+            filter: drop-shadow(0 0 15px rgba(251, 191, 36, 0.5));
+        }
+        .rank.silver {
+            color: #c0c0c0;
+            filter: drop-shadow(0 0 15px rgba(192, 192, 192, 0.5));
+        }
+        .rank.bronze {
+            color: #cd7f32;
+            filter: drop-shadow(0 0 15px rgba(205, 127, 50, 0.5));
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .user-stats {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .user-score {
+            font-size: 1.25rem;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--success);
+        }
+
+        /* Prediction Cards - Compact */
+        .predictions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .prediction-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .prediction-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2);
+        }
+
+        .match-info {
+            text-align: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(96, 165, 250, 0.1);
+        }
+
+        .teams {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .match-time {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-weight: 500;
+        }
+
+        .match-time i {
+            color: var(--primary);
+        }
+
+        .prediction-poll {
+            margin-top: 1rem;
+        }
+
+        .poll-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(96, 165, 250, 0.1);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .poll-option:hover {
+            background: rgba(96, 165, 250, 0.15);
+            border-color: var(--primary);
+        }
+
+        .poll-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            opacity: 0.25;
+            border-radius: 10px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Create Post Button - Compact */
+        .create-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 2rem;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
+            transition: all 0.3s;
+            z-index: 999;
+        }
+
+        .create-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 30px rgba(96, 165, 250, 0.5);
+        }
+
+        .create-btn:active {
+            transform: scale(1) rotate(90deg);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--secondary), var(--primary));
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container { padding: 1rem 0.75rem; }
+            .page-title { font-size: 1.5rem; }
+            .page-subtitle { font-size: 0.85rem; }
+            .stats-bar { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+            .stat-box { padding: 0.75rem; }
+            .stat-icon { font-size: 1.25rem; }
+            .stat-value { font-size: 1.25rem; }
+            .stat-label { font-size: 0.7rem; }
+            .predictions-grid { grid-template-columns: 1fr; }
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            .nav-links a {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+            .discussion-card { padding: 1rem; }
+            .discussion-title { font-size: 0.95rem; }
+            .discussion-preview { font-size: 0.85rem; }
+            .tag { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+            .teams { font-size: 0.95rem; }
+            .rank { font-size: 1.1rem; min-width: 35px; }
+            .user-name { font-size: 0.85rem; }
+            .user-score { font-size: 1.1rem; }
+            .create-btn {
+                bottom: 1.5rem;
+                left: 1.5rem;
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-brain"></i>
+                <span>SMARTSPORTS</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html"><i class="fa-solid fa-home"></i> בית</a>
+                <a href="news.html"><i class="fa-solid fa-newspaper"></i> חדשות</a>
+                <a href="community.html" class="active"><i class="fa-solid fa-users"></i> קהילה</a>
+                <a href="predictions.html"><i class="fa-solid fa-robot"></i> תחזיות</a>
+                <a href="chat.html"><i class="fa-solid fa-comments"></i> TITAN AI</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="page-header">
+            <h1 class="page-title">🏆 קהילת SMARTSPORTS</h1>
+            <p class="page-subtitle">הקהילה הגדולה והאקטיבית ביותר של אוהדי ספורט בישראל</p>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-box">
+                <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="stat-value">12,487</div>
+                <div class="stat-label">חברי קהילה</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon"><i class="fa-solid fa-comments"></i></div>
+                <div class="stat-value">3,254</div>
+                <div class="stat-label">דיונים פעילים</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon"><i class="fa-solid fa-trophy"></i></div>
+                <div class="stat-value">847</div>
+                <div class="stat-label">תחזיות השבוע</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-icon"><i class="fa-solid fa-fire"></i></div>
+                <div class="stat-value">156</div>
+                <div class="stat-label">משתמשים מחוברים</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('discussions')">
+                <i class="fa-solid fa-comments"></i> דיונים
+            </button>
+            <button class="tab-btn" onclick="switchTab('predictions')">
+                <i class="fa-solid fa-poll"></i> תחזיות קהילה
+            </button>
+            <button class="tab-btn" onclick="switchTab('leaderboard')">
+                <i class="fa-solid fa-ranking-star"></i> טבלת מובילים
+            </button>
+            <button class="tab-btn" onclick="switchTab('leagues')">
+                <i class="fa-solid fa-trophy"></i> ליגות פנטזי
+            </button>
+        </div>
+
+        <!-- Tab: Discussions -->
+        <div id="discussions" class="tab-content active">
+            <div class="discussion-grid">
+                <div class="discussion-card">
+                    <div class="discussion-header">
+                        <div class="user-avatar">א</div>
+                        <div class="discussion-meta">
+                            <div class="discussion-author">אריאל כהן</div>
+                            <div class="discussion-time"><i class="fa-regular fa-clock"></i> לפני 23 דקות</div>
+                        </div>
+                    </div>
+                    <h3 class="discussion-title">מה הסיכויים של מכבי תל אביב להעפיל לליגת האלופות?</h3>
+                    <p class="discussion-preview">
+                        אחרי הניצחון המרשים אמש 3-1 על באר שבע, מכבי ת"א נמצאת במקום מצוין בטבלה. האם יש סיכוי אמיתי להעפלה השנה? בואו נדון על הסיכויים...
+                    </p>
+                    <div class="discussion-tags">
+                        <span class="tag">ליגת העל</span>
+                        <span class="tag">מכבי ת"א</span>
+                        <span class="tag">ליגת אלופות</span>
+                    </div>
+                    <div class="discussion-footer">
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-comment"></i>
+                            <span>47 תגובות</span>
+                        </div>
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-heart"></i>
+                            <span>124 לייקים</span>
+                        </div>
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-eye"></i>
+                            <span>892 צפיות</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="discussion-card">
+                    <div class="discussion-header">
+                        <div class="user-avatar">י</div>
+                        <div class="discussion-meta">
+                            <div class="discussion-author">יוסי לוי</div>
+                            <div class="discussion-time"><i class="fa-regular fa-clock"></i> לפני שעה</div>
+                        </div>
+                    </div>
+                    <h3 class="discussion-title">האם סאלח יישאר בליברפול?</h3>
+                    <p class="discussion-preview">
+                        השמועות על עזיבה של מוחמד סאלח מתעצמות. מה דעתכם? האם הוא צריך להישאר או לעבור לסעודיה? תפקידו בקבוצה חיוני מאוד...
+                    </p>
+                    <div class="discussion-tags">
+                        <span class="tag">פרמייר ליג</span>
+                        <span class="tag">ליברפול</span>
+                        <span class="tag">העברות</span>
+                    </div>
+                    <div class="discussion-footer">
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-comment"></i>
+                            <span>89 תגובות</span>
+                        </div>
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-heart"></i>
+                            <span>203 לייקים</span>
+                        </div>
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-eye"></i>
+                            <span>1,247 צפיות</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="discussion-card">
+                    <div class="discussion-header">
+                        <div class="user-avatar">ד</div>
+                        <div class="discussion-meta">
+                            <div class="discussion-author">דני מזרחי</div>
+                            <div class="discussion-time"><i class="fa-regular fa-clock"></i> לפני 3 שעות</div>
+                        </div>
+                    </div>
+                    <h3 class="discussion-title">ניתוח טקטי: למה ברצלונה משחקת יותר טוב השנה?</h3>
+                    <p class="discussion-preview">
+                        ניתוח מעמיק של השינויים הטקטיים של צ'אבי והשפעתם על המשחק. בואו נדבר על השינויים במערך ההגנתי, בניית המשחק מאחור ותנועת השחקנים...
+                    </p>
+                    <div class="discussion-tags">
+                        <span class="tag">לה-ליגה</span>
+                        <span class="tag">ברצלונה</span>
+                        <span class="tag">ניתוח טקטי</span>
+                    </div>
+                    <div class="discussion-footer">
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-comment"></i>
+                            <span>156 תגובות</span>
+                        </div>
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-heart"></i>
+                            <span>421 לייקים</span>
+                        </div>
+                        <div class="discussion-stat">
+                            <i class="fa-solid fa-eye"></i>
+                            <span>2,103 צפיות</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Predictions -->
+        <div id="predictions" class="tab-content">
+            <div class="predictions-grid">
+                <div class="prediction-card">
+                    <div class="match-info">
+                        <div class="teams">ריאל מדריד vs ברצלונה</div>
+                        <div class="match-time"><i class="fa-regular fa-calendar"></i> מחר בשעה 22:00</div>
+                    </div>
+                    <div class="prediction-poll">
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 45%"></div>
+                            <span style="position:relative;z-index:1;">ריאל מדריד</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">45%</span>
+                        </div>
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 25%"></div>
+                            <span style="position:relative;z-index:1;">תיקו</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">25%</span>
+                        </div>
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 30%"></div>
+                            <span style="position:relative;z-index:1;">ברצלונה</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">30%</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:1.5rem;text-align:center;color:var(--text-muted);font-size:0.95rem;">
+                        <i class="fa-solid fa-users"></i> 1,247 הצבעות
+                    </div>
+                </div>
+
+                <div class="prediction-card">
+                    <div class="match-info">
+                        <div class="teams">מנצ'סטר סיטי vs ארסנל</div>
+                        <div class="match-time"><i class="fa-regular fa-calendar"></i> יום ראשון 18:30</div>
+                    </div>
+                    <div class="prediction-poll">
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 55%"></div>
+                            <span style="position:relative;z-index:1;">סיטי</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">55%</span>
+                        </div>
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 20%"></div>
+                            <span style="position:relative;z-index:1;">תיקו</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">20%</span>
+                        </div>
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 25%"></div>
+                            <span style="position:relative;z-index:1;">ארסנל</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">25%</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:1.5rem;text-align:center;color:var(--text-muted);font-size:0.95rem;">
+                        <i class="fa-solid fa-users"></i> 2,103 הצבעות
+                    </div>
+                </div>
+
+                <div class="prediction-card">
+                    <div class="match-info">
+                        <div class="teams">מכבי חיפה vs הפועל ב"ש</div>
+                        <div class="match-time"><i class="fa-regular fa-calendar"></i> שבת 20:00</div>
+                    </div>
+                    <div class="prediction-poll">
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 60%"></div>
+                            <span style="position:relative;z-index:1;">מכבי חיפה</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">60%</span>
+                        </div>
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 15%"></div>
+                            <span style="position:relative;z-index:1;">תיקו</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">15%</span>
+                        </div>
+                        <div class="poll-option" style="position:relative;">
+                            <div class="poll-bar" style="width: 25%"></div>
+                            <span style="position:relative;z-index:1;">הפועל ב"ש</span>
+                            <span style="font-weight:800;position:relative;z-index:1;">25%</span>
+                        </div>
+                    </div>
+                    <div style="margin-top:1.5rem;text-align:center;color:var(--text-muted);font-size:0.95rem;">
+                        <i class="fa-solid fa-users"></i> 643 הצבעות
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Leaderboard -->
+        <div id="leaderboard" class="tab-content">
+            <div class="leaderboard">
+                <div class="leaderboard-item">
+                    <div class="rank gold">🥇</div>
+                    <div class="user-avatar">מ</div>
+                    <div class="user-info">
+                        <div class="user-name">מוטי הגיבור</div>
+                        <div class="user-stats">127 תחזיות מוצלחות | דיוק 89%</div>
+                    </div>
+                    <div class="user-score">8,947</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank silver">🥈</div>
+                    <div class="user-avatar">ש</div>
+                    <div class="user-info">
+                        <div class="user-name">שי כהן</div>
+                        <div class="user-stats">104 תחזיות מוצלחות | דיוק 85%</div>
+                    </div>
+                    <div class="user-score">7,532</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank bronze">🥉</div>
+                    <div class="user-avatar">א</div>
+                    <div class="user-info">
+                        <div class="user-name">אורי לוי</div>
+                        <div class="user-stats">98 תחזיות מוצלחות | דיוק 83%</div>
+                    </div>
+                    <div class="user-score">6,821</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">4</div>
+                    <div class="user-avatar">ד</div>
+                    <div class="user-info">
+                        <div class="user-name">דני מזרחי</div>
+                        <div class="user-stats">87 תחזיות מוצלחות | דיוק 81%</div>
+                    </div>
+                    <div class="user-score">5,964</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">5</div>
+                    <div class="user-avatar">י</div>
+                    <div class="user-info">
+                        <div class="user-name">יוסי אברהם</div>
+                        <div class="user-stats">76 תחזיות מוצלחות | דיוק 78%</div>
+                    </div>
+                    <div class="user-score">5,103</div>
+                </div>
+
+                <div class="leaderboard-item">
+                    <div class="rank">6</div>
+                    <div class="user-avatar">ר</div>
+                    <div class="user-info">
+                        <div class="user-name">רון ביטון</div>
+                        <div class="user-stats">72 תחזיות מוצלחות | דיוק 76%</div>
+                    </div>
+                    <div class="user-score">4,587</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Leagues -->
+        <div id="leagues" class="tab-content">
+            <div class="predictions-grid">
+                <div class="prediction-card">
+                    <h3 style="margin-bottom:1.5rem;font-size:1.5rem;font-weight:800;">🏆 ליגת הפרמיירליג</h3>
+                    <p style="color:var(--text-muted);margin-bottom:1.5rem;line-height:1.7;">
+                        הצטרף לליגת הפנטזי הפופולרית ביותר! 2,347 משתתפים פעילים עם פרסים שבועיים וחודשיים.
+                    </p>
+                    <button style="width:100%;padding:1rem;background:linear-gradient(135deg, var(--primary), var(--secondary));border:none;border-radius:12px;color:white;font-weight:800;cursor:pointer;font-size:1.05rem;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 30px rgba(96,165,250,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                        הצטרף עכשיו
+                    </button>
+                </div>
+
+                <div class="prediction-card">
+                    <h3 style="margin-bottom:1.5rem;font-size:1.5rem;font-weight:800;">⚽ ליגת העל הישראלית</h3>
+                    <p style="color:var(--text-muted);margin-bottom:1.5rem;line-height:1.7;">
+                        ליגת פנטזי לאוהדי הכדורגל הישראלי. 847 משתתפים עם מערכת דירוג ייחודית.
+                    </p>
+                    <button style="width:100%;padding:1rem;background:linear-gradient(135deg, var(--primary), var(--secondary));border:none;border-radius:12px;color:white;font-weight:800;cursor:pointer;font-size:1.05rem;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 30px rgba(96,165,250,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                        הצטרף עכשיו
+                    </button>
+                </div>
+
+                <div class="prediction-card" style="border:2px solid var(--gold);">
+                    <h3 style="margin-bottom:1.5rem;font-size:1.5rem;font-weight:800;background:linear-gradient(135deg,var(--gold),var(--warning));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🔥 ליגת VIP</h3>
+                    <p style="color:var(--text-muted);margin-bottom:1.5rem;line-height:1.7;">
+                        ליגה פרטית למשתמשי Premium בלבד. פרסים שבועיים מובילים ותחרות ייחודית!
+                    </p>
+                    <button style="width:100%;padding:1rem;background:linear-gradient(135deg, var(--gold), var(--warning));border:none;border-radius:12px;color:var(--bg-body);font-weight:800;cursor:pointer;font-size:1.05rem;transition:all 0.3s;" onmouseover="this.style.transform='scale(1.05)';this.style.boxShadow='0 10px 30px rgba(251,191,36,0.5)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+                        שדרג ל-Premium
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Post Button -->
+    <button class="create-btn" onclick="alert('פונקציה זו תהיה זמינה בקרוב! 🚀')">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Mark button as active
+            event.target.closest('.tab-btn').classList.add('active');
+        }
+
+        // Load community data
+        async function loadCommunityData() {
+            try {
+                const response = await fetch('/api/community/feed');
+                if (response.ok) {
+                    const data = await response.json();
+                    // Update with real data
+                    console.log('Community data loaded:', data);
+                }
+            } catch (error) {
+                console.log('Using demo data');
+            }
+        }
+
+        // Animate stats on load
+        function animateStats() {
+            const statValues = document.querySelectorAll('.stat-value');
+            statValues.forEach(stat => {
+                const target = parseInt(stat.textContent.replace(/,/g, ''));
+                let current = 0;
+                const increment = target / 50;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        stat.textContent = target.toLocaleString('he-IL');
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current).toLocaleString('he-IL');
+                    }
+                }, 30);
+            });
+        }
+
+        window.addEventListener('load', () => {
+            loadCommunityData();
+            setTimeout(animateStats, 300);
+        });
+    </script>
+</body>
+</html>

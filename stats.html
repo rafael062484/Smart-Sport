@@ -1,0 +1,2700 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTSPORTS | AI Stats Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="global-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 🔐 בדיקת מנוי -->
+    <script src="auth-check.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-body: #0a0e1a;
+            --bg-panel: #111827;
+            --bg-glass: rgba(26, 35, 50, 0.5);
+            --primary: #60a5fa;
+            --primary-glow: rgba(96, 165, 250, 0.6);
+            --secondary: #93c5fd;
+            --accent: #22d3ee;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gold: #fbbf24;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: 1px solid rgba(255,255,255,0.08);
+            --font-ui: 'Assistant', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--bg-body);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                    radial-gradient(ellipse at 15% 20%, rgba(96, 165, 250, 0.16), transparent 50%),
+                    radial-gradient(ellipse at 85% 80%, rgba(147, 197, 253, 0.12), transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, rgba(34, 211, 238, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(96, 165, 250, 0.5); border-radius: 10px; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(30px);
+            border-left: var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: var(--border);
+        }
+
+        .logo-icon {
+            font-size: 26px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px var(--primary-glow));
+        }
+
+        .logo-text { font-size: 22px; font-weight: 800; color: #fff; }
+        .logo-text span { color: var(--primary); }
+
+        .nav-group { margin-bottom: 20px; }
+        .nav-title {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.25s;
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+
+        .nav-item i { width: 18px; text-align: center; }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            transform: translateX(-3px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
+            color: var(--primary);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-right: var(--sidebar-width);
+            padding: 40px 40px 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            background: linear-gradient(90deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .system-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 50px;
+            color: var(--success);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.3); opacity: 0.7; }
+        }
+
+        /* AI Insights Banner */
+        .ai-insights-banner {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(59, 130, 246, 0.1));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 20px 24px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            animation: fadeUp 0.8s ease-out;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-icon-large {
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #fff;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .ai-insights-content {
+            flex: 1;
+        }
+
+        .ai-insights-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .ai-insights-text {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .ai-ask-btn {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--secondary);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-ui);
+        }
+
+        .ai-ask-btn:hover {
+            background: rgba(139, 92, 246, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* League Selector */
+        .league-selector {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .league-btn {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            color: var(--text);
+            padding: 14px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: var(--font-ui);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .league-btn:hover {
+            transform: translateY(-3px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .league-btn.active {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.1));
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            padding: 24px;
+            border-radius: 20px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .stat-card:hover::before { opacity: 1; }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #fff;
+            font-family: var(--font-mono);
+        }
+
+        /* Two Column Layout */
+        .two-col-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+
+        /* Three Column Layout */
+        .three-col-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        /* Insight Card */
+        .insight-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            padding: 20px;
+            border-radius: 18px;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .insight-card.blue::before { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+        .insight-card.purple::before { background: linear-gradient(90deg, var(--secondary), var(--primary)); }
+        .insight-card.green::before { background: linear-gradient(90deg, var(--success), var(--accent)); }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+
+        .insight-card:hover::before { opacity: 1; }
+
+        .insight-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        .insight-icon.blue { background: rgba(59, 130, 246, 0.15); color: var(--primary); }
+        .insight-icon.purple { background: rgba(139, 92, 246, 0.15); color: var(--secondary); }
+        .insight-icon.green { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .insight-icon.gold { background: rgba(251, 191, 36, 0.15); color: var(--gold); }
+
+        .insight-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .insight-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .insight-value {
+            font-size: 24px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            margin: 10px 0;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Team Comparison */
+        .team-comparison {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            padding: 24px;
+            border-radius: 20px;
+            margin-bottom: 35px;
+        }
+
+        .comparison-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .comparison-team {
+            flex: 1;
+            text-align: center;
+        }
+
+        .comparison-vs {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-muted);
+            padding: 0 20px;
+        }
+
+        .comparison-team-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .comparison-team-logo {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .comparison-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .comparison-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .comparison-label {
+            flex: 1;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .comparison-value {
+            flex: 1;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: var(--font-mono);
+        }
+
+        /* Glass Panel */
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: 22px;
+            padding: 24px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Table */
+        .table-container {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: 22px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.1));
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .table-header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(0,0,0,0.2);
+        }
+
+        th {
+            padding: 14px;
+            text-align: right;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        td {
+            padding: 16px 14px;
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .rank {
+            font-weight: 900;
+            font-size: 18px;
+            width: 60px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .team {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .team-logo {
+            font-size: 20px;
+        }
+
+        .points {
+            font-weight: 900;
+            font-size: 16px;
+            color: var(--success);
+            font-family: var(--font-mono);
+        }
+
+        .form {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+        }
+
+        .form-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .form-dot.W { background: var(--success); }
+        .form-dot.D { background: var(--text-muted); }
+        .form-dot.L { background: var(--danger); }
+
+        /* Chart */
+        .chart-container {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            padding: 24px;
+            border-radius: 20px;
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #pointsChart {
+            height: 280px !important;
+        }
+
+        /* AI Assistant */
+        .ai-assistant {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(30, 41, 59, 0.95));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .ai-header {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.1));
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .ai-header-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .ai-online {
+            font-size: 11px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ai-messages {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 360px;
+            overflow-y: auto;
+        }
+
+        .ai-msg {
+            display: flex;
+            gap: 10px;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes ticker {
+            from { transform: translateX(100%); }
+            to { transform: translateX(-100%); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .ai-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+        }
+
+        .ai-bubble {
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 13px;
+            line-height: 1.6;
+            max-width: 85%;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .ai-input-area {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            gap: 10px;
+        }
+
+        .ai-input {
+            flex: 1;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 13px;
+            font-family: var(--font-ui);
+        }
+
+        .ai-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .ai-input::placeholder { color: var(--text-muted); }
+
+        .ai-send {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .ai-send:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 15px;
+            color: var(--text-muted);
+        }
+
+        .spinner {
+            border: 3px solid rgba(255,255,255,0.1);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* View Mode Buttons */
+        .view-mode-btn {
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            font-family: var(--font-ui);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .view-mode-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .view-mode-btn.active {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.15));
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Team Card */
+        .team-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.4s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px rgba(59, 130, 246, 0.3);
+        }
+
+        .team-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .team-card-rank {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+
+        .team-card-logo {
+            font-size: 48px;
+            text-align: center;
+            margin: 16px 0;
+        }
+
+        .team-card-name {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .team-card-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .team-card-stat {
+            text-align: center;
+            padding: 8px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+        }
+
+        .team-card-stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            color: var(--primary);
+        }
+
+        .team-card-stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .view-container {
+            animation: fadeIn 0.5s;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .two-col-layout { grid-template-columns: 1fr; }
+            .three-col-layout { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 1100px) {
+            .sidebar { display: none; }
+            .main-content { margin-right: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .main-content { padding: 20px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .three-col-layout { grid-template-columns: 1fr; }
+            .page-header { flex-direction: column; gap: 15px; }
+            table { font-size: 12px; }
+            th, td { padding: 10px 8px; }
+            .league-selector { gap: 8px; }
+            .league-btn { padding: 10px 16px; font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+    <div class="logo-area">
+        <i class="fa-solid fa-brain logo-icon"></i>
+        <div class="logo-text">SMART<span>SPORT</span>AI</div>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">ראשי</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i> דף הבית</a>
+        <a href="predictions.html" class="nav-item"><i class="fa-solid fa-microchip"></i> תחזיות AI</a>
+        <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i> TITAN צ'אט</a>
+        <a href="news.html" class="nav-item"><i class="fa-solid fa-newspaper"></i> חדשות ספורט</a>
+        <a href="stats.html" class="nav-item active"><i class="fa-solid fa-chart-line"></i> סטטיסטיקות</a>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">מתקדם</div>
+        <a href="about.html" class="nav-item"><i class="fa-solid fa-info-circle"></i> אודות</a>
+    </div>
+
+    <div class="nav-group" style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border);">
+        <button onclick="openAiPopup()" class="nav-item" style="width: 100%; background: linear-gradient(135deg, #8b5cf6, #3b82f6); border: none; color: white; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; justify-content: center;">
+            <i class="fa-solid fa-robot"></i> TITAN AI Assistant
+        </button>
+    </div>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="page-title">
+            <h1>📊 מרכז AI לסטטיסטיקות</h1>
+            <p>ניתוח חכם בזמן אמת של 6 ליגות מובילות</p>
+        </div>
+        <div class="system-status">
+            <div class="pulse-dot"></div>
+            AI ANALYZING
+        </div>
+    </header>
+
+    <!-- AI Insights Banner -->
+    <div class="ai-insights-banner">
+        <div class="ai-icon-large">
+            <i class="fa-solid fa-brain"></i>
+        </div>
+        <div class="ai-insights-content">
+            <div class="ai-insights-title">מנוע AI מנתח עכשיו</div>
+            <div class="ai-insights-text">האלגוריתם מזהה דפוסים, חוזק צוותים ומגמות בזמן אמת</div>
+        </div>
+        <button class="ai-ask-btn" onclick="scrollToAI()">
+            <i class="fa-solid fa-comments"></i> שאל את ה-AI
+        </button>
+    </div>
+
+    <!-- League Selector -->
+    <div class="league-selector">
+        <button class="league-btn active" onclick="loadLeague('israel', this)">
+            🇮🇱 ליגת העל
+        </button>
+        <button class="league-btn" onclick="loadLeague('england', this)">
+            🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League
+        </button>
+        <button class="league-btn" onclick="loadLeague('spain', this)">
+            🇪🇸 La Liga
+        </button>
+        <button class="league-btn" onclick="loadLeague('italy', this)">
+            🇮🇹 Serie A
+        </button>
+        <button class="league-btn" onclick="loadLeague('germany', this)">
+            🇩🇪 Bundesliga
+        </button>
+        <button class="league-btn" onclick="loadLeague('france', this)">
+            🇫🇷 Ligue 1
+        </button>
+    </div>
+
+    <!-- Live AI Insights Ticker -->
+    <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08)); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 16px; padding: 12px 20px; margin-bottom: 30px; overflow: hidden; position: relative;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div id="insightsTicker" style="font-size: 13px; color: var(--text); font-weight: 500; white-space: nowrap; animation: ticker 20s linear infinite;">
+                מנתח נתונים...
+            </div>
+        </div>
+    </div>
+
+    <!-- View Mode Selector -->
+    <div style="display: flex; gap: 12px; margin-bottom: 30px; padding: 8px; background: rgba(15, 23, 42, 0.5); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
+        <button class="view-mode-btn active" onclick="switchView('cards')" id="cardsViewBtn">
+            <i class="fa-solid fa-grip"></i> כרטיסים
+        </button>
+        <button class="view-mode-btn" onclick="switchView('battle')" id="battleViewBtn">
+            <i class="fa-solid fa-bolt"></i> מצב קרב
+        </button>
+        <button class="view-mode-btn" onclick="switchView('chart')" id="chartViewBtn">
+            <i class="fa-solid fa-chart-area"></i> גרף תלת מימד
+        </button>
+        <button class="view-mode-btn" onclick="switchView('table')" id="tableViewBtn">
+            <i class="fa-solid fa-table"></i> טבלה מסורתית
+        </button>
+        <button class="view-mode-btn" onclick="switchView('story')" id="storyViewBtn">
+            <i class="fa-solid fa-book-open"></i> סיפור הליגה
+        </button>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05)); border-color: rgba(251, 191, 36, 0.3);">
+            <div class="stat-label">🏆 מובילה</div>
+            <div class="stat-value" id="topTeam">--</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(37, 99, 235, 0.05)); border-color: rgba(59, 130, 246, 0.3);">
+            <div class="stat-label">⚽ סה"כ שערים</div>
+            <div class="stat-value" id="totalGoals">--</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05)); border-color: rgba(139, 92, 246, 0.3);">
+            <div class="stat-label">🥇 נקודות מקסימום</div>
+            <div class="stat-value" id="maxPoints">--</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); border-color: rgba(16, 185, 129, 0.3);">
+            <div class="stat-label">📈 משחקים</div>
+            <div class="stat-value" id="totalGames">--</div>
+        </div>
+    </div>
+
+    <!-- Cards View (Default) -->
+    <div id="cardsView" class="view-container">
+        <div id="teamsCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px;">
+            <!-- Cards will be inserted here -->
+        </div>
+    </div>
+
+    <!-- Battle Mode View -->
+    <div id="battleView" class="view-container" style="display: none;">
+        <div style="text-align: center; padding: 30px; background: rgba(239, 68, 68, 0.05); border: 2px dashed rgba(239, 68, 68, 0.3); border-radius: 20px; margin-bottom: 30px;">
+            <div style="font-size: 48px; margin-bottom: 16px;">⚔️</div>
+            <h2 style="font-size: 28px; margin-bottom: 12px; background: linear-gradient(135deg, var(--danger), var(--warning)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">מצב קרב AI</h2>
+            <p style="color: var(--text-muted); margin-bottom: 24px;">בחר 2 קבוצות והאלגוריתם ינתח מי תנצח במפגש ביניהן</p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <select id="battleTeam1" onchange="updateBattle()" style="padding: 12px 20px; background: var(--bg-glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: var(--text); font-size: 16px; font-weight: 600; cursor: pointer;">
+                    <option value="">בחר קבוצה 1</option>
+                </select>
+                <div style="font-size: 32px; padding: 8px;">⚡</div>
+                <select id="battleTeam2" onchange="updateBattle()" style="padding: 12px 20px; background: var(--bg-glass); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: var(--text); font-size: 16px; font-weight: 600; cursor: pointer;">
+                    <option value="">בחר קבוצה 2</option>
+                </select>
+            </div>
+        </div>
+        <div id="battleResult"></div>
+    </div>
+
+    <!-- Chart 3D View -->
+    <div id="chartView" class="view-container" style="display: none;">
+        <div class="glass-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i class="fa-solid fa-chart-area" style="color:var(--accent)"></i>
+                    ויזואליזציה תלת מימדית
+                </div>
+            </div>
+            <div style="padding: 24px;">
+                <canvas id="interactiveChart" style="max-height: 500px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Traditional Table View -->
+    <div id="tableView" class="view-container" style="display: none;">
+        <div class="glass-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i class="fa-solid fa-trophy" style="color:var(--gold)"></i>
+                    <span id="tableTitle">טבלת הליגה</span>
+                </div>
+            </div>
+            <div id="tableContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    טוען נתונים...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Story Mode View -->
+    <div id="storyView" class="view-container" style="display: none;">
+        <div class="glass-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i class="fa-solid fa-book-open" style="color:var(--secondary)"></i>
+                    סיפור הליגה - מסופר על ידי AI
+                </div>
+            </div>
+            <div id="storyContent" style="padding: 32px; font-size: 16px; line-height: 1.8;">
+                <!-- AI Story will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Layout: Power Rankings + AI Assistant -->
+    <div class="two-col-layout" style="margin-top: 35px;">
+        <div>
+
+            <!-- AI Assistant -->
+            <div class="ai-assistant" id="aiAssistant">
+                <div class="ai-header">
+                    <div class="ai-header-title">
+                        <i class="fa-solid fa-brain" style="color:var(--primary); font-size: 18px;"></i>
+                        אנליסט AI
+                    </div>
+                    <div class="ai-online">
+                        <div class="pulse-dot"></div>
+                        Online
+                    </div>
+                </div>
+                <div class="ai-messages" id="aiMessages">
+                    <div class="ai-msg">
+                        <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+                        <div class="ai-bubble">שלום! אני האנליסט AI של הסטטיסטיקות. תשאל אותי על כל ליגה, קבוצה או מגמה!</div>
+                    </div>
+                    <div class="ai-msg">
+                        <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+                        <div class="ai-bubble">לדוגמה: "מי תנצח?", "השווה בין הטופ 2", "מי הכי חזקה בהתקפה?"</div>
+                    </div>
+                </div>
+                <div class="ai-input-area">
+                    <input type="text" class="ai-input" placeholder="שאל על סטטיסטיקות..." id="aiInput" onkeypress="handleAIInput(event)">
+                    <button class="ai-send" onclick="sendAIMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="glass-panel" style="margin-bottom: 35px;">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i class="fa-solid fa-chart-bar" style="color:var(--primary)"></i>
+                    התפלגות נקודות - TOP 10
+                </div>
+            </div>
+            <div style="padding: 20px;">
+                <canvas id="pointsChart" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+
+        <!-- AI Power Rankings -->
+        <div class="panel" style="margin-bottom: 35px;">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <i class="fa-solid fa-crown" style="color:var(--gold)"></i>
+                    AI Power Rankings - דירוג כוח אמיתי
+                </div>
+                <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                    מחושב על בסיס: ביצועים, מומנטום, הפרש שערים, איכות ניצחונות
+                </div>
+            </div>
+            <div style="padding: 24px;">
+                <div id="powerRankings"></div>
+            </div>
+        </div>
+
+        <!-- AI Insights Grid -->
+        <div class="panel-header" style="margin-bottom: 20px;">
+            <div class="panel-title">
+                <i class="fa-solid fa-lightbulb" style="color:var(--gold)"></i>
+                תובנות AI
+            </div>
+        </div>
+        <div class="three-col-layout" id="insightsGrid">
+            <div class="insight-card blue">
+                <div class="insight-icon blue"><i class="fa-solid fa-fire"></i></div>
+                <div class="insight-title">קבוצה הכי חמה</div>
+                <div class="insight-value" id="hotTeam">--</div>
+                <div class="insight-text" id="hotTeamText">מחשב...</div>
+            </div>
+            <div class="insight-card purple">
+                <div class="insight-icon purple"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="insight-title">הגנה הכי חזקה</div>
+                <div class="insight-value" id="bestDefense">--</div>
+                <div class="insight-text" id="bestDefenseText">מחשב...</div>
+            </div>
+            <div class="insight-card green">
+                <div class="insight-icon green"><i class="fa-solid fa-bolt"></i></div>
+                <div class="insight-title">התקפה הכי חזקה</div>
+                <div class="insight-value" id="bestAttack">--</div>
+                <div class="insight-text" id="bestAttackText">מחשב...</div>
+            </div>
+        </div>
+
+        <!-- Team Comparison -->
+        <div class="team-comparison" id="teamComparison" style="display: none;">
+            <div class="panel-header" style="border: none; padding: 0; margin-bottom: 24px;">
+                <div class="panel-title">
+                    <i class="fa-solid fa-scale-balanced" style="color:var(--accent)"></i>
+                    השוואת קבוצות
+                </div>
+            </div>
+            <div class="comparison-header">
+                <div class="comparison-team">
+                    <div class="comparison-team-logo" id="compareTeam1Logo">⚽</div>
+                    <div class="comparison-team-name" id="compareTeam1Name">קבוצה 1</div>
+                </div>
+                <div class="comparison-vs">VS</div>
+                <div class="comparison-team">
+                    <div class="comparison-team-logo" id="compareTeam2Logo">⚽</div>
+                    <div class="comparison-team-name" id="compareTeam2Name">קבוצה 2</div>
+                </div>
+            </div>
+            <div class="comparison-stats">
+                <div class="comparison-row">
+                    <div class="comparison-value" id="compareTeam1Points">0</div>
+                    <div class="comparison-label">נקודות</div>
+                    <div class="comparison-value" id="compareTeam2Points">0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-value" id="compareTeam1Goals">0</div>
+                    <div class="comparison-label">שערים</div>
+                    <div class="comparison-value" id="compareTeam2Goals">0</div>
+                </div>
+                <div class="comparison-row">
+                    <div class="comparison-value" id="compareTeam1Wins">0</div>
+                    <div class="comparison-label">ניצחונות</div>
+                    <div class="comparison-value" id="compareTeam2Wins">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Close two-col-layout container -->
+    </div>
+
+</main>
+
+<script>
+    let currentChart = null;
+    let currentLeague = 'israel';
+    let currentLeagueData = [];
+    // Demo mode enables graceful fallbacks and mock data for live presentations
+    const DEMO_MODE = false;
+
+    // API Configuration
+    const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+        ? 'http://127.0.0.1:8000'
+        : 'https://your-production-url.com';
+
+    const leagueNames = {
+        'israel': 'ליגת העל הישראלית',
+        'england': 'ליגת העל האנגלית',
+        'spain': 'לה ליגה',
+        'italy': 'סרייה A',
+        'germany': 'בונדסליגה',
+        'france': 'ליג 1'
+    };
+
+    function scrollToAI() {
+        const ai = document.getElementById('aiAssistant');
+        if (ai && ai.scrollIntoView) ai.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const input = document.getElementById('aiInput');
+        if (input && input.focus) input.focus();
+    }
+
+    let currentView = 'cards';
+
+    function switchView(view) {
+        // Hide all views
+        document.querySelectorAll('.view-container').forEach(v => v.style.display = 'none');
+
+        // Remove active class from all buttons
+        document.querySelectorAll('.view-mode-btn').forEach(btn => btn.classList.remove('active'));
+
+        // Show selected view
+        document.getElementById(`${view}View`).style.display = 'block';
+        document.getElementById(`${view}ViewBtn`).classList.add('active');
+
+        currentView = view;
+
+        // Refresh content for current view
+        if (currentLeagueData.length > 0) {
+            if (view === 'cards') renderCards(currentLeagueData);
+            else if (view === 'battle') renderBattle(currentLeagueData);
+            else if (view === 'chart') render3DChart(currentLeagueData);
+            else if (view === 'table') renderTable(currentLeagueData);
+            else if (view === 'story') generateStory(currentLeagueData);
+        }
+    }
+
+    function renderCards(data) {
+        const logoMap = {
+            'ליברפול': '🔴', 'מנצ\'סטר סיטי': '💙', 'ארסנל': '🔴', 'צ\'לסי': '🔵', 'מנצ\'סטר יונייטד': '🔴',
+            'ברצלונה': '🔵', 'ריאל מדריד': '⚪', 'אתלטיקו מדריד': '🔴', 'סביליה': '⚪',
+            'באיירן מינכן': '🔴', 'דורטמונד': '🟡', 'לייפציג': '🔴', 'ליברקוזן': '🔴',
+            'יובנטוס': '⚫', 'אינטר': '🔵', 'מילאן': '🔴', 'נאפולי': '🔵', 'רומא': '🟡',
+            'פ.ס.ז': '🔵', 'מרסיי': '⚪', 'ליון': '🔵', 'מונקו': '🔴',
+            'מכבי תל אביב': '🟡', 'מכבי חיפה': '🟢', 'הפועל באר שבע': '🔴', 'הפועל תל אביב': '🔴'
+        };
+
+        const html = data.map((team, idx) => {
+            const teamLogo = logoMap[team.team] || '⚽';
+            const rankColor = idx === 0 ? 'linear-gradient(135deg, #fbbf24, #f59e0b)' :
+                idx === 1 ? 'linear-gradient(135deg, #c0c0c0, #a8a8a8)' :
+                    idx === 2 ? 'linear-gradient(135deg, #cd7f32, #b87333)' :
+                        'linear-gradient(135deg, var(--primary), var(--secondary))';
+
+            const recentWins = (team.form || []).slice(0, 3).filter(f => f === 'W').length;
+            const momentum = recentWins >= 2 ? '📈' : recentWins === 0 ? '📉' : '➡️';
+
+            return `
+                <div class="team-card" onclick="showTeamDetails('${team.team}')">
+                    <div class="team-card-rank" style="background: ${rankColor};">${team.rank}</div>
+                    <div class="team-card-logo">${teamLogo}</div>
+                    <div class="team-card-name">${team.team}</div>
+                    <div style="text-align: center; font-size: 32px; font-weight: 800; color: var(--primary); font-family: var(--font-mono);">${team.points}</div>
+                    <div style="text-align: center; font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">נקודות</div>
+                    <div class="team-card-stats">
+                        <div class="team-card-stat">
+                            <div class="team-card-stat-value">${team.win}</div>
+                            <div class="team-card-stat-label">ניצחונות</div>
+                        </div>
+                        <div class="team-card-stat">
+                            <div class="team-card-stat-value">${team.goalsFor}</div>
+                            <div class="team-card-stat-label">שערים</div>
+                        </div>
+                        <div class="team-card-stat">
+                            <div class="team-card-stat-value">${momentum}</div>
+                            <div class="team-card-stat-label">מגמה</div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 12px; text-align: center;">
+                        <div style="display: inline-flex; gap: 4px;">
+                            ${(team.form || []).map(f => `<div class="form-dot ${f}" style="width: 10px; height: 10px; border-radius: 50%;"></div>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('teamsCardsGrid').innerHTML = html;
+    }
+
+    function renderBattle(data) {
+        // Populate select dropdowns
+        const options = data.map(team => `<option value="${team.team}">${team.team}</option>`).join('');
+        document.getElementById('battleTeam1').innerHTML = '<option value="">בחר קבוצה 1</option>' + options;
+        document.getElementById('battleTeam2').innerHTML = '<option value="">בחר קבוצה 2</option>' + options;
+    }
+
+    function updateBattle() {
+        const team1Name = document.getElementById('battleTeam1').value;
+        const team2Name = document.getElementById('battleTeam2').value;
+
+        if (!team1Name || !team2Name) return;
+
+        const team1 = currentLeagueData.find(t => t.team === team1Name);
+        const team2 = currentLeagueData.find(t => t.team === team2Name);
+
+        // AI Battle Prediction
+        const team1Score = team1.points * 0.4 + team1.goalsFor * 0.3 + (team1.goalsFor - team1.goalsAgainst) * 0.2 + team1.form.filter(f => f === 'W').length * 0.1;
+        const team2Score = team2.points * 0.4 + team2.goalsFor * 0.3 + (team2.goalsFor - team2.goalsAgainst) * 0.2 + team2.form.filter(f => f === 'W').length * 0.1;
+
+        const team1WinProb = Math.round((team1Score / (team1Score + team2Score)) * 100);
+        const team2WinProb = 100 - team1WinProb;
+
+        const html = `
+            <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.08)); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 20px; padding: 32px;">
+                <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 16px;">${team1.logo || '⚽'}</div>
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">${team1.team}</div>
+                        <div style="font-size: 48px; font-weight: 800; font-family: var(--font-mono); color: ${team1WinProb > team2WinProb ? 'var(--success)' : 'var(--danger)'};">${team1WinProb}%</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">סיכוי לניצחון</div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 8px;">⚔️</div>
+                        <div style="font-size: 14px; font-weight: 700; color: var(--text-muted);">VS</div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 16px;">${team2.logo || '⚽'}</div>
+                        <div style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">${team2.team}</div>
+                        <div style="font-size: 48px; font-weight: 800; font-family: var(--font-mono); color: ${team2WinProb > team1WinProb ? 'var(--success)' : 'var(--danger)'};">${team2WinProb}%</div>
+                        <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">סיכוי לניצחון</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <div style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">🤖 ניתוח AI מפורט</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                        <div style="text-align: center; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">נקודות</div>
+                            <div style="font-size: 24px; font-weight: 800; color: ${team1.points > team2.points ? 'var(--success)' : team1.points < team2.points ? 'var(--danger)' : 'var(--warning)'};">${team1.points}</div>
+                            <div style="font-size: 14px; margin: 8px 0;">VS</div>
+                            <div style="font-size: 24px; font-weight: 800; color: ${team2.points > team1.points ? 'var(--success)' : team2.points < team1.points ? 'var(--danger)' : 'var(--warning)'};">${team2.points}</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">שערים</div>
+                            <div style="font-size: 24px; font-weight: 800; color: ${team1.goalsFor > team2.goalsFor ? 'var(--success)' : team1.goalsFor < team2.goalsFor ? 'var(--danger)' : 'var(--warning)'};">${team1.goalsFor}</div>
+                            <div style="font-size: 14px; margin: 8px 0;">VS</div>
+                            <div style="font-size: 24px; font-weight: 800; color: ${team2.goalsFor > team1.goalsFor ? 'var(--success)' : team2.goalsFor < team1.goalsFor ? 'var(--danger)' : 'var(--warning)'};">${team2.goalsFor}</div>
+                        </div>
+                        <div style="text-align: center; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                            <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">הגנה</div>
+                            <div style="font-size: 24px; font-weight: 800; color: ${team1.goalsAgainst < team2.goalsAgainst ? 'var(--success)' : team1.goalsAgainst > team2.goalsAgainst ? 'var(--danger)' : 'var(--warning)'};">${team1.goalsAgainst}</div>
+                            <div style="font-size: 14px; margin: 8px 0;">VS</div>
+                            <div style="font-size: 24px; font-weight: 800; color: ${team2.goalsAgainst < team1.goalsAgainst ? 'var(--success)' : team2.goalsAgainst > team1.goalsAgainst ? 'var(--danger)' : 'var(--warning)'};">${team2.goalsAgainst}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; padding: 20px; background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; text-align: center;">
+                        <div style="font-size: 16px; font-weight: 700; margin-bottom: 8px;">💡 תחזית AI</div>
+                        <div style="font-size: 14px; line-height: 1.6; color: var(--text-muted);">
+                            ${team1WinProb > team2WinProb + 15 ? `${team1.team} צפויה לנצח בבירור בזכות יתרון משמעותי בביצועים` :
+            team2WinProb > team1WinProb + 15 ? `${team2.team} צפויה לנצח בבירור בזכות יתרון משמעותי בביצועים` :
+                `מפגש צמוד ומרגש! שתי הקבוצות ברמה דומה והתוצאה יכולה ללכת לכל כיוון`}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('battleResult').innerHTML = html;
+    }
+
+    function render3DChart(data) {
+        const ctx = document.getElementById('interactiveChart').getContext('2d');
+
+        if (window.interactiveChartInstance) {
+            window.interactiveChartInstance.destroy();
+        }
+
+        window.interactiveChartInstance = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'קבוצות',
+                    data: data.map(team => ({
+                        x: team.goalsFor,
+                        y: team.goalsAgainst,
+                        r: team.points / 2,
+                        team: team.team
+                    })),
+                    backgroundColor: data.map((team, idx) =>
+                        idx < 3 ? 'rgba(251, 191, 36, 0.6)' :
+                            idx < 6 ? 'rgba(59, 130, 246, 0.6)' :
+                                'rgba(139, 92, 246, 0.4)'
+                    ),
+                    borderColor: data.map((team, idx) =>
+                        idx < 3 ? '#fbbf24' :
+                            idx < 6 ? '#3b82f6' :
+                                '#8b5cf6'
+                    ),
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const team = data[context.dataIndex];
+                                return `${team.team}: ${team.goalsFor} שערים, ${team.goalsAgainst} נגד, ${team.points} נק'`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'שערים בעד', color: '#94a3b8' },
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    },
+                    y: {
+                        title: { display: true, text: 'שערים נגד', color: '#94a3b8' },
+                        ticks: { color: '#94a3b8' },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    }
+                }
+            }
+        });
+    }
+
+    function generateStory(data) {
+        const top = data[0];
+        const bottom = data[data.length - 1];
+        const topScorer = [...data].sort((a, b) => b.goalsFor - a.goalsFor)[0];
+        const bestDefender = [...data].sort((a, b) => a.goalsAgainst - b.goalsAgainst)[0];
+        const powerRanked = calculatePowerRankings(data);
+
+        const story = `
+            <div style="max-width: 800px; margin: 0 auto;">
+                <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 24px; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    🎭 סיפור ${leagueNames[currentLeague]}
+                </h2>
+
+                <div style="margin-bottom: 32px; padding: 24px; background: rgba(251, 191, 36, 0.05); border-right: 4px solid var(--gold); border-radius: 12px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--gold);">👑 המלכה המוכתרת</h3>
+                    <p style="line-height: 1.8; color: var(--text-muted);">
+                        <strong style="color: var(--text);">${top.team}</strong> שולטת בליגה בגאון. עם <strong style="color: var(--gold);">${top.points} נקודות</strong>
+                        מתוך ${top.played} משחקים, הם מוכיחים שאין תחרות. ${top.win} ניצחונות מרשימים, ${top.goalsFor} שערים שהרעידו את הרשתות,
+                        ורק ${top.goalsAgainst} שערים שספגו. הצורה האחרונה (${top.form.slice(0,5).join('-')}) מדברת בעד עצמה.
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 32px; padding: 24px; background: rgba(239, 68, 68, 0.05); border-right: 4px solid var(--danger); border-radius: 12px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--danger);">⚡ מלכת השערים</h3>
+                    <p style="line-height: 1.8; color: var(--text-muted);">
+                        <strong style="color: var(--text);">${topScorer.team}</strong> היא התקווה של כל אוהד. עם <strong style="color: var(--danger);">${topScorer.goalsFor} שערים</strong>,
+                        הם מוכיחים שהתקפה זה השם של המשחק. ממוצע מדהים של ${(topScorer.goalsFor / topScorer.played).toFixed(1)} שערים למשחק
+                        הופך כל משחק שלהם לחוויה בלתי נשכחת.
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 32px; padding: 24px; background: rgba(16, 185, 129, 0.05); border-right: 4px solid var(--success); border-radius: 12px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--success);">🛡️ חומת הברזל</h3>
+                    <p style="line-height: 1.8; color: var(--text-muted);">
+                        <strong style="color: var(--text);">${bestDefender.team}</strong> בנו מבצר בלתי חדיר. רק <strong style="color: var(--success);">${bestDefender.goalsAgainst} שערים</strong>
+                        חדרו את ההגנה שלהם - ממוצע מדהים של ${(bestDefender.goalsAgainst / bestDefender.played).toFixed(1)} למשחק.
+                        השוער והמגנים שלהם ישנים בלילה כמו תינוקות.
+                    </p>
+                </div>
+
+                <div style="margin-bottom: 32px; padding: 24px; background: rgba(59, 130, 246, 0.05); border-right: 4px solid var(--primary); border-radius: 12px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">🤖 מה ה-AI חושב?</h3>
+                    <p style="line-height: 1.8; color: var(--text-muted);">
+                        לפי דירוג הכוח המתקדם שלנו, <strong style="color: var(--text);">${powerRanked[0].team}</strong> היא הקבוצה החזקה ביותר
+                        עם ציון <strong style="color: var(--primary);">${powerRanked[0].powerScore}/100</strong>.
+                        ${powerRanked[0].team !== top.team ?
+            `שימו לב: למרות ש-${top.team} מובילה בנקודות, הניתוח שלנו מראה ש-${powerRanked[0].team} חזקה יותר באיכות הביצועים!` :
+            `הניתוח שלנו מתיישב עם המציאות - המובילה היא גם הכי חזקה.`}
+                    </p>
+                </div>
+
+                <div style="padding: 24px; background: rgba(139, 92, 246, 0.05); border-right: 4px solid var(--secondary); border-radius: 12px;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--secondary);">😰 במאבק על ההישרדות</h3>
+                    <p style="line-height: 1.8; color: var(--text-muted);">
+                        <strong style="color: var(--text);">${bottom.team}</strong> נלחמת על כל נקודה. עם ${bottom.points} נקודות בלבד,
+                        הם צריכים נס כדי להישאר בליגה. ${bottom.lose} הפסדים כואבים ורק ${bottom.win} ניצחונות
+                        לא מספיקים. הצורה (${bottom.form.slice(0,5).join('-')}) מדאיגה, אבל בכדורגל הכל יכול לקרות.
+                    </p>
+                </div>
+
+                <div style="margin-top: 32px; text-align: center; padding: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p style="font-size: 12px; color: var(--text-muted); font-style: italic;">
+                        סיפור זה נוצר על ידי AI Analyst • ${new Date().toLocaleDateString('he-IL')}
+                    </p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('storyContent').innerHTML = story;
+    }
+
+    // Simple timeout wrapper for fetch
+    function fetchWithTimeout(resource, options = {}) {
+        const { timeout = 6000 } = options;
+        return Promise.race([
+            fetch(resource, options),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), timeout))
+        ]);
+    }
+
+    // Minimal mock data generator for demo mode
+    function getMockLeagueData(leagueKey) {
+        const teams = [
+            'מכבי תל אביב','מכבי חיפה','הפועל באר שבע','בית"ר ירושלים','הפועל תל אביב','אשדוד','נתניה','סכנין','חדרה','קרית שמונה'
+        ];
+        return teams.map((t, i) => ({
+            rank: i + 1,
+            team: t,
+            played: 20,
+            win: 12 - Math.max(0, i - 3),
+            draw: 4 + (i % 3),
+            lose: 20 - (12 - Math.max(0, i - 3)) - (4 + (i % 3)),
+            goalsFor: 45 - i * 2,
+            goalsAgainst: 20 + i,
+            points: 3*(12 - Math.max(0, i - 3)) + (4 + (i % 3)),
+            form: ['W','W','D','L','W'].slice(0).sort(() => 0.5 - Math.random())
+        }));
+    }
+
+    async function loadLeague(league, btn) {
+        document.querySelectorAll('.league-btn').forEach(b => b.classList.remove('active'));
+        if (btn && btn.classList) btn.classList.add('active');
+
+        currentLeague = league;
+        const tableTitleEl = document.getElementById('tableTitle');
+        if (tableTitleEl) tableTitleEl.innerHTML = `<i class="fa-solid fa-trophy" style="color:var(--gold)"></i> ${leagueNames[league]}`;
+
+        const tableContentEl = document.getElementById('tableContent');
+        if (tableContentEl) tableContentEl.innerHTML = '<div class="loading"><div class="spinner"></div>טוען נתונים...</div>';
+
+        let data = null;
+        try {
+            const response = await fetchWithTimeout(`${API_BASE_URL}/api/stats/league/${league}`, { timeout: DEMO_MODE ? 2500 : 6000 });
+            if (!response.ok) throw new Error('bad status');
+            const apiData = await response.json();
+
+            // ✅ המרת פורמט API-Sports לפורמט שהקוד מצפה לו
+            console.log('📊 Raw API data:', apiData);
+
+            if (apiData && apiData.length > 0 && apiData[0].league) {
+                // זה פורמט API-Sports האמיתי!
+                const standings = apiData[0].league.standings[0]; // מערך הקבוצות
+                data = standings.map(team => ({
+                    rank: team.rank,
+                    team: team.team.name,
+                    logo: team.team.logo,
+                    played: team.all.played,
+                    win: team.all.win,
+                    draw: team.all.draw,
+                    lose: team.all.lose,
+                    goalsFor: team.all.goals.for,
+                    goalsAgainst: team.all.goals.against,
+                    goalDiff: team.goalsDiff,
+                    points: team.points,
+                    form: team.form ? team.form.split('') : []
+                }));
+                console.log('✅ Converted data:', data);
+            } else {
+                throw new Error('Invalid API format');
+            }
+        } catch (error) {
+            console.error('❌ Error loading league:', error);
+            if (DEMO_MODE) {
+                data = getMockLeagueData(league);
+                console.warn('Using mock data (DEMO_MODE) due to error:', error.message);
+            } else {
+                // נסה fallback לנתונים מזויפים
+                console.warn('Using fallback data');
+                data = getMockLeagueData(league);
+            }
+        }
+
+        if (data && data.length > 0) {
+            currentLeagueData = data;
+
+            // Render based on current view (use normalized data)
+            if (currentView === 'cards') renderCards(currentLeagueData);
+            else if (currentView === 'battle') renderBattle(currentLeagueData);
+            else if (currentView === 'chart') render3DChart(currentLeagueData);
+            else if (currentView === 'table') renderTable(currentLeagueData);
+            else if (currentView === 'story') generateStory(currentLeagueData);
+
+            updateStats(currentLeagueData);
+            updateChart(currentLeagueData);
+            updateAIInsights(currentLeagueData);
+            if (typeof addAIMessage === 'function') {
+                addAIMessage(`עכשיו מציג את ${leagueNames[league]}. יש ${currentLeagueData.length} קבוצות. המובילה: ${currentLeagueData[0].team} עם ${currentLeagueData[0].points} נקודות!`);
+            }
+        } else {
+            if (tableContentEl) tableContentEl.innerHTML = '<div class="loading">❌ אין נתונים זמינים</div>';
+        }
+    }
+
+    function renderTable(data) {
+        const html = `
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align:center">#</th>
+                        <th>קבוצה</th>
+                        <th style="text-align:center">משחקים</th>
+                        <th style="text-align:center">ניצחונות</th>
+                        <th style="text-align:center">תיקו</th>
+                        <th style="text-align:center">הפסדים</th>
+                        <th style="text-align:center">שערים</th>
+                        <th style="text-align:center">הפרש</th>
+                        <th style="text-align:center">צורה</th>
+                        <th style="text-align:center" title="AI-Powered Momentum"><i class="fa-solid fa-chart-line"></i></th>
+                        <th style="text-align:center" title="AI Risk Score"><i class="fa-solid fa-exclamation-triangle"></i></th>
+                        <th style="text-align:center">נקודות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${data.map((team, idx) => {
+            const diff = team.goalsFor - team.goalsAgainst;
+            const diffColor = diff > 0 ? 'var(--success)' : diff < 0 ? 'var(--danger)' : 'var(--text-muted)';
+            const formHtml = (team.form || []).map(f => `<div class="form-dot ${f}"></div>`).join('');
+
+            // AI Momentum Calculation
+            const recentWins = (team.form || []).slice(0, 3).filter(f => f === 'W').length;
+            const momentum = recentWins >= 2 ? 'up' : recentWins === 0 ? 'down' : 'neutral';
+            const momentumIcon = momentum === 'up' ? '📈' : momentum === 'down' ? '📉' : '➡️';
+            const momentumColor = momentum === 'up' ? 'var(--success)' : momentum === 'down' ? 'var(--danger)' : 'var(--warning)';
+
+            // AI Risk Score (0-100)
+            const expectedPosition = idx + 1;
+            const performanceRatio = team.points / (team.played * 3);
+            const riskScore = Math.round((1 - performanceRatio) * 100);
+            const riskLevel = riskScore > 60 ? 'high' : riskScore > 35 ? 'medium' : 'low';
+            const riskColor = riskLevel === 'high' ? 'var(--danger)' : riskLevel === 'medium' ? 'var(--warning)' : 'var(--success)';
+            const riskBadge = `<span style="display:inline-block; padding:2px 8px; border-radius:8px; font-size:11px; font-weight:700; background:${riskColor}22; color:${riskColor}; border:1px solid ${riskColor};">${riskScore}</span>`;
+
+            // ✅ שימוש בלוגואים אמיתיים מה-API במקום emoji
+            const teamLogoUrl = team.logo || 'https://via.placeholder.com/30?text=⚽';
+
+            return `
+                            <tr style="cursor:pointer;" onmouseover="this.style.background='rgba(59,130,246,0.08)'" onmouseout="this.style.background='transparent'" onclick="showTeamDetails('${team.team}')">
+                                <td class="rank">${team.rank}</td>
+                                <td>
+                                    <div class="team">
+                                        <img src="${teamLogoUrl}" alt="${team.team}" class="team-logo" style="width: 30px; height: 30px; object-fit: contain; margin-left: 10px;" onerror="this.src='https://via.placeholder.com/30?text=⚽'">
+                                        <span style="font-weight:600;">${team.team}</span>
+                                    </div>
+                                </td>
+                                <td style="text-align:center">${team.played}</td>
+                                <td style="text-align:center">${team.win}</td>
+                                <td style="text-align:center">${team.draw}</td>
+                                <td style="text-align:center">${team.lose}</td>
+                                <td style="text-align:center">${team.goalsFor}:${team.goalsAgainst}</td>
+                                <td style="text-align:center; color:${diffColor}; font-weight:700">${diff > 0 ? '+' : ''}${diff}</td>
+                                <td style="text-align:center"><div class="form">${formHtml}</div></td>
+                                <td style="text-align:center; font-size:18px;" title="Momentum: ${momentum}">${momentumIcon}</td>
+                                <td style="text-align:center;" title="Risk Score: ${riskScore}/100">${riskBadge}</td>
+                                <td class="points">${team.points}</td>
+                            </tr>
+                        `;
+        }).join('')}
+                </tbody>
+            </table>
+        `;
+        document.getElementById('tableContent').innerHTML = html;
+    }
+
+    function updateStats(data) {
+        const topTeam = data[0];
+        const totalGoals = data.reduce((sum, team) => sum + team.goalsFor, 0);
+
+        document.getElementById('topTeam').textContent = topTeam.team;
+        document.getElementById('totalGoals').textContent = totalGoals;
+        document.getElementById('maxPoints').textContent = topTeam.points;
+        document.getElementById('totalGames').textContent = data[0].played;
+    }
+
+    function updateChart(data) {
+        const ctx = document.getElementById('pointsChart').getContext('2d');
+
+        if (currentChart) {
+            currentChart.destroy();
+        }
+
+        const top10 = data.slice(0, 10);
+
+        currentChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: top10.map(t => t.team),
+                datasets: [{
+                    label: 'נקודות',
+                    data: top10.map(t => t.points),
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                    borderColor: '#3b82f6',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 2.5,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            color: '#94a3b8'
+                        },
+                        grid: {
+                            color: 'rgba(255,255,255,0.05)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#94a3b8'
+                        },
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function addAIMessage(text) {
+        const aiMessages = document.getElementById('aiMessages');
+        const msg = document.createElement('div');
+        msg.className = 'ai-msg';
+        msg.innerHTML = `
+            <div class="ai-avatar"><i class="fa-solid fa-robot"></i></div>
+            <div class="ai-bubble">${text}</div>
+        `;
+        aiMessages.appendChild(msg);
+        aiMessages.scrollTop = aiMessages.scrollHeight;
+    }
+
+    function handleAIInput(event) {
+        if (event.key === 'Enter') {
+            sendAIMessage();
+        }
+    }
+
+    function sendAIMessage() {
+        const input = document.getElementById('aiInput');
+        const message = input.value.trim();
+        if (!message) return;
+
+        // Add user message
+        const aiMessages = document.getElementById('aiMessages');
+        const userMsg = document.createElement('div');
+        userMsg.className = 'ai-msg';
+        userMsg.style.flexDirection = 'row-reverse';
+        userMsg.innerHTML = `
+            <div class="ai-avatar" style="background: rgba(255,255,255,0.1);"><i class="fa-solid fa-user"></i></div>
+            <div class="ai-bubble" style="background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); text-align: right;">${message}</div>
+        `;
+        aiMessages.appendChild(userMsg);
+        aiMessages.scrollTop = aiMessages.scrollHeight;
+
+        input.value = '';
+
+        // Simulate AI response with professional analysis
+        setTimeout(() => {
+            let response = '';
+            const lower = message.toLowerCase();
+
+            // Advanced AI Analysis
+            // 1. מי מובילה / תנצח
+            if (lower.includes('מי') && (lower.includes('תנצח') || lower.includes('מובילה') || lower.includes('ראשונה'))) {
+                const top = currentLeagueData[0];
+                const second = currentLeagueData[1];
+                const gap = top.points - (second?.points || 0);
+                const winRate = (top.win / top.played * 100).toFixed(0);
+                const powerRanked = calculatePowerRankings(currentLeagueData);
+                const topPower = powerRanked[0];
+
+                response = `🏆 **ניתוח מובילה: ${top.team}**
+
+**מצב נוכחי:**
+• מיקום: #1 עם ${top.points} נקודות (+${gap} על המקום 2)
+• שיעור ניצחונות: ${winRate}%
+• הפרש שערים: +${top.goalsFor - top.goalsAgainst}
+• צורה: ${top.form.slice(0,5).join(' ')}
+
+**🤖 AI Power Score:**
+${topPower.team === top.team ?
+                    `✅ מובילה גם בדירוג הכוח שלי (${topPower.powerScore}/100)` :
+                    `⚠️ ${topPower.team} חזקה יותר לפי הדירוג שלי (${topPower.powerScore}/100)`}
+
+**💡 תחזית AI:**
+${gap >= 5 ? `סיכוי גבוה מאוד לזכות - יתרון משמעותי` : gap >= 3 ? `סיכוי טוב אך המרוץ עדיין פתוח` : `המרוץ צמוד - כל שגיאה יכולה לעלות ביוקר`}`;
+            }
+            // 2. השוואה
+            else if (lower.includes('השווה') || lower.includes('השוואה') || lower.includes('מול')) {
+                if (currentLeagueData.length >= 2) {
+                    showComparison(currentLeagueData[0], currentLeagueData[1]);
+                    const t1 = currentLeagueData[0];
+                    const t2 = currentLeagueData[1];
+                    response = `⚖️ **השוואה: ${t1.team} vs ${t2.team}**
+
+**נקודות:** ${t1.points} vs ${t2.points} (הפרש: ${t1.points - t2.points})
+**התקפה:** ${t1.goalsFor} vs ${t2.goalsFor} שערים
+**הגנה:** ${t1.goalsAgainst} vs ${t2.goalsAgainst} שערים נגד
+
+**💡 מסקנה:**
+${t1.goalsFor > t2.goalsFor && t1.goalsAgainst < t2.goalsAgainst ?
+                        `${t1.team} עדיפה הן בהתקפה והן בהגנה` :
+                        `מאבק צמוד - כל קבוצה עם יתרון משלה`}`;
+                } else {
+                    response = `צריך לפחות 2 קבוצות כדי להשוות. טען ליגה אחרת.`;
+                }
+            }
+            // 3. התקפה הכי חזקה
+            else if (lower.includes('התקפה') || lower.includes('תוקפנית') || lower.includes('שערים')) {
+                const bestAttacker = [...currentLeagueData].sort((a, b) => b.goalsFor - a.goalsFor)[0];
+                const avgGoals = (bestAttacker.goalsFor / bestAttacker.played).toFixed(2);
+                const topScorers = currentLeagueData.filter(t => t.goalsFor >= bestAttacker.goalsFor * 0.8).slice(0, 3);
+
+                response = `⚡ **ניתוח התקפה: ${bestAttacker.team}**
+
+**סטטיסטיקות:**
+• סה"כ שערים: ${bestAttacker.goalsFor}
+• ממוצע למשחק: ${avgGoals}
+• מיקום: #${bestAttacker.rank}
+• נקודות: ${bestAttacker.points}
+
+**🎯 TOP 3 תוקפניות:**
+${topScorers.map((t, i) => `${i+1}. ${t.team} - ${t.goalsFor} שערים`).join('\n')}
+
+**💡 תובנה AI:**
+${avgGoals > 2.5 ? `התקפה מרשימה! ממוצע ${avgGoals} שערים למשחק` : `התקפה יעילה עם ${bestAttacker.goalsFor} שערים`}`;
+            }
+            // 4. הגנה הכי חזקה
+            else if (lower.includes('הגנה') || lower.includes('מגן') || lower.includes('ספגו')) {
+                const bestDefender = [...currentLeagueData].sort((a, b) => a.goalsAgainst - b.goalsAgainst)[0];
+                const avgConceded = (bestDefender.goalsAgainst / bestDefender.played).toFixed(2);
+
+                response = `🛡️ **ניתוח הגנה: ${bestDefender.team}**
+
+**סטטיסטיקות:**
+• סה"כ שערים נגד: ${bestDefender.goalsAgainst}
+• ממוצע נגד למשחק: ${avgConceded}
+• מיקום: #${bestDefender.rank}
+• נקודות: ${bestDefender.points}
+• Clean sheets: ${bestDefender.form.filter(f => f === 'W').length} (מתוך 5)
+
+**💡 תובנה AI:**
+${avgConceded < 0.8 ? `הגנת ברזל! ממוצע מדהים של ${avgConceded} שערים נגד` : `הגנה איכותית - בסיס יציב להצלחה`}`;
+            }
+            // 5. הפרש שערים
+            else if (lower.includes('הפרש')) {
+                const top = currentLeagueData[0];
+                const diff = top.goalsFor - top.goalsAgainst;
+                response = `📈 **${top.team}** עם הפרש שערים מדהים של **+${diff}**! (${top.goalsFor} הבקיעו, ${top.goalsAgainst} ספגו)`;
+            }
+            // 6. טופ 3
+            else if (lower.includes('טופ') || lower.includes('top') || lower.includes('3')) {
+                const top3 = currentLeagueData.slice(0, 3);
+                const powerRanked = calculatePowerRankings(currentLeagueData).slice(0, 3);
+
+                response = `🥇 **TOP 3 ב-${leagueNames[currentLeague]}:**
+
+**לפי מיקום:**
+1️⃣ ${top3[0].team} - ${top3[0].points} נקודות
+2️⃣ ${top3[1].team} - ${top3[1].points} נקודות
+3️⃣ ${top3[2].team} - ${top3[2].points} נקודות
+
+**🤖 לפי AI Power Rankings:**
+1️⃣ ${powerRanked[0].team} - ${powerRanked[0].powerScore}/100
+2️⃣ ${powerRanked[1].team} - ${powerRanked[1].powerScore}/100
+3️⃣ ${powerRanked[2].team} - ${powerRanked[2].powerScore}/100
+
+**💡 הבדלים:** ${powerRanked[0].team !== top3[0].team ? `⚠️ שים לב! ${powerRanked[0].team} חזקה יותר לפי הניתוח שלי` : `✅ שתי הדירוגים מסכימים`}`;
+            }
+            // 7. רצף / פורמה
+            else if (lower.includes('רצף') || lower.includes('פורמה') || lower.includes('צורה')) {
+                const top = currentLeagueData[0];
+                const formText = top.form.join(' → ');
+                const wins = top.form.filter(f => f === 'W').length;
+                const losses = top.form.filter(f => f === 'L').length;
+
+                response = `📊 **ניתוח צורה: ${top.team}**
+
+**5 משחקים אחרונים:**
+${formText}
+(W=ניצחון, D=תיקו, L=הפסד)
+
+**סטטיסטיקות:**
+• ${wins}/5 ניצחונות (${(wins/5*100).toFixed(0)}%)
+• ${losses}/5 הפסדים
+• נקודות שנצברו: ${wins*3 + (5-wins-losses)}/15 אפשריות
+
+**💡 מסקנה:**
+${wins >= 4 ? `🔥 במגמת עלייה מטורפת!` : wins >= 3 ? `✅ צורה יציבה` : wins >= 2 ? `⚠️ צורה בינונית` : `🔴 משבר - צריך שיפור דחוף`}`;
+            }
+            // 8. בתחתית
+            else if (lower.includes('בתחתית') || lower.includes('אחרונה') || lower.includes('חלשה')) {
+                const last = currentLeagueData[currentLeagueData.length - 1];
+                const riskScore = Math.round((1 - last.points / (last.played * 3)) * 100);
+                const avgGoals = (last.goalsFor / last.played).toFixed(1);
+
+                response = `😟 **ניתוח תחתית: ${last.team}**
+
+**מצב נוכחי:**
+• מיקום: #${last.rank} (אחרון)
+• נקודות: ${last.points}/${last.played * 3} אפשריות
+• AI Risk Score: ${riskScore}/100 🔴
+
+**ביצועים:**
+• ניצחונות: ${last.win} | תיקו: ${last.draw} | הפסדים: ${last.lose}
+• שערים: ${last.goalsFor} בעד, ${last.goalsAgainst} נגד
+• ממוצע שערים: ${avgGoals} למשחק
+
+**💡 מה הבעיה?**
+${last.goalsFor < 15 && last.goalsAgainst > 30 ? `התקפה חלשה (${last.goalsFor}) והגנה רופפת (${last.goalsAgainst})` : last.goalsFor < 15 ? `בעיה תוקפנית - רק ${last.goalsFor} שערים` : `הגנה רופפת - ${last.goalsAgainst} שערים נגד`}`;
+            }
+            // 9. סיכום ליגה
+            else if (lower.includes('סיכום') || lower.includes('מבט כללי') || lower.includes('overview')) {
+                const totalGoals = currentLeagueData.reduce((sum, t) => sum + t.goalsFor, 0);
+                const avgGoalsPerTeam = (totalGoals / currentLeagueData.length).toFixed(1);
+                const topScorer = [...currentLeagueData].sort((a, b) => b.goalsFor - a.goalsFor)[0];
+                const bestDefender = [...currentLeagueData].sort((a, b) => a.goalsAgainst - b.goalsAgainst)[0];
+
+                response = `📋 **סיכום ${leagueNames[currentLeague]}:**
+
+**סטטיסטיקות כלליות:**
+• סה"כ קבוצות: ${currentLeagueData.length}
+• סה"כ שערים: ${totalGoals}
+• ממוצע שערים לקבוצה: ${avgGoalsPerTeam}
+• מובילה: ${currentLeagueData[0].team} (${currentLeagueData[0].points} נק')
+
+**🏆 הטובים ביותר:**
+• התקפה: ${topScorer.team} (${topScorer.goalsFor} שערים)
+• הגנה: ${bestDefender.team} (${bestDefender.goalsAgainst} נגד)
+
+**💡 אופי הליגה:**
+${avgGoalsPerTeam > 30 ? `⚡ ליגה תוקפנית ומרהיבה!` : avgGoalsPerTeam > 25 ? `⚖️ ליגה מאוזנת` : `🛡️ ליגה מגננת`}`;
+            }
+            // 10. כללי
+            else {
+                response = `🤖 **אנליסט AI לשירותך!**
+
+שאל אותי על:
+• **"מי תנצח?"** - ניתוח מועמדת הזכייה
+• **"התקפה הכי חזקה"** - מצא את המבקיעה הטובה
+• **"השווה טופ 2"** - השוואה מפורטת
+• **"צורה של המובילה"** - ניתוח 5 משחקים אחרונים
+• **"טופ 3"** - שלוש הקבוצות המובילות
+• **"סיכום ליגה"** - מבט כולל על הליגה
+• **"בתחתית"** - ניתוח הקבוצה האחרונה
+
+או פשוט לחץ על שם קבוצה בטבלה לניתוח מפורט! 🎯`;
+            }
+
+            addAIMessage(response);
+        }, 1000);
+    }
+
+    function showComparison(team1, team2) {
+        const comparison = document.getElementById('teamComparison');
+        comparison.style.display = 'block';
+
+        document.getElementById('compareTeam1Logo').textContent = team1.logo || '⚽';
+        document.getElementById('compareTeam1Name').textContent = team1.team;
+        document.getElementById('compareTeam1Points').textContent = team1.points;
+        document.getElementById('compareTeam1Goals').textContent = team1.goalsFor;
+        document.getElementById('compareTeam1Wins').textContent = team1.win;
+
+        document.getElementById('compareTeam2Logo').textContent = team2.logo || '⚽';
+        document.getElementById('compareTeam2Name').textContent = team2.team;
+        document.getElementById('compareTeam2Points').textContent = team2.points;
+        document.getElementById('compareTeam2Goals').textContent = team2.goalsFor;
+        document.getElementById('compareTeam2Wins').textContent = team2.win;
+
+        setTimeout(() => {
+            comparison.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    }
+
+    function calculatePowerRankings(data) {
+        // AI Power Score Algorithm
+        return data.map(team => {
+            // 1. Points efficiency (40%)
+            const pointsPerGame = team.points / team.played;
+            const pointsScore = (pointsPerGame / 3) * 40;
+
+            // 2. Form momentum (25%)
+            const formWeights = { 'W': 3, 'D': 1, 'L': 0 };
+            let formScore = 0;
+            team.form.forEach((result, idx) => {
+                const weight = 1 - (idx * 0.15); // Recent matches have more weight
+                formScore += (formWeights[result] || 0) * weight;
+            });
+            const formNormalized = (formScore / 15) * 25;
+
+            // 3. Goal difference quality (20%)
+            const goalDiff = team.goalsFor - team.goalsAgainst;
+            const maxDiff = Math.max(...data.map(t => t.goalsFor - t.goalsAgainst));
+            const goalDiffScore = maxDiff > 0 ? (goalDiff / maxDiff) * 20 : 0;
+
+            // 4. Attacking power (10%)
+            const maxGoals = Math.max(...data.map(t => t.goalsFor));
+            const attackScore = (team.goalsFor / maxGoals) * 10;
+
+            // 5. Defensive strength (5%)
+            const minConceded = Math.min(...data.map(t => t.goalsAgainst));
+            const defenseScore = minConceded > 0 ? (minConceded / (team.goalsAgainst || 1)) * 5 : 0;
+
+            const powerScore = pointsScore + formNormalized + goalDiffScore + attackScore + defenseScore;
+
+            return {
+                ...team,
+                powerScore: Math.round(powerScore * 10) / 10,
+                originalRank: team.rank
+            };
+        }).sort((a, b) => b.powerScore - a.powerScore);
+    }
+
+    function displayPowerRankings(rankedData) {
+        const top5 = rankedData.slice(0, 5);
+        const html = top5.map((team, idx) => {
+            const rankDiff = team.originalRank - (idx + 1);
+            const arrow = rankDiff > 0 ? '🔺' : rankDiff < 0 ? '🔻' : '➖';
+            const arrowColor = rankDiff > 0 ? 'var(--success)' : rankDiff < 0 ? 'var(--danger)' : 'var(--text-muted)';
+
+            const barWidth = (team.powerScore / 100) * 100;
+            const barColor = idx === 0 ? 'var(--gold)' : idx === 1 ? '#c0c0c0' : idx === 2 ? '#cd7f32' : 'var(--primary)';
+
+            return `
+                <div style="margin-bottom: 20px; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 24px; font-weight: 800; color: ${barColor}; width: 30px;">${idx + 1}</span>
+                            <span style="font-size: 16px; font-weight: 600;">${team.team}</span>
+                            <span style="font-size: 14px; color: ${arrowColor};">${arrow} ${Math.abs(rankDiff)}</span>
+                        </div>
+                        <div style="font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: ${barColor};">
+                            ${team.powerScore}
+                        </div>
+                    </div>
+                    <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
+                        <div style="width: ${barWidth}%; height: 100%; background: linear-gradient(90deg, ${barColor}, ${barColor}88); transition: width 1s ease;"></div>
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;">
+                        נקודות: ${team.points} | שערים: ${team.goalsFor}-${team.goalsAgainst} | צורה: ${team.form.slice(0,3).join('')}
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('powerRankings').innerHTML = html;
+    }
+
+    function generateLiveInsights(data) {
+        const insights = [];
+
+        // מומנטום
+        const upTeams = data.filter(t => t.form.slice(0,3).filter(f => f === 'W').length >= 2);
+        if (upTeams.length > 0) {
+            insights.push(`🔥 ${upTeams[0].team} במגמת עלייה חזקה עם ${upTeams[0].form.slice(0,3).filter(f => f === 'W').length} ניצחונות`);
+        }
+
+        // התקפה
+        const topScorer = [...data].sort((a, b) => b.goalsFor - a.goalsFor)[0];
+        insights.push(`⚡ ${topScorer.team} עם ${topScorer.goalsFor} שערים - ההתקפה החזקה ביותר`);
+
+        // הגנה
+        const bestDef = [...data].sort((a, b) => a.goalsAgainst - b.goalsAgainst)[0];
+        insights.push(`🛡️ ${bestDef.team} ספגה רק ${bestDef.goalsAgainst} שערים - הגנה ברזל`);
+
+        // מרווח
+        const gap = data[0].points - (data[1]?.points || 0);
+        if (gap >= 3) {
+            insights.push(`👑 ${data[0].team} מובילה עם יתרון של ${gap} נקודות`);
+        }
+
+        // סיכון
+        const bottomTeam = data[data.length - 1];
+        const riskScore = Math.round((1 - bottomTeam.points / (bottomTeam.played * 3)) * 100);
+        insights.push(`⚠️ ${bottomTeam.team} במצב קשה עם AI Risk Score: ${riskScore}/100`);
+
+        return insights.join('  •  ');
+    }
+
+    function updateAIInsights(data) {
+        // Update live ticker
+        const tickerText = generateLiveInsights(data);
+        document.getElementById('insightsTicker').textContent = tickerText;
+
+        // Calculate and display power rankings
+        const powerRanked = calculatePowerRankings(data);
+        displayPowerRankings(powerRanked);
+
+        // הקבוצה הכי חמה (רצף ניצחונות)
+        let hottestTeam = data[0];
+        let maxWinStreak = 0;
+        data.forEach(team => {
+            const wins = team.form.filter(f => f === 'W').length;
+            if (wins > maxWinStreak) {
+                maxWinStreak = wins;
+                hottestTeam = team;
+            }
+        });
+        document.getElementById('hotTeam').textContent = hottestTeam.team;
+        document.getElementById('hotTeamText').textContent = `${maxWinStreak} ניצחונות ב-5 המשחקים האחרונים`;
+
+        // הגנה הכי חזקה
+        const bestDefense = [...data].sort((a, b) => a.goalsAgainst - b.goalsAgainst)[0];
+        document.getElementById('bestDefense').textContent = bestDefense.team;
+        document.getElementById('bestDefenseText').textContent = `ספגו רק ${bestDefense.goalsAgainst} שערים - ${(bestDefense.goalsAgainst / bestDefense.played).toFixed(1)} למשחק`;
+
+        // התקפה הכי חזקה
+        const bestAttack = [...data].sort((a, b) => b.goalsFor - a.goalsFor)[0];
+        document.getElementById('bestAttack').textContent = bestAttack.team;
+        document.getElementById('bestAttackText').textContent = `הבקיעו ${bestAttack.goalsFor} שערים - ${(bestAttack.goalsFor / bestAttack.played).toFixed(1)} למשחק`;
+    }
+
+    function showTeamDetails(teamName) {
+        const team = currentLeagueData.find(t => t.team === teamName);
+        if (!team) return;
+
+        // Calculate AI predictions
+        const winRate = (team.win / team.played * 100).toFixed(0);
+        const avgGoalsScored = (team.goalsFor / team.played).toFixed(2);
+        const avgGoalsConceded = (team.goalsAgainst / team.played).toFixed(2);
+        const recentForm = team.form.slice(0, 3).join('');
+        const formScore = team.form.filter(f => f === 'W').length * 3 + team.form.filter(f => f === 'D').length;
+
+        // AI Prediction for next match
+        let nextMatchPrediction = '';
+        if (formScore >= 12) nextMatchPrediction = '🟢 סיכוי גבוה לניצחון (85%)';
+        else if (formScore >= 8) nextMatchPrediction = '🟡 סיכוי בינוני לניצחון (60%)';
+        else if (formScore >= 4) nextMatchPrediction = '🟠 סיכויים שווים (45%)';
+        else nextMatchPrediction = '🔴 סיכוי נמוך לניצחון (30%)';
+
+        const message = `
+📊 **ניתוח מעמיק של ${teamName}**
+
+**מיקום:** #${team.rank} | **נקודות:** ${team.points}
+
+**ביצועים:**
+• שיעור ניצחונות: ${winRate}%
+• ממוצע שערים במשחק: ${avgGoalsScored}
+• ממוצע שערים נגד: ${avgGoalsConceded}
+• הפרש שערים: ${team.goalsFor - team.goalsAgainst > 0 ? '+' : ''}${team.goalsFor - team.goalsAgainst}
+
+**צורה אחרונה:** ${recentForm} (${formScore}/15 נקודות אפשריות)
+
+**🤖 תחזית AI למשחק הבא:**
+${nextMatchPrediction}
+
+**💡 המלצת AI:**
+${formScore >= 10 ? 'הקבוצה במגמה עולה מצוינת - סיכוי גבוה לניצחון' : formScore >= 6 ? 'ביצועים יציבים - המתן לניתוח נוסף' : 'הקבוצה במשבר - המתן לשיפור בטופס'}
+        `;
+
+        addAIMessage(message);
+    }
+
+    // Load default league on page load
+    window.addEventListener('DOMContentLoaded', () => {
+        const defaultBtn = document.querySelector('.league-btn.active') || document.querySelector('.league-btn');
+        loadLeague('israel', defaultBtn);
+    });
+
+    // ═══════════════════════════════════════════════════════════════════
+    // 🚀 AI ASSISTANT POPUP - TITAN
+    // ═══════════════════════════════════════════════════════════════════
+
+    const aiLoadingMessages = [
+        'אוקיי, תן לי שנייה... 🤐',
+        'קורא נתונים מהענן ☁️',
+        'מדבר עם GPT-4o 🤖',
+        'עוצם עיניים וחושב 🤔',
+        'שואל את המומחים שלי ⚡',
+        'בודק מי שיחק טוב לאחרונה 📊',
+        'כמעט סיימתי... 💫',
+        'בום! מוכן! 🔥'
+    ];
+
+    const aiWelcomeMessages = [
+        'רגע... אני מזהה שאתה כאן! 🎉<br><strong>תן לי להראות לך משהו מדהים</strong> 🚀',
+        'היי שם! 👋 אני TITAN, מנוע ה-AI שלנו!<br><strong>בוא נראה איך זה עובד</strong> 🏆',
+        'וואו! 🎊<br>אני כאן כדי <strong>להראות לך את העתיד של ניתוח ספורט</strong>. מוכן? 🚀'
+    ];
+
+    const aiFunnyMessages = [
+        '🏅 כן כן, אני לא מנבא לוטו... אבל בכדורגל? ⚽ אלוף עולם!',
+        '💡 טיפ: תגיד "וואו" בקול רם כשתראה את הניתוח. זה משפר את הדיוק! 😄',
+        '🤖 אני AI, אבל אל תדאג - אני לא שולט בעולם. רק בסטטיסטיקות 😉',
+        '⚽ העבודה שלי? להפוך אותך למומחה ניתוח! המשכורת שלי? ביטחון שלך 💪',
+        '🏆 משקיעים שאלו: "למה להשקיע בכם?" אמרתי: "תראו דמו". עכשיו הם פה! 🔥'
+    ];
+
+    let aiLoadingInterval = null;
+    let aiFunnyInterval = null;
+
+    function openAiPopup() {
+        const overlay = document.getElementById('aiPopupOverlay');
+        if (overlay) {
+            overlay.classList.add('show');
+
+            const welcomeMsg = aiWelcomeMessages[Math.floor(Math.random() * aiWelcomeMessages.length)];
+            const welcomeEl = document.getElementById('aiWelcomeMessage');
+            if (welcomeEl) welcomeEl.innerHTML = welcomeMsg;
+
+            const funnyEl = document.getElementById('funnyMessage');
+            if (funnyEl) {
+                aiFunnyInterval = setInterval(() => {
+                    const funnyMsg = aiFunnyMessages[Math.floor(Math.random() * aiFunnyMessages.length)];
+                    funnyEl.innerHTML = funnyMsg;
+                }, 5000);
+            }
+
+            updateAiGreeting();
+        }
+    }
+
+    function closeAiPopup() {
+        const overlay = document.getElementById('aiPopupOverlay');
+        if (overlay) overlay.classList.remove('show');
+
+        const resultDiv = document.getElementById('aiPopupResult');
+        if (resultDiv) resultDiv.style.display = 'none';
+
+        const loaderDiv = document.getElementById('aiPopupLoading');
+        if (loaderDiv) loaderDiv.classList.remove('active');
+
+        if (aiLoadingInterval) {
+            clearInterval(aiLoadingInterval);
+            aiLoadingInterval = null;
+        }
+
+        if (aiFunnyInterval) {
+            clearInterval(aiFunnyInterval);
+            aiFunnyInterval = null;
+        }
+    }
+
+    function updateAiGreeting() {
+        const hour = new Date().getHours();
+        let greeting = 'היי! אני TITAN 👋';
+
+        if (hour >= 5 && hour < 12) {
+            greeting = 'בוקר טוב! אני TITAN ☀️';
+        } else if (hour >= 12 && hour < 17) {
+            greeting = 'צהריים טובים! אני TITAN 👋';
+        } else if (hour >= 17 && hour < 21) {
+            greeting = 'ערב טוב! אני TITAN 🌆';
+        } else {
+            greeting = 'לילה טוב! אני TITAN 🌙';
+        }
+
+        const greetingEl = document.getElementById('aiGreeting');
+        if (greetingEl) greetingEl.textContent = greeting;
+    }
+
+    function showPopupLoading(show = true) {
+        const loader = document.getElementById('aiPopupLoading');
+        const loadingText = document.getElementById('aiLoadingText');
+
+        if (!loader || !loadingText) return;
+
+        if (show) {
+            loader.classList.add('active');
+            let msgIndex = 0;
+            loadingText.textContent = aiLoadingMessages[msgIndex];
+
+            aiLoadingInterval = setInterval(() => {
+                msgIndex = (msgIndex + 1) % aiLoadingMessages.length;
+                loadingText.textContent = aiLoadingMessages[msgIndex];
+            }, 1200);
+        } else {
+            loader.classList.remove('active');
+            if (aiLoadingInterval) {
+                clearInterval(aiLoadingInterval);
+                aiLoadingInterval = null;
+            }
+        }
+    }
+
+    async function analyzeTopTeam() {
+        const resultDiv = document.getElementById('aiPopupResult');
+        if (!resultDiv || !currentLeagueData || currentLeagueData.length === 0) return;
+
+        const suggestionsEl = document.getElementById('aiSuggestions');
+        if (suggestionsEl) suggestionsEl.style.display = 'none';
+
+        showPopupLoading(true);
+
+        setTimeout(() => {
+            showPopupLoading(false);
+
+            const top = currentLeagueData[0];
+            const winRate = ((top.win / top.played) * 100).toFixed(1);
+            const avgGoals = (top.goalsFor / top.played).toFixed(1);
+            const goalDiff = top.goalsFor - top.goalsAgainst;
+
+            resultDiv.innerHTML = `
+                <div style="text-align: center; padding: 18px; background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(59,130,246,0.1)); border: 2px solid rgba(16,185,129,0.3); border-radius: 14px;">
+                    <div style="font-size: 28px; margin-bottom: 12px;">🏆</div>
+                    <h3 style="font-size: 17px; color: #fbbf24; margin-bottom: 12px; font-weight: 900;">ניתוח המובילה: ${top.team}</h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0;"">
+                        <div style="background: rgba(59,130,246,0.1); padding: 10px; border-radius: 8px;">
+                            <div style="font-size: 11px; color: rgba(226,232,240,0.6);">אחוז ניצחונות</div>
+                            <div style="font-size: 24px; font-weight: 900; color: #10b981;">${winRate}%</div>
+                        </div>
+                        <div style="background: rgba(139,92,246,0.1); padding: 10px; border-radius: 8px;">
+                            <div style="font-size: 11px; color: rgba(226,232,240,0.6);">ממוצע שערים</div>
+                            <div style="font-size: 24px; font-weight: 900; color: #3b82f6;">${avgGoals}</div>
+                        </div>
+                        <div style="background: rgba(251,191,36,0.1); padding: 10px; border-radius: 8px;">
+                            <div style="font-size: 11px; color: rgba(226,232,240,0.6);">הפרש שערים</div>
+                            <div style="font-size: 24px; font-weight: 900; color: #fbbf24;">+${goalDiff}</div>
+                        </div>
+                        <div style="background: rgba(239,68,68,0.1); padding: 10px; border-radius: 8px;">
+                            <div style="font-size: 11px; color: rgba(226,232,240,0.6);">טופס אחרון</div>
+                            <div style="font-size: 18px; font-weight: 700; color: #e2e8f0; letter-spacing: 2px;">${top.form.slice(0,5).join('-')}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(59,130,246,0.1); border-radius: 10px; border: 1px solid rgba(59,130,246,0.2);">
+                        <div style="font-size: 11px; color: #e2e8f0; line-height: 1.6;">
+                            🤖 <strong>ניתוח TITAN:</strong><br>
+                            ${winRate > 60 ? '🔥 דומיננטיים לחלוטין! ' : '💪 ביצועים חזקים. '}
+                            ${avgGoals > 2 ? 'התקפה קטלנית עם ' + avgGoals + ' שערים למשחק. ' : 'תקפנות יעילה. '}
+                            ${goalDiff > 20 ? 'הפרש השערים מרשים במיוחד! 🏆' : 'שומרים על יתרון יציב. ✅'}
+                        </div>
+                    </div>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+        }, 2000);
+    }
+
+    async function compareTopTwo() {
+        const resultDiv = document.getElementById('aiPopupResult');
+        if (!resultDiv || !currentLeagueData || currentLeagueData.length < 2) return;
+
+        const suggestionsEl = document.getElementById('aiSuggestions');
+        if (suggestionsEl) suggestionsEl.style.display = 'none';
+
+        showPopupLoading(true);
+
+        setTimeout(() => {
+            showPopupLoading(false);
+
+            const team1 = currentLeagueData[0];
+            const team2 = currentLeagueData[1];
+
+            resultDiv.innerHTML = `
+                <div style="padding: 18px; background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(59,130,246,0.1)); border: 2px solid rgba(139,92,246,0.3); border-radius: 14px;">
+                    <h3 style="font-size: 17px; color: #fbbf24; margin-bottom: 15px; font-weight: 900; text-align: center;">⚔️ קרב הענקים: 1 מול 2</h3>
+
+                    <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin-bottom: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 14px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px;">${team1.team}</div>
+                            <div style="font-size: 11px; color: rgba(226,232,240,0.6);">#1</div>
+                        </div>
+                        <div style="font-size: 24px;">VS</div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 14px; font-weight: 800; color: #e2e8f0; margin-bottom: 5px;">${team2.team}</div>
+                            <div style="font-size: 11px; color: rgba(226,232,240,0.6);">#2</div>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0;">
+                        <div style="background: rgba(16,185,129,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 20px; font-weight: 900; color: #10b981;">${team1.points}</div>
+                            <div style="font-size: 10px; color: rgba(226,232,240,0.6);">נקודות</div>
+                        </div>
+                        <div style="background: rgba(59,130,246,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 20px; font-weight: 900; color: #3b82f6;">${team2.points}</div>
+                            <div style="font-size: 10px; color: rgba(226,232,240,0.6);">נקודות</div>
+                        </div>
+
+                        <div style="background: rgba(139,92,246,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 20px; font-weight: 900; color: #8b5cf6;">${team1.goalsFor}</div>
+                            <div style="font-size: 10px; color: rgba(226,232,240,0.6);">שערים</div>
+                        </div>
+                        <div style="background: rgba(139,92,246,0.1); padding: 10px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 20px; font-weight: 900; color: #8b5cf6;">${team2.goalsFor}</div>
+                            <div style="font-size: 10px; color: rgba(226,232,240,0.6);">שערים</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(251,191,36,0.1); border-radius: 10px; border: 1px solid rgba(251,191,36,0.2);">
+                        <div style="font-size: 11px; color: #e2e8f0; line-height: 1.6; text-align: center;">
+                            🤖 <strong>ניתוח TITAN:</strong><br>
+                            ${team1.points - team2.points} נקודות הפרש!
+                            ${team1.goalsFor > team2.goalsFor ? team1.team + ' תוקפנית יותר 🔥' : team2.team + ' תוקפנית יותר 🔥'}
+                        </div>
+                    </div>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+        }, 2000);
+    }
+
+    function showLeagueInsights() {
+        const resultDiv = document.getElementById('aiPopupResult');
+        if (!resultDiv || !currentLeagueData || currentLeagueData.length === 0) return;
+
+        const suggestionsEl = document.getElementById('aiSuggestions');
+        if (suggestionsEl) suggestionsEl.style.display = 'none';
+
+        const totalGoals = currentLeagueData.reduce((sum, t) => sum + t.goalsFor, 0);
+        const avgGoalsPerTeam = (totalGoals / currentLeagueData.length).toFixed(1);
+        const topScorer = [...currentLeagueData].sort((a, b) => b.goalsFor - a.goalsFor)[0];
+        const bestDefender = [...currentLeagueData].sort((a, b) => a.goalsAgainst - b.goalsAgainst)[0];
+
+        resultDiv.innerHTML = `
+            <div style="padding: 18px; background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(239,68,68,0.1)); border: 2px solid rgba(251,191,36,0.3); border-radius: 14px;">
+                <h3 style="font-size: 17px; color: #fbbf24; margin-bottom: 15px; font-weight: 900; text-align: center;">📊 תובנות ליגה</h3>
+
+                <div style="display: grid; gap: 10px; margin-bottom: 15px;">
+                    <div style="background: rgba(59,130,246,0.1); padding: 12px; border-radius: 10px;">
+                        <div style="font-size: 11px; color: rgba(226,232,240,0.6); margin-bottom: 5px;">⚡ התקפה מובילה</div>
+                        <div style="font-size: 14px; font-weight: 800; color: #3b82f6;">${topScorer.team}</div>
+                        <div style="font-size: 12px; color: #e2e8f0; margin-top: 3px;">${topScorer.goalsFor} שערים</div>
+                    </div>
+
+                    <div style="background: rgba(16,185,129,0.1); padding: 12px; border-radius: 10px;">
+                        <div style="font-size: 11px; color: rgba(226,232,240,0.6); margin-bottom: 5px;">🛡️ הגנה מובילה</div>
+                        <div style="font-size: 14px; font-weight: 800; color: #10b981;">${bestDefender.team}</div>
+                        <div style="font-size: 12px; color: #e2e8f0; margin-top: 3px;">רק ${bestDefender.goalsAgainst} שערים נגד</div>
+                    </div>
+
+                    <div style="background: rgba(251,191,36,0.1); padding: 12px; border-radius: 10px;">
+                        <div style="font-size: 11px; color: rgba(226,232,240,0.6); margin-bottom: 5px;">📊 ממוצע ליגה</div>
+                        <div style="font-size: 20px; font-weight: 900; color: #fbbf24;">${avgGoalsPerTeam}</div>
+                        <div style="font-size: 12px; color: #e2e8f0; margin-top: 3px;">שערים לקבוצה</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 15px; padding: 12px; background: rgba(139,92,246,0.1); border-radius: 10px; border: 1px solid rgba(139,92,246,0.2);">
+                    <div style="font-size: 11px; color: #e2e8f0; line-height: 1.6; text-align: center;">
+                        🤖 <strong>ניתוח TITAN:</strong><br>
+                        הליגה ${avgGoalsPerTeam > 2.5 ? 'תוקפנית מאוד' : 'מאוזנת'} עם ${totalGoals} שערים!
+                    </div>
+                </div>
+            </div>
+        `;
+        resultDiv.style.display = 'block';
+    }
+</script>
+
+<!-- AI Popup HTML -->
+<div id="aiPopupOverlay" class="ai-popup-overlay">
+    <div class="ai-popup-content">
+        <button class="ai-popup-close" onclick="closeAiPopup()">×</button>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="font-size: 48px; margin-bottom: 10px;">🤖</div>
+            <h2 id="aiGreeting" style="font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 10px;">היי! אני TITAN 👋</h2>
+            <p id="aiWelcomeMessage" style="font-size: 14px; color: var(--text-secondary); line-height: 1.6;"></p>
+        </div>
+
+        <div id="aiSuggestions" style="display: grid; gap: 12px; margin-bottom: 20px;">
+            <button onclick="analyzeTopTeam()" style="padding: 15px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: all 0.3s; font-size: 14px;">
+                🏆 נתח את המובילה
+            </button>
+            <button onclick="compareTopTwo()" style="padding: 15px; background: linear-gradient(135deg, #8b5cf6, #ec4899); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: all 0.3s; font-size: 14px;">
+                ⚔️ השווה 1 מול 2
+            </button>
+            <button onclick="showLeagueInsights()" style="padding: 15px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: all 0.3s; font-size: 14px;">
+                📊 תובנות ליגה
+            </button>
+        </div>
+
+        <div id="aiPopupLoading" style="display: none; text-align: center; padding: 20px;">
+            <div style="font-size: 40px; animation: spin 1s linear infinite;">⚡</div>
+            <p id="aiLoadingText" style="margin-top: 10px; color: var(--primary); font-weight: 600;"></p>
+        </div>
+
+        <div id="aiPopupResult" style="display: none; margin-top: 20px;"></div>
+
+        <div id="funnyMessage" style="margin-top: 20px; padding: 15px; background: rgba(251,191,36,0.1); border-radius: 10px; text-align: center; font-size: 12px; color: var(--text-secondary); line-height: 1.6;"></div>
+    </div>
+</div>
+
+<style>
+.ai-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.ai-popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.ai-popup-content {
+    background: var(--card-bg);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    animation: popupEnter 0.4s ease;
+}
+
+@keyframes popupEnter {
+    from {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.ai-popup-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.ai-popup-close:hover {
+    background: rgba(239, 68, 68, 0.3);
+    transform: rotate(90deg);
+}
+
+#aiPopupLoading.active {
+    display: block !important;
+}
+</style>
+
+</body>
+</html>

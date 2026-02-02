@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTSPORTS | TITAN Chat</title>
+    <meta name="theme-color" content="#020617">
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="global-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-body: #0a0e1a;
+            --bg-panel: #111827;
+            --bg-glass: rgba(26, 35, 50, 0.5);
+            --primary: #60a5fa;
+            --primary-glow: rgba(96, 165, 250, 0.6);
+            --secondary: #93c5fd;
+            --accent: #22d3ee;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gold: #fbbf24;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: 1px solid rgba(255,255,255,0.08);
+            --font-ui: 'Assistant', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --sidebar-width: 280px;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--bg-body);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse at 15% 20%, rgba(96, 165, 250, 0.16), transparent 50%),
+                radial-gradient(ellipse at 85% 80%, rgba(147, 197, 253, 0.12), transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(34, 211, 238, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(96, 165, 250, 0.5); border-radius: 10px; }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(30px);
+            border-left: var(--border);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: var(--border);
+        }
+
+        .logo-icon {
+            font-size: 26px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px var(--primary-glow));
+        }
+
+        .logo-text { font-size: 22px; font-weight: 800; color: #fff; }
+        .logo-text span { color: var(--primary); }
+
+        .nav-group { margin-bottom: 20px; }
+        .nav-title {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.25s;
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+
+        .nav-item i { width: 18px; text-align: center; }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            transform: translateX(-3px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), transparent);
+            color: var(--primary);
+            border-color: rgba(59, 130, 246, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-right: var(--sidebar-width);
+            position: relative;
+            z-index: 1;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 40px;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+            border-bottom: var(--border);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title h1 i {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .header-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .header-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Messages */
+        .message {
+            max-width: 70%;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg-bot { align-self: flex-start; }
+        .msg-user { align-self: flex-end; align-items: flex-end; }
+
+        .msg-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .msg-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .msg-content {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            padding: 16px 20px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .msg-user .msg-content {
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .msg-meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            font-family: var(--font-mono);
+        }
+
+        /* Welcome Card */
+        .welcome-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(14, 165, 233, 0.05));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-card h2 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .welcome-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+
+        .feature-item i {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .feature-item i.green { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .feature-item i.blue { background: rgba(59, 130, 246, 0.15); color: var(--primary); }
+        .feature-item i.gold { background: rgba(251, 191, 36, 0.15); color: var(--gold); }
+        .feature-item i.cyan { background: rgba(14, 165, 233, 0.15); color: var(--accent); }
+
+        /* Typing Indicator */
+        .typing-indicator { display: flex; gap: 6px; }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Quick Suggestions */
+        .suggestions-area {
+            padding: 0 40px 20px;
+        }
+
+        .suggestions-title {
+            font-size: 11px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .suggestions-track {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .suggestions-track::-webkit-scrollbar { height: 4px; }
+        .suggestions-track::-webkit-scrollbar-track { background: transparent; }
+        .suggestions-track::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.3); border-radius: 10px; }
+
+        .chip {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 10px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            color: var(--text);
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .chip i { color: var(--primary); font-size: 14px; }
+
+        .chip:hover {
+            background: rgba(59, 130, 246, 0.15);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
+        }
+
+        /* Input Area */
+        .input-container {
+            padding: 20px 40px;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(10px);
+            border-top: var(--border);
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-box {
+            flex: 1;
+            background: var(--bg-panel);
+            border: var(--border);
+            border-radius: 16px;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            transition: 0.2s;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .input-actions {
+            display: flex;
+            gap: 6px;
+            padding: 0 10px;
+        }
+
+        .input-action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .input-action-btn:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--primary);
+        }
+
+        textarea {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: var(--font-ui);
+            resize: none;
+            outline: none;
+            max-height: 120px;
+            min-height: 48px;
+        }
+
+        textarea::placeholder { color: var(--text-muted); }
+
+        .send-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #2563eb);
+            color: white;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px var(--primary-glow);
+        }
+
+        .send-btn:active { transform: scale(0.95); }
+
+        .send-btn:disabled {
+            background: #334155;
+            color: #64748b;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Markdown Styling */
+        .msg-bot .msg-content strong { color: var(--accent); font-weight: 700; }
+        .msg-bot .msg-content em { color: var(--gold); font-style: normal; }
+        .msg-bot .msg-content code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--accent);
+        }
+        .msg-bot .msg-content ul { margin: 12px 0; padding-right: 20px; }
+        .msg-bot .msg-content li { margin-bottom: 6px; }
+
+        @media (max-width: 1000px) {
+            .sidebar { display: none; }
+            .main-content { margin-right: 0; }
+            .chat-messages { padding: 20px 16px; }
+            .message { max-width: 85%; }
+            .suggestions-area { padding: 0 16px 16px; }
+            .input-container { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <div class="logo-area">
+        <i class="fa-solid fa-brain logo-icon"></i>
+        <div class="logo-text">SMART<span>SPORTS</span></div>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">ראשי</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i> דף הבית</a>
+        <a href="predictions.html" class="nav-item"><i class="fa-solid fa-microchip"></i> תחזיות AI</a>
+        <a href="live.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> תוצאות Live</a>
+        <a href="chat.html" class="nav-item active"><i class="fa-solid fa-comments"></i> צ'אט TITAN</a>
+        <a href="news.html" class="nav-item"><i class="fa-solid fa-newspaper"></i> חדשות ספורט</a>
+        <a href="stats.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> סטטיסטיקות</a>
+        <a href="players.html" class="nav-item"><i class="fa-solid fa-user-group"></i> שחקנים</a>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">נוסף</div>
+        <a href="differentiation.html" class="nav-item"><i class="fa-solid fa-scale-balanced"></i> השוואת שוק</a>
+        <a href="about.html" class="nav-item"><i class="fa-solid fa-info"></i> אודות</a>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main-content">
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="page-title">
+            <h1><i class="fa-solid fa-robot"></i> TITAN - צ'אט AI חכם</h1>
+            <p>מערכת שיחה מבוססת בינה מלאכותית מתקדמת</p>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" title="נקה שיחה" onclick="clearChat()"><i class="fa-solid fa-trash-can"></i></button>
+            <button class="header-btn" title="הגדרות"><i class="fa-solid fa-gear"></i></button>
+            <a href="index.html" class="header-btn" title="חזור לדף הבית"><i class="fa-solid fa-xmark"></i></a>
+        </div>
+    </div>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatBox">
+
+            <!-- Welcome Message -->
+            <div class="message msg-bot">
+                <div class="msg-wrapper">
+                    <div class="msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div>
+                        <div class="msg-content">
+                            <div class="welcome-card">
+                                <h2><i class="fa-solid fa-sparkles" style="color:var(--primary)"></i> שלום! אני TITAN - המומחה שלך לספורט</h2>
+                                <p>אני מערכת בינה מלאכותית מתקדמת המתמחה בניתוח ספורטיבי. אני כאן כדי לעזור לך עם תחזיות, סטטיסטיקות, ניתוחי משחקים ותובנות מקצועיות.</p>
+
+                                <div class="welcome-features">
+                                    <div class="feature-item"><i class="fa-solid fa-futbol green"></i> ניתוחי משחקים</div>
+                                    <div class="feature-item"><i class="fa-solid fa-chart-line blue"></i> סטטיסטיקות</div>
+                                    <div class="feature-item"><i class="fa-solid fa-trophy gold"></i> תחזיות AI</div>
+                                    <div class="feature-item"><i class="fa-solid fa-brain cyan"></i> תובנות חכמות</div>
+                                </div>
+                            </div>
+                            <strong>במה אוכל לעזור לך היום? 😊⚽</strong>
+                        </div>
+                        <div class="msg-meta">
+                            <i class="fa-solid fa-robot"></i> TITAN • מקוון
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Quick Suggestions -->
+        <div class="suggestions-area">
+            <div class="suggestions-title"><i class="fa-solid fa-lightbulb"></i> שאלות מהירות</div>
+            <div class="suggestions-track">
+                <div class="chip" onclick="sendQuickMsg('מה דעתך על מסי מול רונאלדו?')"><i class="fa-solid fa-bolt"></i> מסי vs רונאלדו</div>
+                <div class="chip" onclick="sendQuickMsg('מה דעתך על צ׳מפיונס ליג השנה?')"><i class="fa-solid fa-fire"></i> צ׳מפיונס ליג</div>
+                <div class="chip" onclick="sendQuickMsg('ספר לי בדיחה מצחיקה על ספורט')"><i class="fa-solid fa-face-laugh"></i> בדיחת ספורט</div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="input-container">
+            <div class="input-wrapper">
+                <div class="input-box">
+                    <div class="input-actions">
+                        <button class="input-action-btn" title="הקלטה קולית"><i class="fa-solid fa-microphone"></i></button>
+                    </div>
+                    <textarea id="userInput" placeholder="שאל את TITAN כל שאלה על ספורט... ⚽🏀" rows="1"
+                              oninput="this.style.height=''; this.style.height=Math.min(this.scrollHeight, 120)+'px'"></textarea>
+                    <div class="input-actions">
+                        <button class="input-action-btn" title="אימוג'י"><i class="fa-solid fa-face-smile"></i></button>
+                    </div>
+                </div>
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<script>
+    const chatBox = document.getElementById('chatBox');
+    const input = document.getElementById('userInput');
+    const sendBtn = document.getElementById('sendBtn');
+
+    // Enter to send
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    // Quick message
+    function sendQuickMsg(text) {
+        input.value = text;
+        sendMessage();
+    }
+
+    // Send Message
+    async function sendMessage() {
+        const text = input.value.trim();
+        if (!text) return;
+
+        appendMessage(text, 'user');
+        input.value = '';
+        input.style.height = 'auto';
+
+        sendBtn.disabled = true;
+        const loadingId = showTypingIndicator();
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ message: text })
+            });
+
+            removeElement(loadingId);
+
+            if (!response.ok) {
+                if (response.status === 422) {
+                    appendMessage("⚠️ אופס! נראה שהשליחה לא עברה נכון. נסה שוב!", 'bot');
+                } else if (response.status === 429) {
+                    appendMessage("⏸️ קצב איטי! שלחת יותר מדי בקשות. חכה רגע ונסה שוב.", 'bot');
+                } else if (response.status >= 500) {
+                    appendMessage("⚠️ השרת לא מרגיש טוב... נסה שוב בעוד רגע!", 'bot');
+                } else {
+                    appendMessage(`❌ שגיאה ${response.status}. TITAN ינסה לתקן את זה!`, 'bot');
+                }
+                sendBtn.disabled = false;
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data.success && data.response) {
+                const htmlContent = marked.parse(data.response);
+                appendMessage(htmlContent, 'bot', true);
+            } else if (data.error) {
+                appendMessage(`⚠️ ${data.error}`, 'bot');
+            } else {
+                appendMessage("השרת לקח הפסקה. נסה שוב בעוד רגע!", 'bot');
+            }
+
+        } catch (error) {
+            removeElement(loadingId);
+            console.error("TITAN Chat Error:", error);
+
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                appendMessage("⛔ אין חיבור לשרת! תוודא שהשרת רץ.", 'bot');
+            } else if (error.name === 'SyntaxError') {
+                appendMessage("⚠️ בעיה בקריאת התשובה מהשרת.", 'bot');
+            } else {
+                appendMessage("⛔ בעיית תקשורת! תבדוק שהשרת עובד ותחזור.", 'bot');
+            }
+        }
+
+        sendBtn.disabled = false;
+    }
+
+    // Append Message
+    function appendMessage(content, sender, isHTML = false) {
+        if (sender === 'bot') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message msg-bot';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'msg-wrapper';
+
+            const avatarDiv = document.createElement('div');
+            avatarDiv.className = 'msg-avatar';
+            avatarDiv.innerHTML = '<i class="fa-solid fa-robot"></i>';
+
+            const contentWrapper = document.createElement('div');
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'msg-content';
+            if (isHTML) contentDiv.innerHTML = content;
+            else contentDiv.textContent = content;
+
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'msg-meta';
+            metaDiv.innerHTML = '<i class="fa-solid fa-robot"></i> TITAN • ממש עכשיו';
+
+            contentWrapper.appendChild(contentDiv);
+            contentWrapper.appendChild(metaDiv);
+            wrapper.appendChild(avatarDiv);
+            wrapper.appendChild(contentWrapper);
+            messageDiv.appendChild(wrapper);
+            chatBox.appendChild(messageDiv);
+
+        } else {
+            const div = document.createElement('div');
+            div.className = 'message msg-user';
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'msg-content';
+            contentDiv.textContent = content;
+
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'msg-meta';
+            metaDiv.innerHTML = 'אתה • עכשיו';
+
+            div.appendChild(contentDiv);
+            div.appendChild(metaDiv);
+            chatBox.appendChild(div);
+        }
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    // Typing Indicator
+    function showTypingIndicator() {
+        const id = 'typing-' + Date.now();
+
+        const messageDiv = document.createElement('div');
+        messageDiv.id = id;
+        messageDiv.className = 'message msg-bot';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'msg-wrapper';
+
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'msg-avatar';
+        avatarDiv.innerHTML = '<i class="fa-solid fa-robot"></i>';
+
+        const contentWrapper = document.createElement('div');
+
+        const typingMessages = [
+            "TITAN מנתח...",
+            "בודק נתונים...",
+            "מריץ AI...",
+            "מעבד מידע...",
+            "מכין תשובה..."
+        ];
+        const randomMsg = typingMessages[Math.floor(Math.random() * typingMessages.length)];
+
+        contentWrapper.innerHTML = `
+            <div class="msg-content">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <span style="color: var(--text-muted); font-size: 13px;">${randomMsg}</span>
+                </div>
+            </div>
+        `;
+
+        wrapper.appendChild(avatarDiv);
+        wrapper.appendChild(contentWrapper);
+        messageDiv.appendChild(wrapper);
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        return id;
+    }
+
+    function removeElement(id) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+    }
+
+    // Clear Chat
+    function clearChat() {
+        const messages = chatBox.querySelectorAll('.message');
+        messages.forEach((msg, index) => {
+            if (index > 0) msg.remove();
+        });
+
+        const clearMessages = [
+            "השיחה נמחקה. במה אוכל לעזור?",
+            "הצ'אט נוקה. מה תרצה לשאול?",
+            "התחלנו מחדש. שאל אותי משהו!",
+            "השיחה התחדשה. במה לעזור?"
+        ];
+        const randomClearMsg = clearMessages[Math.floor(Math.random() * clearMessages.length)];
+
+        setTimeout(() => {
+            appendMessage(randomClearMsg, 'bot');
+        }, 300);
+    }
+
+    // Init
+    async function initPage() {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+
+        try {
+            const res = await fetch('/api/home', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                // User data loaded
+            }
+        } catch (e) {
+            // Silent handling
+        }
+    }
+
+    window.onload = initPage;
+</script>
+</body>
+</html>

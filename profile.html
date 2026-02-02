@@ -1,0 +1,4200 @@
+
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMARTSPORTS | מרכז הפרופיל האישי</title>
+    <meta name="theme-color" content="#020617">
+    <meta name="description" content="מרכז הפרופיל האישי שלך - נהל את החשבון, עקוב אחר הביצועים וגלה תובנות מותאמות אישית">
+
+    <!-- פונטים ואייקונים -->
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="global-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* ═══════════════════════════════════════════════════════════
+           SMARTSPORTS PROFILE - ULTRA PREMIUM EDITION 2.0
+           הדור הבא של עיצוב פרופיל משתמש
+           ═══════════════════════════════════════════════════════════ */
+        :root {
+            /* צבעי בסיס */
+            --bg-body: #020617;
+            --bg-panel: #0f172a;
+            --bg-glass: rgba(30, 41, 59, 0.6);
+            --bg-card: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+
+            /* צבעים ראשיים */
+            --primary: #3b82f6;
+            --primary-light: #60a5fa;
+            --primary-dark: #2563eb;
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --secondary: #8b5cf6;
+            --secondary-glow: rgba(139, 92, 246, 0.5);
+            --accent: #06b6d4;
+            --accent-glow: rgba(6, 182, 212, 0.4);
+
+            /* צבעי סטטוס */
+            --success: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.4);
+            --danger: #ef4444;
+            --danger-glow: rgba(239, 68, 68, 0.4);
+            --warning: #f59e0b;
+            --warning-glow: rgba(245, 158, 11, 0.4);
+
+            /* צבעי פרימיום */
+            --gold: #fbbf24;
+            --gold-glow: rgba(251, 191, 36, 0.4);
+            --platinum: #e5e4e2;
+            --diamond: #b9f2ff;
+
+            /* טקסט */
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+
+            /* גבולות */
+            --border: 1px solid rgba(255,255,255,0.08);
+            --border-glow: 1px solid rgba(59, 130, 246, 0.3);
+
+            /* פונטים */
+            --font-ui: 'Assistant', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            /* צללים */
+            --shadow-sm: 0 4px 15px rgba(0,0,0,0.2);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.3);
+            --shadow-lg: 0 25px 60px rgba(0,0,0,0.5);
+            --shadow-glow: 0 0 40px var(--primary-glow);
+
+            /* מעברים */
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* רדיוסים */
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text);
+            font-family: var(--font-ui);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           רקע אנימטיבי מתקדם - ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                    radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.15), transparent 50%),
+                    radial-gradient(ellipse at 80% 80%, rgba(139, 92, 246, 0.12), transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, rgba(6, 182, 212, 0.08), transparent 60%),
+                    radial-gradient(ellipse at 90% 10%, rgba(251, 191, 36, 0.05), transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+            animation: backgroundPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .grid-pattern {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 0.5px, transparent 0.5px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
+        }
+
+        /* כדורים צפים משופרים */
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatOrb 30s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px; height: 500px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            top: -15%; left: -10%;
+            animation-delay: 0s;
+        }
+        .orb-2 {
+            width: 400px; height: 400px;
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            bottom: -15%; right: -10%;
+            animation-delay: -10s;
+        }
+        .orb-3 {
+            width: 300px; height: 300px;
+            background: linear-gradient(135deg, var(--accent), var(--success));
+            top: 40%; left: 45%;
+            animation-delay: -20s;
+            opacity: 0.2;
+        }
+        .orb-4 {
+            width: 200px; height: 200px;
+            background: linear-gradient(135deg, var(--gold), var(--warning));
+            top: 10%; right: 20%;
+            animation-delay: -5s;
+            opacity: 0.15;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            25% { transform: translate(60px, -40px) scale(1.1) rotate(90deg); }
+            50% { transform: translate(-40px, 60px) scale(0.9) rotate(180deg); }
+            75% { transform: translate(40px, 30px) scale(1.05) rotate(270deg); }
+        }
+
+        /* חלקיקים מרחפים */
+        .particles-container {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particleFloat 20s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           סרגל צד - ULTRA SIDEBAR
+           ═══════════════════════════════════════════════════════════ */
+        .sidebar {
+            width: 300px;
+            min-width: 300px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-left: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            flex-direction: column;
+            padding: 28px;
+            z-index: 100;
+            box-shadow: 5px 0 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(59, 130, 246, 0.03), transparent 50%);
+            pointer-events: none;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 45px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-area:hover {
+            transform: scale(1.03);
+        }
+
+        .logo-icon {
+            font-size: 34px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 30px var(--primary-glow));
+            animation: logoGradient 5s ease-in-out infinite, pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes logoGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 25px var(--primary-glow)); }
+            50% { filter: drop-shadow(0 0 40px var(--primary-glow)); }
+        }
+
+        .logo-text {
+            font-size: 26px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+        .logo-text span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ניווט */
+        .nav-section {
+            margin-bottom: 30px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            margin-bottom: 15px;
+            padding-right: 5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 18px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            transition: all var(--transition-normal);
+            margin-bottom: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            transform: scaleY(0);
+            transition: transform var(--transition-normal);
+            border-radius: 0 5px 5px 0;
+        }
+
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            transform: translateX(-8px);
+        }
+
+        .nav-item:hover::before { transform: scaleY(1); }
+        .nav-item:hover::after { opacity: 1; }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.05));
+            color: var(--primary-light);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.2), inset 0 0 20px rgba(59, 130, 246, 0.05);
+        }
+
+        .nav-item.active::before { transform: scaleY(1); }
+
+        .nav-item i {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+            transition: all var(--transition-normal);
+        }
+
+        .nav-item:hover i {
+            transform: scale(1.15);
+            color: var(--primary);
+        }
+
+        /* תג חדש */
+        .nav-badge {
+            margin-right: auto;
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 20px;
+            animation: badgePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* כפתור התנתקות */
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            margin-top: auto;
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logout-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(239, 68, 68, 0.1), transparent);
+            transition: left var(--transition-slow);
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.12);
+            transform: translateX(-8px);
+            border-color: rgba(239, 68, 68, 0.3);
+            box-shadow: 0 5px 25px var(--danger-glow);
+        }
+
+        .logout-btn:hover::before { left: 100%; }
+
+        .logout-btn .icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: rgba(239,68,68,0.1);
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            transition: all var(--transition-normal);
+        }
+
+        .logout-btn:hover .icon {
+            background: rgba(239,68,68,0.2);
+            transform: rotate(-10deg);
+        }
+
+        .logout-btn span {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--danger);
+        }
+
+        /* מידע גרסה */
+        .version-info {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: 20px;
+        }
+
+        .version-info span {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           אזור תוכן ראשי
+           ═══════════════════════════════════════════════════════════ */
+        .main-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 45px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .main-area::-webkit-scrollbar { width: 8px; }
+        .main-area::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+        .main-area::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
+        /* ═══════════════════════════════════════════════════════════
+           כותרת עמוד
+           ═══════════════════════════════════════════════════════════ */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-title .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .page-title .subtitle i {
+            color: var(--success);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .header-btn {
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-ui);
+        }
+
+        .header-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           PROFILE HERO - ULTRA VERSION
+           ═══════════════════════════════════════════════════════════ */
+        .profile-hero {
+            position: relative;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+        }
+
+        /* באנר אנימטיבי */
+        .profile-banner {
+            height: 180px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 35%, var(--accent) 70%, var(--success) 100%);
+            background-size: 300% 300%;
+            position: relative;
+            overflow: hidden;
+            animation: bannerGradient 15s ease-in-out infinite;
+        }
+
+        @keyframes bannerGradient {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        .profile-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.08' fill-rule='evenodd'/%3E%3C/svg%3E");
+            animation: patternMove 40s linear infinite;
+        }
+
+        @keyframes patternMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        .profile-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 100px;
+            background: linear-gradient(to top, rgba(15,23,42,1), transparent);
+        }
+
+        /* כפתור ערוך באנר */
+        .banner-edit-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 5;
+            padding: 10px 16px;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-ui);
+        }
+
+        .banner-edit-btn:hover {
+            background: rgba(0,0,0,0.6);
+            transform: scale(1.05);
+        }
+
+        /* תוכן הפרופיל */
+        .profile-content {
+            padding: 0 45px 40px;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .profile-main {
+            display: flex;
+            align-items: flex-end;
+            gap: 30px;
+            margin-top: -70px;
+        }
+
+        /* אווטאר ULTRA */
+        .avatar-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .avatar-ring {
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border-radius: 35px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent), var(--primary));
+            background-size: 400% 400%;
+            animation: ringRotate 4s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes ringRotate {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 400% 50%; }
+        }
+
+        .avatar-xl {
+            width: 140px;
+            height: 140px;
+            border-radius: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 56px;
+            font-weight: 800;
+            color: #fff;
+            box-shadow: 0 20px 50px rgba(59,130,246,0.4);
+            border: 5px solid var(--bg-panel);
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .avatar-xl::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+            transform: rotate(45deg);
+            animation: avatarShine 3s ease-in-out infinite;
+        }
+
+        @keyframes avatarShine {
+            0%, 100% { transform: translateX(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .avatar-container:hover .avatar-xl {
+            transform: scale(1.08) rotate(-5deg);
+            box-shadow: 0 25px 60px rgba(59,130,246,0.5);
+        }
+
+        /* תמונת אווטאר */
+        .avatar-xl img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 27px;
+        }
+
+        /* כפתור העלאת תמונה */
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            z-index: 5;
+            border: 3px solid var(--bg-panel);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .avatar-upload-btn:hover {
+            transform: scale(1.15) rotate(15deg);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* תג סטטוס */
+        .status-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 4px solid var(--bg-panel);
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse-status 2s infinite;
+        }
+
+        .status-dot::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse-status {
+            0%, 100% { box-shadow: 0 0 0 0 var(--success-glow); }
+            50% { box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+        }
+
+        /* פרטי משתמש */
+        .user-info-main { padding-bottom: 15px; }
+
+        .user-name {
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 30px rgba(0,0,0,0.4);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .verified-badge {
+            background: linear-gradient(135deg, var(--gold), #f59e0b);
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 20px var(--gold-glow);
+            animation: badgeFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes badgeFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
+        .user-level {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--secondary);
+            padding: 6px 14px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .user-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .badge {
+            font-size: 13px;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all var(--transition-normal);
+            cursor: default;
+        }
+
+        .badge:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, rgba(251,191,36,0.15), rgba(245,158,11,0.15));
+            color: var(--gold);
+            border: 1px solid rgba(251,191,36,0.3);
+            box-shadow: 0 4px 20px var(--gold-glow);
+        }
+
+        .badge-premium.vip {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+            color: var(--diamond);
+            border-color: rgba(185, 242, 255, 0.3);
+        }
+
+        .badge-email {
+            background: rgba(255,255,255,0.03);
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .badge-joined {
+            background: rgba(6,182,212,0.1);
+            color: var(--accent);
+            border: 1px solid rgba(6,182,212,0.2);
+        }
+
+        .badge-id {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            font-family: var(--font-mono);
+            font-size: 12px;
+        }
+
+        /* סטטיסטיקות מהירות ULTRA */
+        .quick-stats {
+            display: flex;
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px 30px;
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all var(--transition-normal);
+            min-width: 140px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform var(--transition-normal);
+        }
+
+        .stat-item:hover {
+            background: rgba(59,130,246,0.08);
+            border-color: rgba(59,130,246,0.2);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md), 0 0 30px var(--primary-glow);
+        }
+
+        .stat-item:hover::before { transform: scaleX(1); }
+
+        .stat-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+
+        .stat-value {
+            font-size: 42px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            text-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        .stat-value.gold {
+            background: linear-gradient(135deg, var(--gold), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-value.success {
+            background: linear-gradient(135deg, var(--success), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        .stat-change {
+            font-size: 11px;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .stat-change.up { color: var(--success); }
+        .stat-change.down { color: var(--danger); }
+
+        /* ═══════════════════════════════════════════════════════════
+           טאבים ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        .tabs-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .tabs-container {
+            display: flex;
+            gap: 6px;
+            padding: 6px;
+            background: rgba(15,23,42,0.7);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 14px 28px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-ui);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+            z-index: -1;
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            box-shadow: 0 5px 25px var(--primary-glow);
+        }
+
+        .tab-btn.active::before { opacity: 1; }
+
+        .tab-btn:hover:not(.active) {
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .tab-btn i {
+            font-size: 16px;
+            transition: transform var(--transition-normal);
+        }
+
+        .tab-btn:hover i { transform: scale(1.15); }
+
+        .tab-count {
+            background: rgba(255,255,255,0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .quick-action-btn {
+            padding: 12px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-md);
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-ui);
+        }
+
+        .quick-action-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .quick-action-btn.primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: #fff;
+        }
+
+        .quick-action-btn.primary:hover {
+            box-shadow: 0 8px 30px var(--primary-glow);
+            transform: translateY(-3px);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           רשת תוכן
+           ═══════════════════════════════════════════════════════════ */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.6fr 1fr;
+            gap: 30px;
+        }
+
+        .section-content {
+            display: none;
+            animation: fadeSlideIn 0.5s ease;
+        }
+
+        .section-content.active { display: block; }
+
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* כרטיסים ULTRA */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-lg);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+
+        .card:hover {
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title i {
+            color: var(--gold);
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            background: rgba(251, 191, 36, 0.1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-title-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .card-action {
+            font-size: 13px;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-normal);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-action:hover {
+            background: rgba(59,130,246,0.1);
+            transform: translateX(-5px);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           פילטרים והיסטוריה
+           ═══════════════════════════════════════════════════════════ */
+        .filters-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-chip {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-family: var(--font-ui);
+        }
+
+        .filter-chip:hover {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: rgba(59, 130, 246, 0.3);
+            color: var(--primary-light);
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-color: transparent;
+            color: #fff;
+        }
+
+        .history-list {
+            max-height: 500px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-left: 5px;
+        }
+
+        .history-list::-webkit-scrollbar { width: 5px; }
+        .history-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        /* כרטיס תחזית ULTRA */
+        .prediction-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), transparent);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            padding: 22px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .prediction-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .prediction-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, rgba(59,130,246,0.05), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+            pointer-events: none;
+        }
+
+        .prediction-card:hover {
+            border-color: var(--primary);
+            transform: translateX(-8px);
+            box-shadow: var(--shadow-md), 0 0 30px rgba(59, 130, 246, 0.1);
+        }
+
+        .prediction-card:hover::before { opacity: 1; }
+        .prediction-card:hover::after { opacity: 1; }
+
+        .prediction-card.won {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+        .prediction-card.won::before {
+            background: linear-gradient(180deg, var(--success), var(--accent));
+            opacity: 1;
+        }
+
+        .prediction-card.lost {
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+        .prediction-card.lost::before {
+            background: linear-gradient(180deg, var(--danger), var(--warning));
+            opacity: 1;
+        }
+
+        .match-info { display: flex; align-items: center; gap: 18px; }
+
+        .match-sport-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: var(--accent);
+        }
+
+        .match-details { display: flex; flex-direction: column; gap: 6px; }
+
+        .match-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .league-tag {
+            background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(59,130,246,0.15));
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .match-teams {
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .match-teams .vs {
+            color: var(--text-dim);
+            font-size: 12px;
+            font-weight: 400;
+            margin: 0 10px;
+            background: rgba(255,255,255,0.05);
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        .prediction-result {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .score-display {
+            font-family: var(--font-mono);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--success);
+            text-shadow: 0 0 25px var(--success-glow);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 8px 20px;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .score-display.basketball {
+            color: var(--warning);
+            text-shadow: 0 0 25px var(--warning-glow);
+            background: rgba(245, 158, 11, 0.1);
+            border-color: rgba(245, 158, 11, 0.2);
+        }
+
+        .confidence-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .confidence-bar {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .confidence-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 20px; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(500%); }
+        }
+
+        .confidence-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .result-badge {
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 15px;
+            text-transform: uppercase;
+        }
+
+        .result-badge.won {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .result-badge.lost {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .result-badge.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* Empty State ULTRA */
+        .empty-state {
+            text-align: center;
+            padding: 60px 30px;
+            color: var(--text-muted);
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-dim);
+            border: 2px dashed rgba(255,255,255,0.1);
+        }
+
+        .empty-title {
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 12px;
+            font-weight: 800;
+        }
+
+        .empty-text {
+            font-size: 15px;
+            margin-bottom: 30px;
+            max-width: 350px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           גרפים וסטטיסטיקות ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        .chart-container {
+            height: 220px;
+            position: relative;
+        }
+
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.hits { background: var(--success); }
+        .legend-dot.misses { background: var(--danger); }
+        .legend-dot.pending { background: var(--warning); }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            padding: 20px 15px;
+            text-align: center;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            opacity: 0;
+            transition: opacity var(--transition-normal);
+        }
+
+        .stat-box:hover {
+            background: rgba(59,130,246,0.06);
+            border-color: rgba(59,130,246,0.15);
+            transform: translateY(-3px);
+        }
+
+        .stat-box:hover::before { opacity: 1; }
+
+        .stat-box-icon {
+            font-size: 22px;
+            margin-bottom: 10px;
+            opacity: 0.7;
+        }
+
+        .stat-box-value {
+            font-size: 28px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+        }
+
+        .stat-box-value.success {
+            color: var(--success);
+            text-shadow: 0 0 20px var(--success-glow);
+        }
+        .stat-box-value.danger {
+            color: var(--danger);
+            text-shadow: 0 0 20px var(--danger-glow);
+        }
+        .stat-box-value.warning {
+            color: var(--warning);
+            text-shadow: 0 0 20px var(--warning-glow);
+        }
+
+        .stat-box-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* תרשים התקדמות מעגלי */
+        .progress-ring-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        .progress-ring {
+            position: relative;
+            width: 180px;
+            height: 180px;
+        }
+
+        .progress-ring svg {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: rgba(255,255,255,0.05);
+            stroke-width: 12;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: url(#progressGradient);
+            stroke-width: 12;
+            stroke-linecap: round;
+            stroke-dasharray: 502;
+            stroke-dashoffset: 502;
+            transition: stroke-dashoffset 2s ease-out;
+        }
+
+        .progress-ring-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-ring-value {
+            font-size: 48px;
+            font-weight: 800;
+            font-family: var(--font-mono);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .progress-ring-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        /* כרטיס סטטוס ULTRA */
+        .status-card {
+            background: linear-gradient(145deg, rgba(16,185,129,0.06), rgba(6, 182, 212, 0.06));
+            border-color: rgba(16,185,129,0.15);
+        }
+
+        .status-card:hover {
+            border-color: rgba(16,185,129,0.3);
+            box-shadow: var(--shadow-lg), 0 0 40px var(--success-glow);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-icon {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(6,182,212,0.15));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--success);
+            font-size: 24px;
+            position: relative;
+        }
+
+        .status-icon::after {
+            content: '';
+            position: absolute;
+            top: -3px; right: -3px;
+            width: 12px; height: 12px;
+            background: var(--success);
+            border-radius: 50%;
+            border: 2px solid var(--bg-panel);
+            animation: pulse 2s infinite;
+        }
+
+        .status-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .status-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .connection-info {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .connection-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-muted);
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-normal);
+        }
+
+        .connection-item:hover {
+            background: rgba(255,255,255,0.04);
+            transform: translateX(-5px);
+        }
+
+        .connection-item i {
+            width: 30px;
+            height: 30px;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            font-size: 14px;
+        }
+
+        .connection-item .value {
+            margin-right: auto;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           הגדרות פרופיל ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .settings-section {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group { margin-bottom: 0; }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .form-label i {
+            color: var(--primary);
+            font-size: 15px;
+            width: 30px;
+            height: 30px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-label .required {
+            color: var(--danger);
+            font-size: 12px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 22px;
+            background: rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: var(--radius-md);
+            color: #fff;
+            font-family: var(--font-ui);
+            font-size: 15px;
+            transition: all var(--transition-normal);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59,130,246,0.15), var(--shadow-glow);
+            background: rgba(0,0,0,0.35);
+        }
+
+        .form-input:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(0,0,0,0.15);
+        }
+
+        .form-input::placeholder { color: var(--text-dim); }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-dim);
+            font-size: 16px;
+            pointer-events: none;
+        }
+
+        .form-input.with-icon {
+            padding-left: 50px;
+        }
+
+        .input-action {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 5px;
+            transition: all var(--transition-normal);
+        }
+
+        .input-action:hover {
+            color: var(--primary);
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .form-hint i { font-size: 11px; }
+
+        /* סוויץ' */
+        .switch-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-normal);
+        }
+
+        .switch-group:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .switch-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .switch-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .switch-text h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .switch-text p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .switch::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            border-radius: 50%;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .switch.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .switch.active::before {
+            right: calc(100% - 27px);
+        }
+
+        /* כפתורים ULTRA */
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 800;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-family: var(--font-ui);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before { left: 100%; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            box-shadow: 0 8px 30px var(--primary-glow);
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px var(--primary-glow);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: #fff;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(71, 85, 105, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: #fff;
+            box-shadow: 0 8px 25px var(--danger-glow);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 35px var(--danger-glow);
+        }
+
+        .btn:disabled {
+            background: #334155;
+            color: var(--text-dim);
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn:disabled::before { display: none; }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+            margin-top: 0;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           הישגים ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .achievement-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--warning));
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform var(--transition-normal);
+        }
+
+        .achievement-card:hover {
+            border-color: rgba(251, 191, 36, 0.2);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md), 0 0 30px var(--gold-glow);
+        }
+
+        .achievement-card:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .achievement-card.locked {
+            opacity: 0.5;
+            filter: grayscale(50%);
+        }
+
+        .achievement-card.locked:hover {
+            opacity: 0.7;
+            filter: grayscale(30%);
+        }
+
+        .achievement-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .achievement-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(245, 158, 11, 0.15));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: var(--gold);
+            position: relative;
+        }
+
+        .achievement-card.locked .achievement-icon {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-dim);
+        }
+
+        .achievement-icon .lock-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 18px;
+        }
+
+        .achievement-info h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .achievement-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .achievement-progress {
+            margin-top: 15px;
+        }
+
+        .achievement-progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .achievement-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--warning));
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        .achievement-progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .achievement-reward {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+            color: var(--gold);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           פרטיות ואבטחה
+           ═══════════════════════════════════════════════════════════ */
+        .privacy-section {
+            margin-top: 30px;
+        }
+
+        .privacy-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 25px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            margin-bottom: 15px;
+            transition: all var(--transition-normal);
+        }
+
+        .privacy-item:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .privacy-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .privacy-content {
+            flex: 1;
+        }
+
+        .privacy-content h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .privacy-content p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .privacy-action {
+            margin-top: 12px;
+        }
+
+        .privacy-btn {
+            padding: 10px 18px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius-sm);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-family: var(--font-ui);
+        }
+
+        .privacy-btn:hover {
+            background: rgba(59, 130, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .privacy-btn.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .privacy-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Toast הודעות ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        .toast-container {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .toast {
+            padding: 18px 30px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            animation: toastSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            min-width: 300px;
+        }
+
+        .toast i {
+            font-size: 20px;
+        }
+
+        .toast.success {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(6, 182, 212, 0.2));
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success);
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(245, 158, 11, 0.2));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--danger);
+        }
+
+        .toast.info {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--primary);
+        }
+
+        .toast.warning {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.2));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--warning);
+        }
+
+        @keyframes toastSlideIn {
+            from { opacity: 0; transform: translateY(-40px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes toastSlideOut {
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(-40px) scale(0.9); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           מסך טעינה ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        .loading-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-body);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 30px;
+            z-index: 10000;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loading-logo {
+            font-size: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoGradient 3s ease-in-out infinite, pulse-glow 2s ease-in-out infinite;
+        }
+
+        .loading-spinner-container {
+            position: relative;
+            width: 60px;
+            height: 60px;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(59, 130, 246, 0.1);
+            border-top-color: var(--primary);
+            border-right-color: var(--secondary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-spinner-inner {
+            position: absolute;
+            top: 8px; left: 8px;
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(6, 182, 212, 0.1);
+            border-bottom-color: var(--accent);
+            border-left-color: var(--success);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .loading-dots span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: loadingDot 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loadingDot {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           מודאל ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--radius-xl);
+            padding: 35px;
+            max-width: 500px;
+            width: 90%;
+            transform: scale(0.9) translateY(20px);
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-icon {
+            width: 55px;
+            height: 55px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .modal-icon.danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .modal-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+        }
+
+        .modal-body p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 15px;
+        }
+
+        .modal-footer .btn {
+            flex: 1;
+            margin-top: 0;
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           Mobile Nav
+           ═══════════════════════════════════════════════════════════ */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(25px);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 10px 20px;
+            z-index: 1000;
+        }
+
+        .mobile-nav-items {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-normal);
+        }
+
+        .mobile-nav-item i {
+            font-size: 20px;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           רספונסיב ULTRA
+           ═══════════════════════════════════════════════════════════ */
+        @media (max-width: 1400px) {
+            .content-grid { grid-template-columns: 1.2fr 1fr; }
+        }
+
+        @media (max-width: 1200px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .settings-grid { grid-template-columns: 1fr; }
+            .quick-stats { flex-wrap: wrap; justify-content: center; }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main-area { padding: 25px 20px 100px; }
+            .profile-content { padding: 0 25px 30px; }
+            .profile-main {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                margin-top: -60px;
+            }
+            .user-info-main { text-align: center; }
+            .user-name {
+                justify-content: center;
+                flex-wrap: wrap;
+                font-size: 30px;
+            }
+            .user-badges { justify-content: center; }
+            .quick-stats { justify-content: center; }
+            .tabs-wrapper { flex-direction: column; }
+            .tabs-container { width: 100%; justify-content: center; overflow-x: auto; }
+            .quick-actions { width: 100%; justify-content: center; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .mobile-nav { display: block; }
+        }
+
+        @media (max-width: 600px) {
+            .main-area { padding: 20px 15px 100px; }
+            .profile-banner { height: 140px; }
+            .avatar-xl { width: 110px; height: 110px; font-size: 44px; }
+            .avatar-ring { top: -6px; left: -6px; right: -6px; bottom: -6px; }
+            .user-name { font-size: 26px; }
+            .quick-stats { flex-direction: column; align-items: center; }
+            .stat-item { width: 100%; max-width: 250px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .tabs-container {
+                padding: 4px;
+                gap: 4px;
+            }
+            .tab-btn {
+                padding: 12px 16px;
+                font-size: 13px;
+            }
+            .tab-btn span { display: none; }
+            .card { padding: 22px; }
+            .achievements-grid { grid-template-columns: 1fr; }
+            .btn-group { flex-direction: column; }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+           אנימציות כניסה
+           ═══════════════════════════════════════════════════════════ */
+        .animate-in {
+            animation: animateIn 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        @keyframes animateIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* Tooltip */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-5px);
+            background: rgba(0,0,0,0.9);
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-normal);
+            z-index: 1000;
+        }
+
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(-10px);
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--primary);
+            color: #fff;
+        }
+    </style>
+    <!-- 🔐 בדיקת מנוי -->
+    <script src="auth-check.js"></script>
+</head>
+<body>
+
+<!-- רקע -->
+<div class="grid-pattern"></div>
+<div class="floating-orb orb-1"></div>
+<div class="floating-orb orb-2"></div>
+<div class="floating-orb orb-3"></div>
+<div class="floating-orb orb-4"></div>
+
+<!-- חלקיקים -->
+<div class="particles-container" id="particlesContainer"></div>
+
+<!-- מסך טעינה -->
+<div class="loading-screen" id="loadingScreen">
+    <i class="fa-solid fa-brain loading-logo"></i>
+    <div class="loading-spinner-container">
+        <div class="loading-spinner"></div>
+        <div class="loading-spinner-inner"></div>
+    </div>
+    <div class="loading-text">
+        טוען את הפרופיל שלך
+        <div class="loading-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-icon" id="modalIcon"><i class="fa-solid fa-question"></i></div>
+            <div>
+                <div class="modal-title" id="modalTitle">כותרת</div>
+                <div class="modal-subtitle" id="modalSubtitle">תת כותרת</div>
+            </div>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <p>תוכן המודאל</p>
+        </div>
+        <div class="modal-footer" id="modalFooter">
+            <button class="btn btn-secondary" onclick="closeModal()">ביטול</button>
+            <button class="btn btn-primary" id="modalConfirm">אישור</button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     סרגל צד
+     ═══════════════════════════════════════════════════════════ -->
+<aside class="sidebar">
+    <div class="logo-area" onclick="window.location.href='index.html'">
+        <i class="fa-solid fa-brain logo-icon"></i>
+        <div class="logo-text">SMART<span>SPORTS</span></div>
+    </div>
+
+    <nav>
+        <div class="nav-section">
+            <div class="nav-title">ראשי</div>
+            <a href="index.html" class="nav-item">
+                <i class="fa-solid fa-grid-2"></i> דף הבית
+            </a>
+            <a href="predictions.html" class="nav-item">
+                <i class="fa-solid fa-microchip"></i> תחזיות AI
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">תוכן</div>
+            <a href="news.html" class="nav-item">
+                <i class="fa-solid fa-newspaper"></i> חדשות ספורט
+            </a>
+            <a href="stats.html" class="nav-item">
+                <i class="fa-solid fa-chart-mixed"></i> סטטיסטיקות
+            </a>
+            <a href="chat.html" class="nav-item">
+                <i class="fa-solid fa-comments"></i>צ'אט TITAN
+            </a>
+        </div>
+    </nav>
+
+    <div class="logout-btn" onclick="confirmLogout()">
+        <div class="icon"><i class="fa-solid fa-right-from-bracket"></i></div>
+        <span>התנתק מהמערכת</span>
+    </div>
+
+    <div class="version-info">
+        <span>v2.0.0 ULTRA</span>
+    </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     אזור תוכן ראשי
+     ═══════════════════════════════════════════════════════════ -->
+<main class="main-area">
+
+    <!-- כותרת -->
+    <header class="page-header animate-in">
+        <div class="page-title">
+            <div>
+                <h1>מרכז הפרופיל</h1>
+                <div class="subtitle">
+                    <i class="fa-solid fa-circle"></i>
+                    <span id="connectionStatus">מחובר למערכת</span>
+                </div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="header-btn" onclick="refreshData()" data-tooltip="רענן נתונים">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>רענן</span>
+            </button>
+            <button class="header-btn" onclick="exportData()" data-tooltip="ייצא נתונים">
+                <i class="fa-solid fa-download"></i>
+                <span>ייצוא</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- PROFILE HERO -->
+    <section class="profile-hero animate-in delay-1">
+        <div class="profile-banner">
+            <button class="banner-edit-btn" onclick="showToast('עריכת הבאנר תהיה זמינה בקרוב', 'info')">
+                <i class="fa-solid fa-camera"></i>
+                ערוך באנר
+            </button>
+        </div>
+        <div class="profile-content">
+            <div class="profile-main">
+                <div class="avatar-container" onclick="showAvatarOptions()">
+                    <div class="avatar-ring"></div>
+                    <div class="avatar-xl" id="userAvatar">U</div>
+                    <div class="status-dot"></div>
+                    <div class="avatar-upload-btn" data-tooltip="העלה תמונה">
+                        <i class="fa-solid fa-camera"></i>
+                    </div>
+                </div>
+                <div class="user-info-main">
+                    <h1 class="user-name">
+                        <span id="userName">טוען...</span>
+                        <span class="verified-badge"><i class="fa-solid fa-check"></i> מאומת</span>
+                        <span class="user-level"><i class="fa-solid fa-gem"></i> רמה <span id="userLevel">1</span></span>
+                    </h1>
+                    <div class="user-badges">
+                        <span class="badge badge-premium" id="badgePremium" data-tooltip="חבר פרימיום">
+                            <i class="fa-solid fa-crown"></i>
+                            <span id="userMembership">PREMIUM</span>
+                        </span>
+                        <span class="badge badge-email" data-tooltip="כתובת האימייל שלך">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span id="userEmail">...</span>
+                        </span>
+                        <span class="badge badge-joined" data-tooltip="תאריך הצטרפות">
+                            <i class="fa-solid fa-calendar"></i>
+                            הצטרף ב-<span id="userJoinDate">2024</span>
+                        </span>
+                        <span class="badge badge-id" data-tooltip="מזהה משתמש">
+                            <i class="fa-solid fa-fingerprint"></i>
+                            ID: <span id="userId">-</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-stats">
+                <div class="stat-item" data-tooltip="סך הכל תחזיות שיצרת">
+                    <div class="stat-icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="stat-value" id="totalPredictions">0</div>
+                    <div class="stat-label">תחזיות</div>
+                    <div class="stat-change up" id="predictionsChange">
+                        <i class="fa-solid fa-arrow-up"></i> +0 החודש
+                    </div>
+                </div>
+                <div class="stat-item" data-tooltip="אחוז הצלחה כולל">
+                    <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="stat-value success" id="successRate">0%</div>
+                    <div class="stat-label">אחוז הצלחה</div>
+                    <div class="stat-change up" id="successChange">
+                        <i class="fa-solid fa-arrow-up"></i> +0%
+                    </div>
+                </div>
+                <div class="stat-item" data-tooltip="נקודות XP שצברת">
+                    <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+                    <div class="stat-value gold" id="totalXP">0</div>
+                    <div class="stat-label">נקודות XP</div>
+                    <div class="stat-change up" id="xpChange">
+                        <i class="fa-solid fa-arrow-up"></i> +0 השבוע
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TABS -->
+    <div class="tabs-wrapper animate-in delay-2">
+        <div class="tabs-container">
+            <button class="tab-btn active" onclick="switchTab('activity', this)">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>פעילות</span>
+                <span class="tab-count" id="activityCount">0</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('settings', this)">
+                <i class="fa-solid fa-gear"></i>
+                <span>הגדרות</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('achievements', this)">
+                <i class="fa-solid fa-trophy"></i>
+                <span>הישגים</span>
+                <span class="tab-count" id="achievementsCount">0</span>
+            </button>
+            <button class="tab-btn" onclick="switchTab('privacy', this)">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>פרטיות</span>
+            </button>
+        </div>
+        <div class="quick-actions">
+            <button class="quick-action-btn primary" onclick="window.location.href='predictions.html'">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                תחזית חדשה
+            </button>
+        </div>
+    </div>
+
+    <!-- TAB: ACTIVITY -->
+    <div id="activity" class="section-content active">
+        <div class="content-grid">
+            <!-- היסטוריית תחזיות -->
+            <div class="card animate-in delay-3">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <div class="card-title-text">
+                            היסטוריית תחזיות
+                            <span class="card-subtitle">התחזיות האחרונות שלך</span>
+                        </div>
+                    </h3>
+                    <span class="card-action" onclick="window.location.href='predictions.html'">
+                        צור חדשה <i class="fa-solid fa-arrow-left"></i>
+                    </span>
+                </div>
+
+                <div class="filters-bar">
+                    <button class="filter-chip active" onclick="filterPredictions('all', this)">הכל</button>
+                    <button class="filter-chip" onclick="filterPredictions('won', this)">
+                        <i class="fa-solid fa-check"></i> ניצחונות
+                    </button>
+                    <button class="filter-chip" onclick="filterPredictions('lost', this)">
+                        <i class="fa-solid fa-xmark"></i> הפסדים
+                    </button>
+                    <button class="filter-chip" onclick="filterPredictions('pending', this)">
+                        <i class="fa-solid fa-clock"></i> ממתין
+                    </button>
+                </div>
+
+                <div class="history-list" id="historyList">
+                    <div class="empty-state">
+                        <div class="loading-spinner-container" style="margin: 0 auto;">
+                            <div class="loading-spinner"></div>
+                            <div class="loading-spinner-inner"></div>
+                        </div>
+                        <p style="margin-top: 20px;">טוען היסטוריה...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- צד ימין -->
+            <div style="display:flex; flex-direction:column; gap:25px;">
+                <!-- אחוז הצלחה מעגלי -->
+                <div class="card animate-in delay-4">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <div class="card-title-text">
+                                ביצועים כוללים
+                                <span class="card-subtitle">אחוז ההצלחה שלך</span>
+                            </div>
+                        </h3>
+                    </div>
+
+                    <div class="progress-ring-container">
+                        <div class="progress-ring">
+                            <svg width="180" height="180">
+                                <defs>
+                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:var(--primary)"/>
+                                        <stop offset="50%" style="stop-color:var(--secondary)"/>
+                                        <stop offset="100%" style="stop-color:var(--accent)"/>
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-ring-bg" cx="90" cy="90" r="80"/>
+                                <circle class="progress-ring-fill" id="progressRing" cx="90" cy="90" r="80"/>
+                            </svg>
+                            <div class="progress-ring-text">
+                                <div class="progress-ring-value" id="ringValue">0%</div>
+                                <div class="progress-ring-label">דיוק כולל</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-box-icon"><i class="fa-solid fa-check-circle"></i></div>
+                            <div class="stat-box-value success" id="statHits">0</div>
+                            <div class="stat-box-label">פגיעות</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-box-icon"><i class="fa-solid fa-times-circle"></i></div>
+                            <div class="stat-box-value danger" id="statMisses">0</div>
+                            <div class="stat-box-label">פספוסים</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-box-icon"><i class="fa-solid fa-clock"></i></div>
+                            <div class="stat-box-value warning" id="statPending">0</div>
+                            <div class="stat-box-label">ממתין</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- סטטוס חשבון -->
+                <div class="card status-card animate-in delay-5">
+                    <div class="status-header">
+                        <div class="status-icon"><i class="fa-solid fa-shield-check"></i></div>
+                        <div>
+                            <div class="status-title">החשבון פעיל ומאובטח</div>
+                            <div class="status-subtitle" id="aiStatus">מחובר לשרתי AI</div>
+                        </div>
+                    </div>
+                    <div class="connection-info">
+                        <div class="connection-item">
+                            <i class="fa-solid fa-server"></i>
+                            <span>שרת AI</span>
+                            <span class="value" id="serverStatus">פעיל</span>
+                        </div>
+                        <div class="connection-item">
+                            <i class="fa-solid fa-cloud"></i>
+                            <span>גיבוי ענן</span>
+                            <span class="value">מופעל</span>
+                        </div>
+                        <div class="connection-item">
+                            <i class="fa-solid fa-lock"></i>
+                            <span>הצפנה</span>
+                            <span class="value">AES-256</span>
+                        </div>
+                        <div class="connection-item">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>התחברות אחרונה</span>
+                            <span class="value" id="lastLogin">עכשיו</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: SETTINGS -->
+    <div id="settings" class="section-content">
+        <div class="settings-grid">
+            <!-- פרטים אישיים -->
+            <div class="settings-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa-solid fa-user-pen"></i>
+                            <div class="card-title-text">
+                                פרטים אישיים
+                                <span class="card-subtitle">עדכן את המידע האישי שלך</span>
+                            </div>
+                        </h3>
+                    </div>
+                    <form id="profileForm">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fa-solid fa-envelope"></i>
+                                כתובת אימייל
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="email" class="form-input" id="inputEmail" disabled>
+                                <span class="input-icon"><i class="fa-solid fa-lock"></i></span>
+                            </div>
+                            <div class="form-hint">
+                                <i class="fa-solid fa-info-circle"></i>
+                                לא ניתן לשנות את כתובת האימייל
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fa-solid fa-id-card"></i>
+                                שם מלא
+                                <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="inputFullName" placeholder="הכנס את שמך המלא">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fa-solid fa-phone"></i>
+                                מספר טלפון
+                            </label>
+                            <input type="tel" class="form-input" id="inputPhone" placeholder="050-0000000">
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btnSaveProfile">
+                            <i class="fa-solid fa-floppy-disk"></i> שמור שינויים
+                        </button>
+                    </form>
+                </div>
+
+                <!-- העדפות -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa-solid fa-sliders"></i>
+                            <div class="card-title-text">
+                                העדפות
+                                <span class="card-subtitle">התאם את חוויית השימוש</span>
+                            </div>
+                        </h3>
+                    </div>
+
+                    <div class="switch-group">
+                        <div class="switch-info">
+                            <div class="switch-icon"><i class="fa-solid fa-bell"></i></div>
+                            <div class="switch-text">
+                                <h4>התראות Push</h4>
+                                <p>קבל התראות על תוצאות משחקים</p>
+                            </div>
+                        </div>
+                        <div class="switch active" id="switchNotifications" onclick="toggleSwitch(this)"></div>
+                    </div>
+
+                    <div class="switch-group" style="margin-top: 15px;">
+                        <div class="switch-info">
+                            <div class="switch-icon"><i class="fa-solid fa-envelope"></i></div>
+                            <div class="switch-text">
+                                <h4>עדכונים באימייל</h4>
+                                <p>קבל סיכום שבועי לאימייל</p>
+                            </div>
+                        </div>
+                        <div class="switch" id="switchEmail" onclick="toggleSwitch(this)"></div>
+                    </div>
+
+                    <div class="switch-group" style="margin-top: 15px;">
+                        <div class="switch-info">
+                            <div class="switch-icon"><i class="fa-solid fa-moon"></i></div>
+                            <div class="switch-text">
+                                <h4>מצב כהה</h4>
+                                <p>תמיד פעיל (ברירת מחדל)</p>
+                            </div>
+                        </div>
+                        <div class="switch active" id="switchDarkMode" onclick="toggleSwitch(this)"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- אבטחה -->
+            <div class="settings-section">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa-solid fa-lock"></i>
+                            <div class="card-title-text">
+                                שינוי סיסמה
+                                <span class="card-subtitle">עדכן את סיסמת החשבון</span>
+                            </div>
+                        </h3>
+                    </div>
+                    <form id="passwordForm">
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fa-solid fa-key"></i>
+                                סיסמה נוכחית
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="password" class="form-input with-icon" id="inputCurrentPass" placeholder="••••••••">
+                                <button type="button" class="input-action" onclick="togglePassword('inputCurrentPass', this)">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fa-solid fa-lock"></i>
+                                סיסמה חדשה
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="password" class="form-input with-icon" id="inputNewPass" placeholder="••••••••">
+                                <button type="button" class="input-action" onclick="togglePassword('inputNewPass', this)">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                            <small class="form-hint">לפחות 8 תווים, אות גדולה, מספר ותו מיוחד</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="inputNewPass">
+                                <i class="fa-solid fa-check-double"></i>
+                                אימות סיסמה חדשה
+                            </label>
+                            <div class="input-wrapper">
+                                <input type="password" class="form-input with-icon" id="inputConfirmPass" placeholder="••••••••">
+                                <button type="button" class="input-action" onclick="togglePassword('inputConfirmPass', this)">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                            <button type="button" class="btn btn-secondary" id="btnChangePass" onclick="changePassword()">
+                                <i class="fa-solid fa-key"></i> שנה סיסמה
+                            </button>
+                      </form>
+                </div>
+
+                <!-- אימות דו-שלבי -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div class="card-title-text">
+                                אימות דו-שלבי
+                                <span class="card-subtitle">הגנה נוספת על החשבון</span>
+                            </div>
+                        </h3>
+                    </div>
+
+                    <div class="switch-group">
+                        <div class="switch-info">
+                            <div class="switch-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                            <div class="switch-text">
+                                <h4>אימות SMS</h4>
+                                <p>קבל קוד אימות בהודעת SMS</p>
+                            </div>
+                        </div>
+                        <div class="switch" id="switch2FA" onclick="toggle2FA(this)"></div>
+                    </div>
+
+                    <div class="switch-group" style="margin-top: 15px;">
+                        <div class="switch-info">
+                            <div class="switch-icon"><i class="fa-solid fa-qrcode"></i></div>
+                            <div class="switch-text">
+                                <h4>Google Authenticator</h4>
+                                <p>השתמש באפליקציית אימות</p>
+                            </div>
+                        </div>
+                        <div class="switch" id="switchAuthenticator" onclick="toggleAuthenticator(this)"></div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="showBackupCodes()">
+                            <i class="fa-solid fa-key"></i> קודי גיבוי
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: ACHIEVEMENTS -->
+    <div id="achievements" class="section-content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-trophy"></i>
+                    <div class="card-title-text">
+                        ההישגים שלי
+                        <span class="card-subtitle">צבור הישגים ופתח פרסים</span>
+                    </div>
+                </h3>
+                <span class="card-action">
+                    <span id="achievementsProgress">0</span>/12 הושלמו
+                </span>
+            </div>
+
+            <div class="achievements-grid" id="achievementsGrid">
+                <!-- הישגים יטענו דינמית -->
+            </div>
+        </div>
+
+        <!-- רמה והתקדמות -->
+        <div class="card" style="margin-top: 25px;">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-ranking-star"></i>
+                    <div class="card-title-text">
+                        רמה והתקדמות
+                        <span class="card-subtitle">צבור XP כדי לעלות ברמות</span>
+                    </div>
+                </h3>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 30px; flex-wrap: wrap;">
+                <div style="text-align: center;">
+                    <div style="font-size: 80px; font-weight: 800; font-family: var(--font-mono); background: linear-gradient(135deg, var(--gold), var(--warning)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                        <span id="currentLevel">1</span>
+                    </div>
+                    <div style="color: var(--text-muted); font-size: 14px;">רמה נוכחית</div>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px;">
+                        <span style="color: var(--text-muted);">התקדמות לרמה הבאה</span>
+                        <span style="color: var(--gold); font-weight: 700;" id="xpProgress">0/1000 XP</span>
+                    </div>
+                    <div class="achievement-progress-bar" style="height: 12px;">
+                        <div class="achievement-progress-fill" id="levelProgressBar" style="width: 0%;"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: var(--text-dim);">
+                        <span>רמה <span id="currentLevelSmall">1</span></span>
+                        <span>רמה <span id="nextLevel">2</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <h4 style="font-size: 16px; margin-bottom: 15px; color: #fff;">
+                    <i class="fa-solid fa-gift" style="color: var(--gold); margin-left: 8px;"></i>
+                    פרסי הרמה הבאה
+                </h4>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="background: rgba(251, 191, 36, 0.1); border: 1px solid rgba(251, 191, 36, 0.2); padding: 15px 20px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-bolt" style="color: var(--gold); font-size: 20px;"></i>
+                        <div>
+                            <div style="font-weight: 700; color: #fff;">+5 תחזיות יומיות</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">הגדל את המכסה היומית</div>
+                        </div>
+                    </div>
+                    <div style="background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); padding: 15px 20px; border-radius: var(--radius-md); display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-palette" style="color: var(--secondary); font-size: 20px;"></i>
+                        <div>
+                            <div style="font-weight: 700; color: #fff;">ערכת נושא בלעדית</div>
+                            <div style="font-size: 12px; color: var(--text-muted);">עיצוב פרופיל מיוחד</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: PRIVACY -->
+    <div id="privacy" class="section-content">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <div class="card-title-text">
+                        פרטיות ואבטחת מידע
+                        <span class="card-subtitle">שליטה מלאה על המידע שלך</span>
+                    </div>
+                </h3>
+            </div>
+
+            <div class="privacy-section">
+                <div class="privacy-item">
+                    <div class="privacy-icon"><i class="fa-solid fa-eye"></i></div>
+                    <div class="privacy-content">
+                        <h4>נראות הפרופיל</h4>
+                        <p>קבע מי יכול לראות את הפרופיל שלך ואת הסטטיסטיקות שלך. כרגע הפרופיל שלך מוגדר כפרטי.</p>
+                        <div class="privacy-action">
+                            <button class="privacy-btn" onclick="showPrivacySettings()">
+                                <i class="fa-solid fa-gear"></i> הגדרות נראות
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="privacy-item">
+                    <div class="privacy-icon"><i class="fa-solid fa-download"></i></div>
+                    <div class="privacy-content">
+                        <h4>הורדת המידע שלי</h4>
+                        <p>הורד עותק של כל המידע שאספנו עליך, כולל היסטוריית תחזיות, הגדרות ופעילות בחשבון.</p>
+                        <div class="privacy-action">
+                            <button class="privacy-btn" onclick="requestDataDownload()">
+                                <i class="fa-solid fa-file-arrow-down"></i> בקש הורדת מידע
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="privacy-item">
+                    <div class="privacy-icon"><i class="fa-solid fa-history"></i></div>
+                    <div class="privacy-content">
+                        <h4>היסטוריית התחברויות</h4>
+                        <p>צפה בכל ההתחברויות לחשבון שלך, כולל מיקום, מכשיר וזמן. זהה פעילות חשודה.</p>
+                        <div class="privacy-action">
+                            <button class="privacy-btn" onclick="showLoginHistory()">
+                                <i class="fa-solid fa-list"></i> צפה בהיסטוריה
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="privacy-item">
+                    <div class="privacy-icon"><i class="fa-solid fa-devices"></i></div>
+                    <div class="privacy-content">
+                        <h4>מכשירים מחוברים</h4>
+                        <p>נהל את כל המכשירים שמחוברים לחשבון שלך. נתק מכשירים שאינך מזהה.</p>
+                        <div class="privacy-action">
+                            <button class="privacy-btn" onclick="showConnectedDevices()">
+                                <i class="fa-solid fa-laptop"></i> נהל מכשירים
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="privacy-item" style="border-color: rgba(239, 68, 68, 0.2);">
+                    <div class="privacy-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                    <div class="privacy-content">
+                        <h4 style="color: var(--danger);">מחיקת חשבון</h4>
+                        <p>מחיקת החשבון היא פעולה בלתי הפיכה. כל המידע שלך יימחק לצמיתות ולא ניתן יהיה לשחזר אותו.</p>
+                        <div class="privacy-action">
+                            <button class="privacy-btn danger" onclick="confirmDeleteAccount()">
+                                <i class="fa-solid fa-exclamation-triangle"></i> מחק את החשבון
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- יומן פעילות -->
+        <div class="card" style="margin-top: 25px;">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fa-solid fa-scroll"></i>
+                    <div class="card-title-text">
+                        יומן פעילות אחרון
+                        <span class="card-subtitle">פעולות אחרונות בחשבון</span>
+                    </div>
+                </h3>
+                <span class="card-action" onclick="clearActivityLog()">
+                    נקה יומן <i class="fa-solid fa-eraser"></i>
+                </span>
+            </div>
+
+            <div class="history-list" id="activityLog" style="max-height: 300px;">
+                <!-- יומן פעילות יטען דינמית -->
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<!-- Mobile Navigation -->
+<nav class="mobile-nav">
+    <div class="mobile-nav-items">
+        <a href="index.html" class="mobile-nav-item">
+            <i class="fa-solid fa-home"></i>
+            <span>בית</span>
+        </a>
+        <a href="live.html" class="mobile-nav-item">
+            <i class="fa-solid fa-satellite-dish"></i>
+            <span>Live</span>
+        </a>
+        <a href="predictions.html" class="mobile-nav-item">
+            <i class="fa-solid fa-microchip"></i>
+            <span>AI</span>
+        </a>
+        <a href="profile.html" class="mobile-nav-item active">
+            <i class="fa-solid fa-user"></i>
+            <span>פרופיל</span>
+        </a>
+    </div>
+</nav>
+
+<script>
+    /* ═══════════════════════════════════════════════════════════
+       SMARTSPORTS PROFILE - ULTRA JAVASCRIPT ENGINE
+       ═══════════════════════════════════════════════════════════ */
+
+    // משתנים גלובליים
+    let userData = null;
+    let predictionsData = [];
+    let achievementsData = [];
+    let currentFilter = 'all';
+
+    // ════════════════════════════════════════════════════════════
+    // יצירת חלקיקים ברקע
+    // ════════════════════════════════════════════════════════════
+    function createParticles() {
+        const container = document.getElementById('particlesContainer');
+        if (!container) return;
+
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (15 + Math.random() * 15) + 's';
+
+            const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)', 'var(--gold)'];
+            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.width = (2 + Math.random() * 4) + 'px';
+            particle.style.height = particle.style.width;
+
+            container.appendChild(particle);
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 1. אתחול הדף
+    // ════════════════════════════════════════════════════════════
+    async function initProfile() {
+        createParticles();
+
+        const token = localStorage.getItem('access_token');
+
+        if (!token) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        try {
+            // טעינת הפרופיל
+            const resProfile = await fetch('/api/profile', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (resProfile.ok) {
+                userData = await resProfile.json();
+                // User Profile Data loaded successfully
+                renderProfile(userData);
+
+                // טעינת נתונים נוספים במקביל
+                await Promise.all([
+                    loadPredictionHistory(token),
+                    loadStats(token),
+                    loadAchievements(),
+                    loadActivityLog()
+                ]);
+
+                // אנימציית כניסה
+                setTimeout(() => {
+                    hideLoading();
+                    celebrateLogin();
+                }, 800);
+
+            } else {
+                showToast('הסשן פג תוקף, נא להתחבר מחדש', 'error');
+                setTimeout(() => logout(), 2000);
+            }
+        } catch (e) {
+            console.error('Critical Profile Error:', e);
+            showToast('שגיאה בטעינת הפרופיל', 'error');
+            hideLoading();
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 2. רינדור פרטי המשתמש
+    // ════════════════════════════════════════════════════════════
+    function renderProfile(data) {
+        const name = data.full_name || data.username || 'משתמש';
+        const email = data.username || 'אין אימייל';
+        const initial = name.charAt(0).toUpperCase();
+        const userId = data.id || '-';
+
+        // עדכון אלמנטים
+        updateElement('userName', name);
+        updateElement('userEmail', email);
+        updateElement('userAvatar', initial);
+        updateElement('userId', userId);
+
+        const inputEmail = document.getElementById('inputEmail');
+        const inputName = document.getElementById('inputFullName');
+
+        if (inputEmail) inputEmail.value = email;
+        if (inputName) inputName.value = data.full_name || '';
+
+        if (data.join_date) {
+            updateElement('userJoinDate', data.join_date);
+        }
+
+        // 🔥 Premium Badge Management - CTO Directive Implementation
+        const premiumBadge = document.getElementById('badgePremium');
+        if (premiumBadge) {
+            if (data.is_premium) {
+                premiumBadge.style.display = 'inline-flex';
+                const membershipText = document.getElementById('userMembership');
+                if (membershipText) {
+                    membershipText.textContent = (data.subscription_plan || 'premium').toUpperCase();
+                }
+            } else {
+                premiumBadge.style.display = 'none';
+            }
+        }
+
+        // עדכון סטטוס AI
+        if (data.ai_status) {
+            const aiStatusEl = document.getElementById('aiStatus');
+            const serverStatusEl = document.getElementById('serverStatus');
+
+            if (data.ai_status === 'online') {
+                if (aiStatusEl) aiStatusEl.textContent = 'מחובר לשרתי AI בזמן אמת';
+                if (serverStatusEl) serverStatusEl.textContent = 'פעיל ✓';
+            } else {
+                if (aiStatusEl) aiStatusEl.textContent = 'מצב גיבוי פעיל';
+                if (serverStatusEl) {
+                    serverStatusEl.textContent = 'גיבוי';
+                    serverStatusEl.style.color = 'var(--warning)';
+                }
+            }
+        }
+
+        // חישוב רמה (לדוגמה)
+        const xp = data.xp || 0;
+        const level = Math.floor(xp / 1000) + 1;
+        updateElement('userLevel', level);
+        updateElement('currentLevel', level);
+        updateElement('currentLevelSmall', level);
+        updateElement('nextLevel', level + 1);
+
+        const xpInLevel = xp % 1000;
+        updateElement('xpProgress', `${xpInLevel}/1000 XP`);
+        updateElement('totalXP', xp.toLocaleString());
+
+        const progressBar = document.getElementById('levelProgressBar');
+        if (progressBar) {
+            setTimeout(() => {
+                progressBar.style.width = (xpInLevel / 10) + '%';
+            }, 500);
+        }
+    }
+
+    function updateElement(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 3. טעינת היסטוריית תחזיות
+    // ════════════════════════════════════════════════════════════
+    async function loadPredictionHistory(token) {
+        try {
+            const res = await fetch('/api/user/predictions', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                predictionsData = data.predictions || [];
+                renderHistory(predictionsData);
+                updateElement('activityCount', predictionsData.length);
+            } else {
+                renderHistory([]);
+            }
+        } catch (e) {
+            console.error('History fetch error:', e);
+            renderHistory([]);
+        }
+    }
+
+    function renderHistory(predictions, filter = 'all') {
+        const container = document.getElementById('historyList');
+        if (!container) return;
+
+        // סינון
+        let filtered = predictions;
+        if (filter !== 'all') {
+            filtered = predictions.filter(p => p.status === filter);
+        }
+
+        animateValue('totalPredictions', predictions.length);
+
+        if (!filtered || filtered.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fa-regular fa-folder-open"></i></div>
+                    <div class="empty-title">${filter === 'all' ? 'עדיין אין תחזיות' : 'אין תוצאות בקטגוריה זו'}</div>
+                    <div class="empty-text">התחל ליצור תחזיות עם מנוע ה-AI החכם שלנו ותראה אותן כאן</div>
+                    <button class="btn btn-primary" style="width:auto; margin:0 auto;" onclick="location.href='predictions.html'">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> צור תחזית ראשונה
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach((p, i) => {
+            const leagueLower = (p.league || '').toLowerCase();
+            const isBasketball = leagueLower.includes('nba') || leagueLower.includes('basket') || leagueLower.includes('euroleague');
+            const sportIcon = isBasketball ? 'fa-basketball' : 'fa-futbol';
+            const sportClass = isBasketball ? 'basketball' : '';
+
+            // קביעת סטטוס
+            const status = p.status || 'pending';
+            const statusClass = status === 'won' ? 'won' : status === 'lost' ? 'lost' : '';
+            const statusBadge = status === 'won' ? '<span class="result-badge won"><i class="fa-solid fa-check"></i> נכון</span>' :
+                status === 'lost' ? '<span class="result-badge lost"><i class="fa-solid fa-xmark"></i> שגוי</span>' :
+                    '<span class="result-badge pending"><i class="fa-solid fa-clock"></i> ממתין</span>';
+
+            html += `
+                <div class="prediction-card ${statusClass}" style="animation: fadeSlideIn 0.5s ease ${i * 0.08}s backwards;" onclick="showPredictionDetails(${i})">
+                    <div class="match-info">
+                        <div class="match-sport-icon">
+                            <i class="fa-solid ${sportIcon}"></i>
+                        </div>
+                        <div class="match-details">
+                            <div class="match-meta">
+                                <span><i class="fa-regular fa-calendar"></i> ${p.date || 'תאריך חסר'}</span>
+                                <span class="league-tag">
+                                    <i class="fa-solid ${sportIcon}"></i>
+                                    ${p.league || 'כללי'}
+                                </span>
+                            </div>
+                            <div class="match-teams">
+                                ${p.home || 'קבוצה א'}
+                                <span class="vs">VS</span>
+                                ${p.away || 'קבוצה ב'}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prediction-result">
+                        <div class="score-display ${sportClass}">${p.score || '-'}</div>
+                        <div class="confidence-wrapper">
+                            <div class="confidence-bar">
+                                <div class="confidence-fill" style="width: ${p.confidence || 50}%"></div>
+                            </div>
+                            <div class="confidence-text">${p.confidence || 50}% ביטחון</div>
+                        </div>
+                        ${statusBadge}
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function filterPredictions(filter, btn) {
+        currentFilter = filter;
+
+        // עדכון כפתורים
+        document.querySelectorAll('.filter-chip').forEach(chip => chip.classList.remove('active'));
+        btn.classList.add('active');
+
+        renderHistory(predictionsData, filter);
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 4. טעינת סטטיסטיקות
+    // ════════════════════════════════════════════════════════════
+    async function loadStats(token) {
+        let stats = { hits: 0, misses: 0, pending: 0, accuracy: 0 };
+
+        try {
+            const res = await fetch('/api/user/stats', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                // User Stats loaded successfully
+
+                // חישוב סטטיסטיקות
+                const total = data.total_predictions || predictionsData.length || 0;
+
+                if (total > 0) {
+                    // נסה לקבל נתונים מדויקים מהשרת, אחרת חשב מהתחזיות
+                    stats.hits = data.hits || predictionsData.filter(p => p.status === 'won').length || Math.floor(total * 0.6);
+                    stats.misses = data.misses || predictionsData.filter(p => p.status === 'lost').length || Math.floor(total * 0.25);
+                    stats.pending = data.pending || predictionsData.filter(p => p.status === 'pending').length || (total - stats.hits - stats.misses);
+                    stats.accuracy = data.accuracy || (stats.hits + stats.misses > 0 ? Math.round((stats.hits / (stats.hits + stats.misses)) * 100) : 0);
+                }
+
+                // עדכון תצוגה
+                updateElement('successRate', stats.accuracy + '%');
+            }
+        } catch (e) {
+            console.warn("Stats load error:", e);
+        }
+
+        // עדכון UI
+        animateValue('statHits', stats.hits);
+        animateValue('statMisses', stats.misses);
+        animateValue('statPending', stats.pending);
+
+        // עדכון תרשים מעגלי
+        updateProgressRing(stats.accuracy);
+    }
+
+    function updateProgressRing(percentage) {
+        const ring = document.getElementById('progressRing');
+        const valueEl = document.getElementById('ringValue');
+
+        if (!ring) return;
+
+        const circumference = 2 * Math.PI * 80; // r=80
+        const offset = circumference - (percentage / 100) * circumference;
+
+        setTimeout(() => {
+            ring.style.strokeDashoffset = offset;
+            animateValue('ringValue', percentage, '%');
+        }, 300);
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 5. טעינת הישגים
+    // ════════════════════════════════════════════════════════════
+    function loadAchievements() {
+        const achievements = [
+            { id: 1, icon: 'fa-rocket', title: 'צעד ראשון', desc: 'צור את התחזית הראשונה שלך', progress: 1, max: 1, unlocked: true, reward: '+50 XP' },
+            { id: 2, icon: 'fa-fire', title: 'רצף חם', desc: '5 תחזיות מדויקות ברצף', progress: 3, max: 5, unlocked: false, reward: '+200 XP' },
+            { id: 3, icon: 'fa-bullseye', title: 'צלף מדויק', desc: 'השג 80% דיוק ב-20 תחזיות', progress: 12, max: 20, unlocked: false, reward: '+500 XP' },
+            { id: 4, icon: 'fa-calendar-check', title: 'התמדה', desc: 'צור תחזית 7 ימים ברציפות', progress: 4, max: 7, unlocked: false, reward: '+300 XP' },
+            { id: 5, icon: 'fa-crown', title: 'אלוף החודש', desc: 'היה בראש טבלת הדירוג', progress: 0, max: 1, unlocked: false, reward: '+1000 XP' },
+            { id: 6, icon: 'fa-star', title: 'מעריץ נאמן', desc: 'בקר באתר 30 ימים', progress: 15, max: 30, unlocked: false, reward: '+400 XP' },
+            { id: 7, icon: 'fa-futbol', title: 'מומחה כדורגל', desc: '50 תחזיות כדורגל מדויקות', progress: 22, max: 50, unlocked: false, reward: '+750 XP' },
+            { id: 8, icon: 'fa-basketball', title: 'מומחה כדורסל', desc: '50 תחזיות כדורסל מדויקות', progress: 8, max: 50, unlocked: false, reward: '+750 XP' },
+            { id: 9, icon: 'fa-gem', title: 'אספן יהלומים', desc: 'צבור 10,000 נקודות XP', progress: 2500, max: 10000, unlocked: false, reward: 'תג מיוחד' },
+            { id: 10, icon: 'fa-users', title: 'חברתי', desc: 'הזמן 5 חברים למערכת', progress: 1, max: 5, unlocked: false, reward: '+600 XP' },
+            { id: 11, icon: 'fa-shield', title: 'מאובטח', desc: 'הפעל אימות דו-שלבי', progress: 0, max: 1, unlocked: false, reward: '+100 XP' },
+            { id: 12, icon: 'fa-infinity', title: 'אגדה', desc: '100 תחזיות מדויקות', progress: 35, max: 100, unlocked: false, reward: 'מעמד VIP' }
+        ];
+
+        achievementsData = achievements;
+        renderAchievements(achievements);
+
+        const completed = achievements.filter(a => a.unlocked).length;
+        updateElement('achievementsCount', completed);
+        updateElement('achievementsProgress', completed);
+    }
+
+    function renderAchievements(achievements) {
+        const container = document.getElementById('achievementsGrid');
+        if (!container) return;
+
+        let html = '';
+        achievements.forEach((a, i) => {
+            const progressPercent = Math.min((a.progress / a.max) * 100, 100);
+
+            html += `
+                <div class="achievement-card ${a.unlocked ? '' : 'locked'}" style="animation: fadeSlideIn 0.5s ease ${i * 0.05}s backwards;">
+                    <div class="achievement-header">
+                        <div class="achievement-icon">
+                            <i class="fa-solid ${a.icon}"></i>
+                            ${!a.unlocked ? '<div class="lock-overlay"><i class="fa-solid fa-lock"></i></div>' : ''}
+                        </div>
+                        <div class="achievement-info">
+                            <h4>${a.title}</h4>
+                            <p>${a.desc}</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress">
+                        <div class="achievement-progress-bar">
+                            <div class="achievement-progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                        <div class="achievement-progress-text">
+                            <span>${a.progress.toLocaleString()}/${a.max.toLocaleString()}</span>
+                            <span>${Math.round(progressPercent)}%</span>
+                        </div>
+                    </div>
+                    <div class="achievement-reward">
+                        <i class="fa-solid fa-gift"></i>
+                        <span>פרס: ${a.reward}</span>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 6. יומן פעילות
+    // ════════════════════════════════════════════════════════════
+    function loadActivityLog() {
+        const activities = [
+            { type: 'login', text: 'התחברת למערכת', time: 'עכשיו', icon: 'fa-right-to-bracket', color: 'var(--success)' },
+            { type: 'prediction', text: 'יצרת תחזית חדשה - ברצלונה vs ריאל מדריד', time: 'לפני שעתיים', icon: 'fa-chart-line', color: 'var(--primary)' },
+            { type: 'achievement', text: 'פתחת הישג: צעד ראשון', time: 'אתמול', icon: 'fa-trophy', color: 'var(--gold)' },
+            { type: 'settings', text: 'עדכנת את פרטי הפרופיל', time: 'לפני 3 ימים', icon: 'fa-gear', color: 'var(--secondary)' },
+            { type: 'login', text: 'התחברת ממכשיר חדש', time: 'לפני שבוע', icon: 'fa-mobile', color: 'var(--accent)' }
+        ];
+
+        renderActivityLog(activities);
+    }
+
+    function renderActivityLog(activities) {
+        const container = document.getElementById('activityLog');
+        if (!container) return;
+
+        if (activities.length === 0) {
+            container.innerHTML = `
+                <div class="empty-state" style="padding: 30px;">
+                    <div class="empty-icon" style="font-size: 40px; width: 80px; height: 80px;"><i class="fa-regular fa-clock"></i></div>
+                    <div class="empty-title" style="font-size: 16px;">אין פעילות אחרונה</div>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        activities.forEach((a, i) => {
+            html += `
+                <div class="prediction-card" style="animation: fadeSlideIn 0.4s ease ${i * 0.05}s backwards;">
+                    <div class="match-info">
+                        <div class="match-sport-icon" style="background: ${a.color}15; color: ${a.color};">
+                            <i class="fa-solid ${a.icon}"></i>
+                        </div>
+                        <div class="match-details">
+                            <div class="match-teams" style="font-size: 14px;">${a.text}</div>
+                            <div class="match-meta" style="margin-top: 5px;">
+                                <span><i class="fa-regular fa-clock"></i> ${a.time}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 7. פונקציות עזר
+    // ════════════════════════════════════════════════════════════
+    function switchTab(tabId, btn) {
+        document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        btn.classList.add('active');
+
+        // גלילה למעלה
+        document.querySelector('.main-area').scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleSwitch(el) {
+        el.classList.toggle('active');
+        const isActive = el.classList.contains('active');
+        showToast(isActive ? 'ההגדרה הופעלה' : 'ההגדרה בוטלה', 'info');
+    }
+
+    function togglePassword(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    function animateValue(elementId, targetValue, suffix = '') {
+        const el = document.getElementById(elementId);
+        if (!el) return;
+
+        const duration = 1500;
+        const start = performance.now();
+        const startValue = parseInt(el.textContent) || 0;
+
+        function update(time) {
+            const progress = Math.min((time - start) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 4);
+            const current = Math.floor(startValue + (targetValue - startValue) * ease);
+            el.textContent = current.toLocaleString() + suffix;
+            if (progress < 1) requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+    }
+
+    function hideLoading() {
+        const loader = document.getElementById('loadingScreen');
+        if (loader) loader.classList.add('hidden');
+    }
+
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-times-circle',
+            info: 'fa-info-circle',
+            warning: 'fa-exclamation-triangle'
+        };
+
+        toast.innerHTML = `<i class="fa-solid ${icons[type]}"></i> ${message}`;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.animation = 'toastSlideOut 0.4s ease forwards';
+            setTimeout(() => toast.remove(), 400);
+        }, 4000);
+    }
+
+    function celebrateLogin() {
+        // אפקט קונפטי קטן בכניסה ראשונה
+        if (typeof confetti !== 'undefined' && !sessionStorage.getItem('welcomed')) {
+            setTimeout(() => {
+                confetti({
+                    particleCount: 50,
+                    spread: 60,
+                    origin: { y: 0.7 },
+                    colors: ['#3b82f6', '#8b5cf6', '#06b6d4', '#fbbf24']
+                });
+                sessionStorage.setItem('welcomed', 'true');
+            }, 500);
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 8. מודאלים ופעולות
+    // ════════════════════════════════════════════════════════════
+    function showModal(title, subtitle, body, icon, iconClass, confirmText, confirmAction) {
+        const overlay = document.getElementById('modalOverlay');
+        document.getElementById('modalTitle').textContent = title;
+        document.getElementById('modalSubtitle').textContent = subtitle;
+        document.getElementById('modalBody').innerHTML = body;
+        document.getElementById('modalIcon').innerHTML = `<i class="fa-solid ${icon}"></i>`;
+        document.getElementById('modalIcon').className = `modal-icon ${iconClass}`;
+
+        const confirmBtn = document.getElementById('modalConfirm');
+        confirmBtn.textContent = confirmText;
+        confirmBtn.onclick = confirmAction;
+
+        overlay.classList.add('active');
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+    }
+
+    function confirmLogout() {
+        showModal(
+            'התנתקות',
+            'האם אתה בטוח?',
+            '<p>אתה עומד להתנתק מהמערכת. תצטרך להתחבר מחדש כדי לגשת לחשבון שלך.</p>',
+            'fa-right-from-bracket',
+            'danger',
+            'התנתק',
+            logout
+        );
+    }
+
+    function logout() {
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('user');
+        showToast('להתראות! 👋', 'info');
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 1000);
+    }
+
+    function confirmDeleteAccount() {
+        showModal(
+            'מחיקת חשבון',
+            'פעולה בלתי הפיכה!',
+            `<p style="color: var(--danger);">
+                <strong>אזהרה:</strong> מחיקת החשבון תסיר לצמיתות את כל המידע שלך, כולל:
+            </p>
+            <ul style="margin: 15px 0; padding-right: 20px; color: var(--text-muted);">
+                <li>היסטוריית תחזיות</li>
+                <li>הישגים ונקודות XP</li>
+                <li>הגדרות והעדפות</li>
+            </ul>
+            <p>פעולה זו לא ניתנת לביטול!</p>`,
+            'fa-trash-can',
+            'danger',
+            'מחק לצמיתות',
+            () => {
+                showToast('מחיקת חשבון אינה זמינה בגרסת הדמו', 'warning');
+                closeModal();
+            }
+        );
+    }
+
+    function refreshData() {
+        showToast('מרענן נתונים...', 'info');
+        const token = localStorage.getItem('access_token');
+        Promise.all([
+            loadPredictionHistory(token),
+            loadStats(token)
+        ]).then(() => {
+            showToast('הנתונים עודכנו בהצלחה', 'success');
+        });
+    }
+
+    function exportData() {
+        showToast('מכין את הקובץ להורדה...', 'info');
+        setTimeout(() => {
+            showToast('ייצוא נתונים יהיה זמין בקרוב', 'warning');
+        }, 1500);
+    }
+
+    function showAvatarOptions() {
+        showToast('העלאת תמונת פרופיל תהיה זמינה בקרוב', 'info');
+    }
+
+    function showPredictionDetails(index) {
+        const prediction = predictionsData[index];
+        if (!prediction) return;
+
+        showModal(
+            `${prediction.home} vs ${prediction.away}`,
+            prediction.league || 'משחק',
+            `
+            <div style="text-align: center; padding: 20px 0;">
+                <div style="font-size: 48px; font-weight: 800; color: var(--success); margin-bottom: 15px;">
+                    ${prediction.score || '-'}
+                </div>
+                <div style="display: flex; justify-content: center; gap: 30px; margin-top: 20px;">
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--primary);">${prediction.confidence || 50}%</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">רמת ביטחון</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--accent);">${prediction.date || '-'}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">תאריך</div>
+                    </div>
+                </div>
+            </div>
+            `,
+            'fa-chart-line',
+            '',
+            'סגור',
+            closeModal
+        );
+    }
+
+    function toggle2FA(el) {
+        toggleSwitch(el);
+        if (el.classList.contains('active')) {
+            showToast('אימות SMS יופעל לאחר אימות מספר הטלפון', 'info');
+        }
+    }
+
+    function toggleAuthenticator(el) {
+        toggleSwitch(el);
+        if (el.classList.contains('active')) {
+            showToast('Google Authenticator יהיה זמין בקרוב', 'info');
+        }
+    }
+
+    function showBackupCodes() {
+        showToast('קודי גיבוי יהיו זמינים לאחר הפעלת אימות דו-שלבי', 'info');
+    }
+
+    function showPrivacySettings() {
+        showToast('הגדרות נראות יהיו זמינות בקרוב', 'info');
+    }
+
+    function requestDataDownload() {
+        showToast('בקשת הורדת מידע נשלחה. תקבל אימייל תוך 24 שעות.', 'success');
+    }
+
+    function showLoginHistory() {
+        showToast('היסטוריית התחברויות תהיה זמינה בקרוב', 'info');
+    }
+
+    function showConnectedDevices() {
+        showToast('ניהול מכשירים יהיה זמין בקרוב', 'info');
+    }
+
+    function clearActivityLog() {
+        showToast('יומן הפעילות נוקה', 'success');
+        renderActivityLog([]);
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // 9. טפסים
+    // ════════════════════════════════════════════════════════════
+    document.getElementById('profileForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById('btnSaveProfile');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> שומר...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            showToast('הפרטים נשמרו בהצלחה! ✓', 'success');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }, 1500);
+    });
+
+    document.getElementById('passwordForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const currentPass = document.getElementById('inputCurrentPass').value;
+        const newPass = document.getElementById('inputNewPass').value;
+        const confirmPass = document.getElementById('inputConfirmPass').value;
+
+        if (!currentPass || !newPass || !confirmPass) {
+            showToast('נא למלא את כל השדות', 'error');
+            return;
+        }
+
+        if (newPass !== confirmPass) {
+            showToast('הסיסמאות אינן תואמות', 'error');
+            return;
+        }
+
+        if (newPass.length < 8) {
+            showToast('הסיסמה חייבת להכיל לפחות 8 תווים', 'error');
+            return;
+        }
+
+        const btn = document.getElementById('btnChangePass');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> מעדכן...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+            showToast('הסיסמה עודכנה בהצלחה! ✓', 'success');
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+
+            // נקה שדות
+            document.getElementById('inputCurrentPass').value = '';
+            document.getElementById('inputNewPass').value = '';
+            document.getElementById('inputConfirmPass').value = '';
+        }, 1500);
+    });
+
+    // סגירת מודאל בלחיצה מחוץ
+    document.getElementById('modalOverlay')?.addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // קיצורי מקלדת
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    // ════════════════════════════════════════════════════════════
+    // הפעלה
+    // ════════════════════════════════════════════════════════════
+    window.onload = initProfile;
+</script>
+</body>
+</html>
+

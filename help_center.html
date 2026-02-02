@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>SMARTSPORTS | מרכז עזרה חכם</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Core Colors */
+            --bg-body: #020617;
+            --bg-panel: #0f172a;
+            --bg-card: #1e293b;
+            --bg-glass: rgba(30, 41, 59, 0.7);
+
+            /* Brand */
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.5);
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+
+            /* Status */
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --gold: #fbbf24;
+
+            /* Text */
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-dim: #64748b;
+
+            /* UI */
+            --border: 1px solid rgba(255,255,255,0.08);
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+
+            /* Typography */
+            --font-ui: 'Assistant', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-display: 'Orbitron', sans-serif;
+
+            /* Effects */
+            --shadow-sm: 0 4px 15px rgba(0,0,0,0.3);
+            --shadow-md: 0 10px 30px rgba(0,0,0,0.4);
+            --shadow-lg: 0 25px 60px rgba(0,0,0,0.5);
+            --transition: 0.3s ease;
+
+            /* Sidebar */
+            --sidebar-width: 280px;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-body);
+            color: var(--text);
+            font-family: var(--font-ui);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                    radial-gradient(ellipse at 20% 20%, rgba(59,130,246,.15), transparent 50%),
+                    radial-gradient(ellipse at 80% 80%, rgba(139,92,246,.12), transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, rgba(6,182,212,.08), transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 20s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+
+        /* Layout Container */
+        .app-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--bg-glass);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-left: var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            height: 100vh;
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            padding-bottom: 20px;
+            border-bottom: var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .logo-area:hover {
+            transform: translateX(-3px);
+        }
+
+        .logo-icon {
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px var(--primary-glow));
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .nav-group {
+            margin-bottom: 25px;
+        }
+
+        .nav-title {
+            font-size: 10px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            padding-right: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 13px 16px;
+            color: var(--text-muted);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+            position: relative;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            transform: translateX(-3px);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), transparent);
+            color: var(--primary);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-badge {
+            background: linear-gradient(135deg, var(--danger), var(--warning));
+            color: white;
+            font-size: 9px;
+            font-weight: 800;
+            padding: 3px 7px;
+            border-radius: 10px;
+            margin-right: auto;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: var(--font-ui);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            border: var(--border);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            transition: var(--transition);
+            margin-bottom: 20px;
+            animation: fadeUp 0.6s ease backwards;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .card h2 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .card p {
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%,100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        @keyframes glow {
+            0%,100% { box-shadow: 0 0 15px var(--primary-glow); }
+            50% { box-shadow: 0 0 30px var(--primary-glow); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            z-index: 1;
+            padding: 60px 20px 40px;
+            text-align: center;
+            background: linear-gradient(180deg, transparent, rgba(59, 130, 246, 0.03));
+        }
+
+        header h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeUp 0.8s ease;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 16px;
+            animation: fadeUp 1s ease;
+        }
+
+        /* Main Content */
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 960px;
+            margin: auto;
+            padding: 30px 20px 60px;
+            width: 100%;
+        }
+
+        /* AI Help Section */
+        #ai-help {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.05));
+        }
+
+        #ai-help textarea {
+            width: 100%;
+            min-height: 120px;
+            margin-top: 18px;
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            color: var(--text);
+            font-size: 15px;
+            font-family: var(--font-ui);
+            resize: vertical;
+            transition: var(--transition);
+        }
+
+        #ai-help textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background: rgba(2, 6, 23, 0.8);
+        }
+
+        #ai-help textarea::placeholder {
+            color: var(--text-dim);
+        }
+
+        #ai-help button {
+            margin-top: 14px;
+            padding: 14px 28px;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff;
+            border: none;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        #ai-help button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        #ai-help button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
+        }
+
+        #helpResponse {
+            margin-top: 24px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 15px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius-md);
+            animation: fadeIn 0.5s ease;
+        }
+
+        #helpResponse:empty {
+            display: none;
+        }
+
+        /* FAQ Items */
+        .faq-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .faq-question {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .faq-answer {
+            margin-top: 12px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        /* Guide Grid */
+        .guide-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .guide-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .guide-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(59, 130, 246, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .guide-card i {
+            font-size: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .guide-card h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .guide-card p {
+            font-size: 13px;
+            color: var(--text-dim);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            transition: var(--transition);
+        }
+
+        .mobile-menu-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 50;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Loading Animation */
+        .loading-dots {
+            display: inline-flex;
+            gap: 4px;
+        }
+
+        .loading-dots span {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: loadingDot 1.4s infinite;
+        }
+
+        .loading-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .loading-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes loadingDot {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            :root { --sidebar-width: 0; }
+
+            .sidebar {
+                position: fixed;
+                right: -100%;
+                width: 280px;
+                transition: right 0.3s ease;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .sidebar.mobile-open {
+                right: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            header h1 {
+                font-size: 32px;
+            }
+
+            header p {
+                font-size: 14px;
+            }
+
+            main {
+                padding: 20px 15px 40px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .guide-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .scroll-to-top {
+                bottom: 20px;
+                left: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+
+        /* Animation Delays */
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+    </style>
+</head>
+
+<body>
+
+<div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+        <div class="logo-area" onclick="window.location.href='index.html'">
+            <i class="fa-solid fa-brain logo-icon"></i>
+            <div class="logo-text">SMART<span>SPORT</span>AI</div>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-title">ראשי</div>
+            <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i> דף הבית</a>
+            <a href="predictions.html" class="nav-item"><i class="fa-solid fa-microchip"></i> תחזיות AI</a>
+            <a href="live.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> תוצאות Live</a>
+            <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i> בוט AI</a>
+            <a href="news.html" class="nav-item"><i class="fa-solid fa-newspaper"></i> חדשות</a>
+            <a href="stats.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> סטטיסטיקות</a>
+            <a href="players.html" class="nav-item"><i class="fa-solid fa-user-group"></i> שחקנים</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-title">משחקים</div>
+            <a href="game_arena.html" class="nav-item"><i class="fa-solid fa-trophy"></i> זירת AI ⚡ <span class="nav-badge">HOT</span></a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-title">מתקדם</div>
+            <a href="differentiation.html" class="nav-item"><i class="fa-solid fa-scale-balanced"></i> במה אנחנו שונים</a>
+            <a href="start_up.html" class="nav-item"><i class="fa-solid fa-rocket"></i> למשקיעים</a>
+            <a href="about.html" class="nav-item"><i class="fa-solid fa-info-circle"></i> אודות</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-title">תמיכה</div>
+            <a href="help_center.html" class="nav-item active"><i class="fa-solid fa-life-ring"></i> מרכז עזרה</a>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-title">אישי</div>
+            <a href="profile.html" class="nav-item"><i class="fa-solid fa-user"></i> פרופיל</a>
+        </div>
+
+        <div id="login-area" style="margin-top:auto;">
+            <a href="login.html" style="display:flex; justify-content:center; align-items:center; gap:8px; background:linear-gradient(135deg, var(--primary), var(--secondary)); color:#fff; padding:12px; border-radius:12px; font-weight:700; font-size:13px; text-decoration:none; box-shadow:0 6px 20px var(--primary-glow); transition:0.2s;">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> התחברות
+            </a>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="תפריט">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <header>
+            <h1>🎯 מרכז העזרה החכם</h1>
+            <p>SMARTSPORTS · תמיכה, למידה ובינה מלאכותית במקום אחד</p>
+        </header>
+
+        <main>
+            <!-- Quick Start Guides -->
+            <section class="card">
+                <h2>📚 מדריכי התחלה מהירה</h2>
+                <p>היכרות קצרה וברורה עם הכלים, התחזיות והיכולות של הפלטפורמה.</p>
+
+                <div class="guide-grid">
+                    <div class="guide-card" onclick="scrollToSection('ai-help')">
+                        <i class="fa-solid fa-rocket"></i>
+                        <h4>צעדים ראשונים</h4>
+                        <p>איך להתחיל להשתמש במערכת ה-AI</p>
+                    </div>
+                    <div class="guide-card" onclick="scrollToSection('ai-help')">
+                        <i class="fa-solid fa-chart-mixed"></i>
+                        <h4>הבנת תחזיות</h4>
+                        <p>מדריך מקיף לקריאת ניתוח AI</p>
+                    </div>
+                    <div class="guide-card" onclick="scrollToSection('ai-help')">
+                        <i class="fa-solid fa-sliders"></i>
+                        <h4>התאמה אישית</h4>
+                        <p>כוונון המערכת לצרכים שלך</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Common Issues -->
+            <section class="card">
+                <h2>🔧 פתרון תקלות נפוצות</h2>
+                <p>תקלות מוכרות, הסברים ופתרונות מומלצים.</p>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>התחזיות לא מתעדכנות בזמן אמת</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        וודא שהדפדפן שלך מעודכן ושאין חסימת JavaScript. נסה לרענן את הדף או לנקות את המטמון. אם הבעיה נמשכת, בדוק את חיבור האינטרנט שלך.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>לא מצליח להתחבר לחשבון</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        וודא שהזנת את הפרטים הנכונים. אם שכחת סיסמה, לחץ על "שכחתי סיסמה" בדף ההתחברות. ניתן גם לפנות לתמיכה דרך מרכז העזרה החכם למטה.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>תקלות בתצוגה במובייל</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        אנו ממליצים להשתמש בדפדפנים מודרניים כמו Chrome, Safari או Firefox בגרסאות המעודכנות. נסה לסובב את המסך למצב לרוחב לחוויה טובה יותר בסטטיסטיקות מפורטות.
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="card">
+                <h2>❓ שאלות נפוצות</h2>
+                <p>כל השאלות שמשתמשים שואלים – במקום אחד.</p>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>איך מנוע ה-AI TITAN עובד?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        TITAN מנתח מאות אלפי נתונים היסטוריים, סטטיסטיקות שחקנים, מזג אוויר, תנאי משחק ועוד. המערכת משתמשת באלגוריתמי למידת מכונה מתקדמים כדי לחזות תוצאות עם דיוק גבוה.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>האם התחזיות מובטחות ב-100%?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        אין תחזית ספורט שמובטחת ב-100%. המערכת שלנו מספקת ניתוח מבוסס נתונים עם רמת דיוק גבוהה, אך תמיד קיים אלמנט של אי-ודאות בספורט. השתמש בתחזיות כמידע תומך בקבלת החלטות.
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>האם יש אפשרות לקבל התראות?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        כן! במסך הפרופיל שלך תוכל להפעיל התראות לתחזיות חדשות, משחקים חיים, ועדכוני תוצאות. ההתראות זמינות גם באפליקציה הנלווית (בקרוב).
+                    </div>
+                </div>
+
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">
+                        <span>מה ההבדל בין החבילות השונות?</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        חבילת FREE מספקת גישה בסיסית. חבילת PRO כוללת תחזיות מתקדמות, ניתוח עמוק וסטטיסטיקות נוספות. חבילת ELITE מציעה ייעוץ אישי, גישה מוקדמת לתחזיות ותמיכה VIP.
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Help Section -->
+            <section class="card" id="ai-help">
+                <h2>🤖 עזרה חכמה עם AI</h2>
+                <p>שאל כל שאלה על תחזיות, סטטיסטיקות, מנוע ה-AI או שימוש בפלטפורמה - והבינה המלאכותית תענה לך מיידית.</p>
+
+                <textarea id="helpInput" placeholder="לדוגמה: איך TITAN מחשב תחזיות? מה משמעות אחוזי הביטחון? איך אני משתמש בזירת ה-AI?" aria-label="שאלת עזרה"></textarea>
+                <button id="helpBtn" onclick="sendHelp()">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    שאל את ה-AI
+                </button>
+
+                <div id="helpResponse"></div>
+            </section>
+
+            <!-- Contact Support -->
+            <section class="card">
+                <h2>📞 צור קשר עם התמיכה</h2>
+                <p>לא מצאת מה שחיפשת? צוות התמיכה שלנו כאן בשבילך 24/7.</p>
+
+                <div style="display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap;">
+                    <a href="mailto:support@smartsports.ai" class="btn btn-primary">
+                        <i class="fa-solid fa-envelope"></i>
+                        שלח אימייל
+                    </a>
+                    <a href="chat.html" class="btn btn-secondary">
+                        <i class="fa-solid fa-comments"></i>
+                        צ'אט חי
+                    </a>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+<!-- Scroll to Top Button -->
+<button class="scroll-to-top" id="scrollToTopBtn" onclick="scrollToTop()" aria-label="חזור למעלה">
+    <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<script>
+    // AI Help Function
+    async function sendHelp() {
+        const input = document.getElementById("helpInput");
+        const button = document.getElementById("helpBtn");
+        const responseBox = document.getElementById("helpResponse");
+
+        const message = input.value.trim();
+        if (!message) {
+            responseBox.innerHTML = '<span style="color: var(--warning);">⚠️ אנא הזן שאלה</span>';
+            return;
+        }
+
+        button.disabled = true;
+        button.innerHTML = '<span class="loading-dots"><span></span><span></span><span></span></span> מנתח...';
+        responseBox.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div> AI חושב ומנתח את שאלתך...';
+
+        try {
+            const res = await fetch("/api/help-chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify({
+                    message: message,
+                    page: "help_center"
+                })
+            });
+
+            //Check if response is ok
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            const data = await res.json();
+
+            if (data.answer) {
+                responseBox.innerHTML = `
+                    <div style="border-right: 3px solid var(--primary); padding-right: 16px;">
+                        <strong style="color: var(--primary); display: block; margin-bottom: 8px;">
+                            <i class="fa-solid fa-robot"></i> תשובת AI:
+                        </strong>
+                        ${formatResponse(data.answer)}
+                    </div>
+                `;
+                // Clear input after successful response
+                input.value = '';
+            } else {
+                responseBox.innerHTML = '<span style="color: var(--danger);">❌ לא התקבלה תשובה. נסה שוב.</span>';
+            }
+
+        } catch (error) {
+            console.error("Error:", error);
+
+            //More specific error message
+            if (error.message.includes('Failed to fetch')) {
+                errorMessage += '❌ לא ניתן להתחבר לשרת. בדוק את חיבור האינטרנט שלך.';
+            } else if (error.message.includes('404')) {
+                errorMessage += '❌ לא נמצא: ודא שכתובת ה-API אנא פנה לתמיכה.';
+            } else if (error.message.includes('500')) {
+                errorMessage += '❌ שגיאת שרת פנימית. אנא נסה שוב מאוחר יותר.';
+            } else {
+                errorMessage += 'אנא נסה שוב בעוד רגע.';
+            }
+
+            responseBox.innerHTML = '<span style="color: var(--danger);">❌ אירעה שגיאה בחיבור. אנא נסה שוב בעוד רגע.</span>';
+        } finally {
+            button.disabled = false;
+            button.innerHTML = '<i class="fa-solid fa-paper-plane"></i> שאל את ה-AI';
+        }
+    }
+
+    // Format Response
+    function formatResponse(text) {
+        return text
+            .replace(/\n/g, '<br>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>');
+    }
+
+    // Toggle FAQ
+    function toggleFaq(element) {
+        const isActive = element.classList.contains('active');
+
+        // Close all FAQs
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+        // Open clicked FAQ if it wasn't active
+        if (!isActive) {
+            element.classList.add('active');
+        }
+    }
+
+    // Scroll to Section
+    function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            // Highlight the section briefly
+            section.style.boxShadow = '0 0 30px rgba(59, 130, 246, 0.5)';
+            setTimeout(() => {
+                section.style.boxShadow = '';
+            }, 2000);
+        }
+    }
+
+    // Scroll to Top
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Show/Hide Scroll to Top Button
+    window.addEventListener('scroll', function() {
+        const scrollBtn = document.getElementById('scrollToTopBtn');
+        if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('visible');
+        } else {
+            scrollBtn.classList.remove('visible');
+        }
+    });
+
+    // Mobile Menu Toggle
+    function toggleMobileMenu() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('mobile-open');
+    }
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const sidebar = document.getElementById('sidebar');
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+
+        if (window.innerWidth <= 768 &&
+            !sidebar.contains(event.target) &&
+            !menuToggle.contains(event.target) &&
+            sidebar.classList.contains('mobile-open')) {
+            sidebar.classList.remove('mobile-open');
+        }
+    });
+
+    // Handle Enter key in textarea
+    document.getElementById('helpInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            sendHelp();
+        }
+    });
+
+    // Add smooth scroll behavior
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

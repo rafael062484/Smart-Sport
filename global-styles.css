@@ -1,0 +1,375 @@
+/* ═══════════════════════════════════════════════════════════════════
+   SMARTSPORTS - GLOBAL DESIGN SYSTEM
+   קובץ עיצוב גלובלי אחיד לכל האתר
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+    /* Core Colors - צבעי ליבה */
+    --bg-body: #0a0e1a;
+    --bg-panel: #111827;
+    --bg-card: #1a2332;
+    --bg-glass: rgba(26, 35, 50, 0.7);
+
+    /* Brand Colors - צבעי המותג - כחול בהיר יותר */
+    --primary: #60a5fa;
+    --primary-glow: rgba(96, 165, 250, 0.6);
+    --secondary: #93c5fd;
+    --accent: #22d3ee;
+
+    /* Status Colors - צבעי סטטוס */
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --gold: #fbbf24;
+
+    /* Text Colors - צבעי טקסט */
+    --text: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-dim: #64748b;
+
+    /* UI Elements - אלמנטי ממשק */
+    --border: 1px solid rgba(255,255,255,0.08);
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+
+    /* Typography - טיפוגרפיה */
+    --font-ui: 'Assistant', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Orbitron', sans-serif;
+
+    /* Effects - אפקטים */
+    --shadow-sm: 0 4px 15px rgba(0,0,0,0.3);
+    --shadow-md: 0 10px 30px rgba(0,0,0,0.4);
+    --shadow-lg: 0 25px 60px rgba(0,0,0,0.5);
+    --transition: 0.3s ease;
+
+    /* Sidebar - תפריט צד */
+    --sidebar-width: 280px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESET & BASE STYLES - איפוס וסגנונות בסיס
+   ═══════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    background: var(--bg-body);
+    color: var(--text);
+    font-family: var(--font-ui);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATED BACKGROUND - רקע מונפש
+   ═══════════════════════════════════════════════════════════════════ */
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(96, 165, 250, 0.20), transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(147, 197, 253, 0.15), transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(34, 211, 238, 0.12), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+    animation: bgPulse 20s ease-in-out infinite;
+}
+
+@keyframes bgPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SCROLLBAR - פס גלילה
+   ═══════════════════════════════════════════════════════════════════ */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   SIDEBAR - תפריט צד
+   ═══════════════════════════════════════════════════════════════════ */
+
+.sidebar {
+    width: var(--sidebar-width);
+    background: var(--bg-glass);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-left: var(--border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 35px;
+    padding-bottom: 20px;
+    border-bottom: var(--border);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.logo-area:hover {
+    transform: translateX(-3px);
+}
+
+.logo-icon {
+    font-size: 28px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 20px var(--primary-glow));
+}
+
+.logo-text {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.logo-text span {
+    color: var(--primary);
+}
+
+.nav-group {
+    margin-bottom: 25px;
+}
+
+.nav-title {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-weight: 700;
+    padding-right: 8px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition);
+    margin-bottom: 4px;
+    border: 1px solid transparent;
+}
+
+.nav-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    transform: translateX(-3px);
+}
+
+.nav-item.active {
+    background: linear-gradient(90deg, rgba(96, 165, 250, 0.25), transparent);
+    color: var(--primary);
+    border: 1px solid rgba(96, 165, 250, 0.4);
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+}
+
+.nav-badge {
+    background: linear-gradient(135deg, var(--danger), var(--warning));
+    color: white;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 3px 7px;
+    border-radius: 10px;
+    margin-right: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   BUTTONS - כפתורים
+   ═══════════════════════════════════════════════════════════════════ */
+
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    box-shadow: 0 6px 20px rgba(96, 165, 250, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(96, 165, 250, 0.6);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   CARDS - כרטיסים
+   ═══════════════════════════════════════════════════════════════════ */
+
+.card {
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    border: var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    transition: var(--transition);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 30px rgba(96, 165, 250, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATIONS - אנימציות
+   ═══════════════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 15px var(--primary-glow); }
+    50% { box-shadow: 0 0 30px var(--primary-glow); }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   UTILITIES - כלים עזר
+   ═══════════════════════════════════════════════════════════════════ */
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 15px var(--success);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.glass-panel {
+    background: var(--bg-glass);
+    backdrop-filter: blur(30px);
+    border: var(--border);
+    border-radius: var(--radius-lg);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   RESPONSIVE - רספונסיבי
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    :root {
+        --sidebar-width: 0;
+    }
+
+    .sidebar {
+        position: fixed;
+        right: -100%;
+        transition: right 0.3s ease;
+    }
+
+    .sidebar.mobile-open {
+        right: 0;
+    }
+}

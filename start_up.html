@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>startup — למשקיעים | SmartSports AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="global-styles.css">
+    <link rel="stylesheet" href="style.css?v=20251210-r1">
+
+    <style>
+        :root {
+            --bg: #0a0e1a;
+            --card: #111827;
+            --primary: #60a5fa;
+            --secondary: #93c5fd;
+            --success: #22c55e;
+            --muted: #9fb3c8;
+            --sidebar-width: 280px;
+            --primary-glow: rgba(96, 165, 250, 0.3);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0f1419 100%);
+            color: #e6f0f6;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: linear-gradient(180deg, #111827 0%, #0a0e1a 100%);
+            border-left: 1px solid rgba(255,255,255,0.06);
+            padding: 20px 16px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            margin-bottom: 24px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #fff;
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #9ee8ff, #cbb7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text span {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            -webkit-text-fill-color: var(--muted);
+        }
+
+        .nav-group {
+            margin-bottom: 20px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 12px;
+            opacity: 0.7;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            border-radius: 12px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,0.06);
+            color: #fff;
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(124,58,237,0.15));
+            color: var(--primary);
+            border: 1px solid rgba(6,182,212,0.2);
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* User Widget */
+        .user-mini {
+            margin-top: auto;
+            padding: 14px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-bottom: 12px;
+        }
+
+        .user-mini:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            color: #f87171;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            margin-right: var(--sidebar-width);
+            flex: 1;
+            padding: 30px 40px;
+            min-height: 100vh;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 30px 60px;
+            background: linear-gradient(180deg, rgba(6,182,212,0.1) 0%, rgba(124,58,237,0.05) 50%, transparent 100%);
+            border-radius: 28px;
+            margin-bottom: 35px;
+            border: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(6,182,212,0.08) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero > * { position: relative; z-index: 1; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 36px;
+            color: #fff;
+            box-shadow: 0 12px 40px var(--primary-glow);
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #9ee8ff, #cbb7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .hero .lead {
+            color: var(--muted);
+            font-size: 17px;
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 6px;
+            font-weight: 500;
+        }
+
+        /* Quick Nav Pills */
+        .quick-nav {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .quick-nav a {
+            background: rgba(255,255,255,0.04);
+            padding: 12px 20px;
+            border-radius: 14px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .quick-nav a:hover {
+            background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(124,58,237,0.1));
+            color: #fff;
+            border-color: rgba(6,182,212,0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 25px;
+        }
+
+        @media (max-width: 1100px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Panels */
+        .panel {
+            background: linear-gradient(180deg, rgba(10,31,48,0.9), rgba(7,24,39,0.95));
+            padding: 28px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.06);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+            border-color: rgba(6,182,212,0.2);
+        }
+
+        .panel h2 {
+            margin: 0 0 20px 0;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+        }
+
+        .panel h3 {
+            margin: 0 0 10px 0;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e6f0f6;
+        }
+
+        .section { margin-bottom: 22px; }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            margin: 20px 0;
+        }
+
+        ul, ol { padding-inline-start: 22px; }
+        li { margin-bottom: 10px; line-height: 1.6; color: var(--muted); }
+
+        .pill {
+            display: inline-block;
+            background: rgba(255,255,255,0.06);
+            padding: 6px 14px;
+            border-radius: 999px;
+            color: var(--muted);
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: 8px;
+        }
+
+        .pill.high { background: rgba(6,182,212,0.2); color: var(--primary); }
+        .pill.medium { background: rgba(124,58,237,0.2); color: #a78bfa; }
+        .pill.low { background: rgba(34,197,94,0.2); color: var(--success); }
+
+        .muted { color: var(--muted); line-height: 1.7; }
+
+        /* CTA Button */
+        .btn-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px var(--primary-glow);
+            margin-top: 20px;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--primary-glow);
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+            margin-top: 16px;
+        }
+
+        .feature {
+            background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-4px);
+            border-color: rgba(6,182,212,0.25);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, rgba(6,182,212,0.2), rgba(124,58,237,0.2));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 14px;
+        }
+
+        .feature h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+
+        .feature p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Timeline */
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .timeline-marker {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .timeline-content h4 {
+            margin: 0 0 4px 0;
+            font-size: 15px;
+            color: #fff;
+        }
+
+        .timeline-content p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+            padding: 25px 0;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.25s;
+        }
+
+        footer a:hover { color: #fff; }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.open { transform: translateX(0); }
+
+            .main-content {
+                margin-right: 0;
+                padding: 20px;
+            }
+
+            .hero h1 { font-size: 28px; }
+            .hero-stats { gap: 20px; }
+            .stat { min-width: 100px; padding: 15px; }
+            .stat-value { font-size: 28px; }
+
+            .mobile-toggle {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                border-radius: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1001;
+                cursor: pointer;
+                box-shadow: 0 4px 15px var(--primary-glow);
+            }
+
+            .mobile-toggle i { font-size: 20px; color: #fff; }
+        }
+
+        @media (min-width: 901px) {
+            .mobile-toggle { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Mobile Toggle -->
+<div class="mobile-toggle" onclick="toggleSidebar()">
+    <i class="fa-solid fa-bars"></i>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <div class="logo-area">
+        <div class="logo-icon">
+            <i class="fa-solid fa-brain"></i>
+        </div>
+        <div class="logo-text">
+            SMART<span>SPORTS AI</span>
+        </div>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">ראשי</div>
+        <a href="index.html" class="nav-item"><i class="fa-solid fa-grid-2"></i> דף הבית</a>
+        <a href="predictions.html" class="nav-item"><i class="fa-solid fa-microchip"></i> תחזיות ספורט AI</a>
+        <a href="live.html" class="nav-item"><i class="fa-solid fa-satellite-dish"></i> תוצאות Live</a>
+        <a href="chat.html" class="nav-item"><i class="fa-solid fa-comments"></i> בוט ספורט AI</a>
+        <a href="news.html" class="nav-item"><i class="fa-solid fa-newspaper"></i> חדשות ספורט</a>
+        <a href="stats.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> סטטיסטיקות</a>
+        <a href="players.html" class="nav-item"><i class="fa-solid fa-user-group"></i> שחקנים</a>
+        <a href="differentiation.html" class="nav-item"><i class="fa-solid fa-scale-balanced"></i> במה אנחנו שונים</a>
+        <a href="start_up.html" class="nav-item active"><i class="fa-solid fa-rocket"></i> Startup - למשקיעים</a>
+        <a href="about.html" class="nav-item"><i class="fa-solid fa-info-circle"></i> אודות המערכת</a>
+    </div>
+
+    <div class="nav-group">
+        <div class="nav-title">תיק השקעות</div>
+        <a href="profile.html" class="nav-item"><i class="fa-solid fa-wallet"></i> פרופיל אישי</a>
+    </div>
+
+    <!-- User Widget -->
+    <div id="user-widget" class="user-mini" onclick="navigateTo('profile.html')" style="display:none;">
+        <div class="avatar" id="user-avatar">U</div>
+        <div style="display:flex; flex-direction:column; flex:1;">
+            <span style="font-size:14px; font-weight:700; color:#fff;" id="user-name">משתמש</span>
+            <span style="font-size:11px; color:var(--success);">● מחובר</span>
+        </div>
+    </div>
+
+    <!-- Logout Button -->
+    <div id="logout-area" style="display:none;">
+        <button class="logout-btn" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> התנתק</button>
+    </div>
+
+    <!-- Login Button -->
+    <div id="login-area" style="margin-top:auto;">
+        <a href="login.html" class="btn-cta" style="width:100%; justify-content:center;">
+            <i class="fa-solid fa-arrow-right-to-bracket"></i> התחברות למערכת
+        </a>
+    </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-badge">
+            <i class="fa-solid fa-seedling"></i>
+            מחפשים משקיעים ושותפים
+        </div>
+        <div class="hero-logo"><i class="fa-solid fa-rocket"></i></div>
+        <h1>SmartSports AI — Startup</h1>
+        <p class="lead">SMARTSPORTS: פלטפורמת חיזוי ספורט מבוססת AI עם דיוק גבוה, הסברים בזמן אמת וחוויית גיימינג שמגדילה מעורבות והמרות.</p>
+        <div style="margin-top:10px;">
+            <span class="pill high">Demo Build r1</span>
+            <span class="pill" title="תאריך עדכון">עודכן: 2025‑12‑10</span>
+        </div>
+
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-value">AI+</div>
+                <div class="stat-label">מנוע תחזיות</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">בוט אנליסט</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">85%+</div>
+                <div class="stat-label">יעד דיוק (Demo)</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">B2C</div>
+                <div class="stat-label">מודל עסקי</div>
+            </div>
+        </div>
+
+        <a href="#contact" class="btn-cta" style="margin-top:28px;">
+            <i class="fa-solid fa-rocket"></i>
+            נתחיל שיחה — אני מעוניין להשקיע
+        </a>
+    </section>
+
+    <!-- QUICK NAV -->
+    <nav class="quick-nav">
+        <a href="#investors">📊 מצגת למשקיעים</a>
+        <a href="#roadmap">🚀 Roadmap</a>
+        <a href="#features">✨ בידול ופיצ'רים</a>
+        <a href="#ai-role">🤖 תפקיד ה-AI</a>
+        <a href="#kpis">📈 KPI ותקציב</a>
+        <a href="#contact">📞 צור קשר</a>
+    </nav>
+
+    <!-- MAIN GRID -->
+    <div class="main-grid">
+
+        <!-- INVESTORS PANEL -->
+        <section class="panel" id="investors">
+            <h2><i class="fa-solid fa-chart-pie" style="color:var(--primary)"></i> מצגת למשקיעים</h2>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-bullseye" style="color:var(--success)"></i> הבעיה בשוק</h3>
+                <ul>
+                    <li>אין כלי תחזיות אנליטיות מקצועיות עם עומק והסברים</li>
+                    <li>תחזיות קיימות שטחיות — בלי הסבר מדוע או ניתוח</li>
+                    <li>משתמשים מחפשים כלי שעוזר להבין, לא רק לנחש</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-lightbulb" style="color:#fbbf24"></i> הפתרון שלנו</h3>
+                <ul>
+                    <li><strong>מנוע תחזיות AI</strong> — ניתוח עמוק עם הסברים מפורטים</li>
+                    <li><strong>בוט אנליסט 24/7</strong> — שיחות חכמות על כל משחק</li>
+                    <li><strong>תוכן אוטומטי</strong> — כתבות וסיכומים בזמן אמת</li>
+                    <li><strong>היסטוריה ומעקב</strong> — שקיפות מלאה על הביצועים</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-coins" style="color:var(--primary)"></i> מודל הכנסות</h3>
+                <ul>
+                    <li><span class="pill high">פרימיום</span> מנוי חודשי עם יתרונות בלעדיים</li>
+                    <li><span class="pill medium">AI PLUS</span> גישה למנוע תחזיות מתקדם</li>
+                    <li><span class="pill low">התראות</span> פושים מותאמים אישית</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-hand-holding-dollar" style="color:var(--success)"></i> בקשת מימון</h3>
+                <p class="muted" style="margin-bottom:10px">
+                    <strong style="color:#fff; font-size:18px">$1,250,000</strong> — לצמיחה והשקה מסחרית בקנה מידה מלא.
+                </p>
+                <ul>
+                    <li><span class="pill high">$500,000</span> פיתוח מוצר — פלטפורמה, אלגוריתמים ו‑UX</li>
+                    <li><span class="pill high">$375,000</span> נתונים ותשתיות — מאגרי מידע, שרתים ואבטחה</li>
+                    <li><span class="pill medium">$250,000</span> שיווק וצמיחה — קמפיינים, שיתופי פעולה, חדירה לשוק</li>
+                    <li><span class="pill low">$125,000</span> תפעול ומשאבים — צוות, תמיכה וניהול</li>
+                </ul>
+                <div class="divider"></div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">Q1</div>
+                    <div class="timeline-content">
+                        <h4>השקה</h4>
+                        <p>העלאה לענן, יציבות 24/7, MVP פרימיום</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">Q2</div>
+                    <div class="timeline-content">
+                        <h4>גיוס משתמשים</h4>
+                        <p>קמפיינים ממוקדים, שיתופי פעולה ראשונים</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">Q3</div>
+                    <div class="timeline-content">
+                        <h4>אינטגרציות</h4>
+                        <p>חיבור Data פרימיום, הרחבת ליגות ו‑B2B</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">Q4</div>
+                    <div class="timeline-content">
+                        <h4>סקיילינג ואופטימיזציה</h4>
+                        <p>שיפור דיוק, אופטימיזציית עלויות והרחבת הכנסות</p>
+                    </div>
+                </div>
+                <p class="muted" style="margin-top:10px">מאושר מול הנהלה ומשקיעים; מתעדכן חודשי בהתאם להתקדמות.</p>
+                <a href="#contact" class="btn-cta" style="margin-top:10px">
+                    <i class="fa-solid fa-envelope"></i> צור קשר עכשיו
+                </a>
+            </div>
+        </section>
+
+        <!-- ROADMAP PANEL -->
+        <aside class="panel" id="roadmap">
+            <h2><i class="fa-solid fa-road" style="color:var(--secondary)"></i> Roadmap</h2>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-fire" style="color:#ef4444"></i> עדיפות גבוהה</h3>
+                <div class="timeline-item">
+                    <div class="timeline-marker">1</div>
+                    <div class="timeline-content">
+                        <h4>דיוק תחזיות</h4>
+                        <p>שיפור מתמיד של מודל ה-AI</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">2</div>
+                    <div class="timeline-content">
+                        <h4>Data בזמן אמת</h4>
+                        <p>חיבור ל-API נתונים חיים</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-marker">3</div>
+                    <div class="timeline-content">
+                        <h4>שדרוג צ'אט-בוט</h4>
+                        <p>יכולות ניתוח מתקדמות</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-list-check" style="color:var(--primary)"></i> משימות טכניות</h3>
+                <ul>
+                    <li>ספק נתונים free tier / premium</li>
+                    <li>KPIs לדיוק תחזיות</li>
+                    <li>שמירה ו-rollback לתחזיות</li>
+                    <li>טיוב prompts (A/B testing)</li>
+                    <li>טבלת היסטוריית תחזיות</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-clock" style="color:#a78bfa"></i> עדיפות בינונית</h3>
+                <ul>
+                    <li>מסלול פרימיום מלא</li>
+                    <li>התראות push חכמות</li>
+                    <li>A/B testing לתכונות</li>
+                    <li>אפליקציית מובייל</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+
+    <!-- FEATURES -->
+    <section class="panel" id="features" style="margin-top:25px">
+        <h2><i class="fa-solid fa-sparkles" style="color:#fbbf24"></i> פיצ'רים לבידול אמיתי</h2>
+
+        <div class="feature-grid">
+            <div class="feature">
+                <div class="feature-icon">🧠</div>
+                <h3>Engine תחזיות דינמי</h3>
+                <p>תרחישי "מה אם": שינויי סגל, פציעות, מומנטום — התחזית מתעדכנת בזמן אמת.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">📡</div>
+                <h3>Mood Analyzer</h3>
+                <p>ניתוח תקשורתי ורשתות חברתיות: ציון מומנטום קבוצתי אמיתי.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🎙️</div>
+                <h3>AI פרשן משחקים</h3>
+                <p>מפת משחק חיה + מהלכים מומלצים + סיכומים אוטומטיים.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔔</div>
+                <h3>התראות חכמות</h3>
+                <p>פושים מותאמים לפרופיל המשתמש — רק מה שרלוונטי לך.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🧬</div>
+                <h3>פרופיל סגנון משתמש</h3>
+                <p>המערכת לומדת את המשתמש ומשנה סגנון תחזיות בהתאם להעדפות.</p>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">📈</div>
+                <h3>דשבורד אנליטיקס</h3>
+                <p>מעקב ביצועים, סטטיסטיקות אישיות והשוואה לקהילה.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI ROLE -->
+    <section class="panel" id="ai-role" style="margin-top:25px">
+        <h2><i class="fa-solid fa-robot" style="color:var(--primary)"></i> תפקיד ה-AI במערכת</h2>
+
+        <div class="main-grid" style="gap:20px">
+            <div class="section">
+                <h3><i class="fa-solid fa-check-circle" style="color:var(--success)"></i> מה ה-AI עושה עכשיו</h3>
+                <ul>
+                    <li>עריכת וייצור כתבות ספורט אוטומטיות</li>
+                    <li>ייצור תחזיות עם הסברים מפורטים</li>
+                    <li>שיחות אנליסט בצ'אט — 24/7</li>
+                    <li>ניתוח סטטיסטיקות ומגמות</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-arrow-trend-up" style="color:#fbbf24"></i> שדרוגים מתוכננים</h3>
+                <ul>
+                    <li>השוואה בין תחזיות לתוצאות אמת</li>
+                    <li>לימוד משתמש (personalization)</li>
+                    <li>בונה prompts פנימי</li>
+                    <li>שיפור prompts על בסיס feedback</li>
+                    <li>תבניות תשובה מותאמות</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- KPIS -->
+    <section class="panel" id="kpis" style="margin-top:25px">
+        <h2><i class="fa-solid fa-chart-column" style="color:var(--success)"></i> KPI ותקציב</h2>
+
+        <div class="main-grid" style="gap:20px">
+            <div class="section">
+                <h3><i class="fa-solid fa-bullseye" style="color:var(--primary)"></i> מדדי הצלחה (KPIs)</h3>
+                <ul>
+                    <li><strong>דיוק תחזיות</strong> — יעד 85%+</li>
+                    <li><strong>DAU/MAU</strong> — משתמשים פעילים</li>
+                    <li><strong>המרה לפרימיום</strong> — יעד 5%+</li>
+                    <li><strong>אורך שיחה עם הבוט</strong> — engagement</li>
+                    <li><strong>NPS</strong> — שביעות רצון</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3><i class="fa-solid fa-wallet" style="color:#fbbf24"></i> חלוקת תקציב</h3>
+                <p class="muted" style="margin-bottom:15px">
+                    <strong style="color:#fff; font-size:18px">$5K–10K</strong> — חיבור נתונים, UI, AI, שיווק
+                </p>
+                <ul>
+                    <li>2–3 data feeds בזמן אמת</li>
+                    <li>פיתוח פרימיום ראשוני</li>
+                    <li>דמו למשקיעים</li>
+                    <li>קמפיין שיווק ראשוני</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="panel" id="contact" style="margin-top:25px; text-align:center">
+        <h2 style="justify-content:center"><i class="fa-solid fa-handshake" style="color:var(--primary)"></i> בואו נדבר!</h2>
+        <p class="muted" style="max-width:500px; margin:0 auto 25px">
+            מעוניינים להשקיע או לשמוע עוד? נשמח לשיחה ולהציג את המוצר בפירוט.
+        </p>
+        <div style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap">
+            <a href="mailto:invest@smartsports.ai" class="btn-cta">
+                <i class="fa-solid fa-envelope"></i> שלחו מייל
+            </a>
+            <a href="chat.html" class="btn-cta" style="background:linear-gradient(135deg, var(--secondary), var(--primary))">
+                <i class="fa-solid fa-comments"></i> דברו עם הבוט
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>SmartSports AI — פלטפורמת ספורט מבוססת בינה מלאכותית © 2024</p>
+        <p style="margin-top:10px">
+            <a href="index.html">בית</a> •
+            <a href="about.html">אודות</a> •
+            <a href="chat.html">צ'אט AI</a> •
+            <a href="predictions.html">תחזיות</a> •
+            <a href="differentiation.html">בידול</a>
+        </p>
+    </footer>
+
+</div>
+
+<script>
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', function(e) {
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.querySelector('.mobile-toggle');
+        if (window.innerWidth <= 900 && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Close mobile sidebar after clicking
+                if (window.innerWidth <= 900) {
+                    document.getElementById('sidebar').classList.remove('open');
+                }
+            }
+        });
+    });
+
+    // User authentication (placeholder - connect to your auth system)
+    function checkUserAuth() {
+        const user = localStorage.getItem('user');
+        if (user) {
+            const userData = JSON.parse(user);
+            document.getElementById('user-widget').style.display = 'flex';
+            document.getElementById('logout-area').style.display = 'block';
+            document.getElementById('login-area').style.display = 'none';
+            document.getElementById('user-name').textContent = userData.name || 'משתמש';
+            document.getElementById('user-avatar').textContent = (userData.name || 'U')[0].toUpperCase();
+        }
+    }
+
+    function handleLogout() {
+        localStorage.removeItem('user');
+        window.location.reload();
+    }
+
+    function navigateTo(url) {
+        window.location.href = url;
+    }
+
+    // Initialize
+    checkUserAuth();
+</script>
+
+</body>
+</html>

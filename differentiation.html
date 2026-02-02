@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSports Pro | Competitive Analysis</title>
+    <meta name="theme-color" content="#0b1120">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="global-styles.css">
+
+    <style>
+        /* Unified Enterprise Theme (Matched to stats.html) */
+        :root {
+            --bg-root: #0a0e1a;
+            --bg-panel: #111827;
+            --bg-table-head: #1a2332;
+            --bg-hover: rgba(96, 165, 250, 0.05);
+
+            --primary: #60a5fa;
+            --primary-glow: rgba(96, 165, 250, 0.4);
+            --accent: #22d3ee;
+            --gold: #fbbf24;
+            --success: #10b981;
+            --danger: #ef4444;
+
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+
+            --border: 1px solid rgba(255,255,255,0.08);
+            --font-ui: 'Heebo', sans-serif;
+            --font-num: 'JetBrains Mono', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
+        body { background: var(--bg-root); color: var(--text-main); font-family: var(--font-ui); height: 100vh; display: flex; overflow: hidden; }
+
+        /* --- SIDEBAR --- */
+        .sidebar { width: 260px; background: #0f172a; border-left: var(--border); display: flex; flex-direction: column; z-index: 50; box-shadow: 5px 0 30px rgba(0,0,0,0.3); }
+        .brand { height: 70px; display: flex; align-items: center; padding: 0 24px; border-bottom: var(--border); font-size: 20px; font-weight: 900; letter-spacing: 1px; color: #fff; }
+        .brand span { color: var(--primary); }
+        .nav-list { flex: 1; padding: 20px 15px; overflow-y: auto; }
+        .nav-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; color: var(--text-muted); text-decoration: none; border-radius: 10px; font-size: 14px; font-weight: 500; transition: all 0.2s; margin-bottom: 4px; }
+        .nav-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .nav-link.active { background: rgba(59, 130, 246, 0.1); color: var(--primary); border-right: 3px solid var(--primary); }
+        .nav-link i { width: 20px; text-align: center; }
+
+        /* --- WORKSPACE --- */
+        .workspace { flex: 1; display: flex; flex-direction: column; position: relative; background: radial-gradient(circle at 10% 10%, rgba(59,130,246,0.08), transparent 40%); }
+
+        .header-bar { height: 70px; border-bottom: var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; background: rgba(11, 17, 32, 0.8); backdrop-filter: blur(10px); }
+        .page-title { font-size: 18px; font-weight: 800; color: #fff; display: flex; gap: 10px; align-items: center; }
+        .investor-badge { background: linear-gradient(135deg, var(--primary), #2563eb); padding: 6px 14px; border-radius: 20px; font-size: 12px; color: #fff; font-weight: 700; box-shadow: 0 0 15px var(--primary-glow); }
+
+        .content-scroll { flex: 1; overflow-y: auto; padding: 30px; }
+
+        /* --- LAYOUT GRID --- */
+        .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 1200px; margin: 0 auto; }
+
+        /* Hero Section */
+        .hero-section {
+            background: var(--bg-panel); border: var(--border); border-radius: 16px; padding: 30px;
+            display: flex; justify-content: space-between; align-items: center; gap: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .hero-text h1 { font-size: 24px; font-weight: 900; margin-bottom: 10px; color: #fff; }
+        .hero-text p { color: var(--text-muted); max-width: 500px; line-height: 1.6; font-size: 15px; }
+
+        .kpi-group { display: flex; gap: 20px; }
+        .kpi-card {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            padding: 15px 20px; border-radius: 12px; min-width: 140px; text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+        }
+        .kpi-val { display: block; font-size: 24px; font-weight: 800; color: var(--primary); font-family: var(--font-num); }
+        .kpi-lbl { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+        /* Buttons */
+        .btn { padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; font-size: 14px; transition: 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5); }
+        .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); }
+        .btn-ghost:hover { background: rgba(255,255,255,0.05); color: #fff; }
+
+        /* Table */
+        .table-card { background: var(--bg-panel); border: var(--border); border-radius: 16px; overflow: hidden; }
+        .table-header { padding: 20px; border-bottom: var(--border); background: var(--bg-table-head); }
+        .table-header h3 { margin: 0; font-size: 16px; color: #fff; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { text-align: center; padding: 18px; color: var(--text-muted); background: rgba(0,0,0,0.2); font-weight: 600; font-size: 12px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th:first-child { text-align: right; padding-right: 30px; width: 220px; }
+
+        td { padding: 18px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-muted); transition: 0.2s; }
+        td:first-child { text-align: right; padding-right: 30px; font-weight: 600; color: #fff; }
+        tr:hover td { background: var(--bg-hover); }
+
+        /* Highlights */
+        .col-highlight { background: rgba(59, 130, 246, 0.08); border-left: 1px solid rgba(59, 130, 246, 0.1); border-right: 1px solid rgba(59, 130, 246, 0.1); }
+        th.col-highlight { color: var(--primary); font-weight: 800; font-size: 14px; }
+        td.col-highlight { color: #fff; font-weight: 700; }
+
+        .check { color: var(--success); font-size: 16px; }
+        .cross { color: #475569; font-size: 14px; opacity: 0.5; }
+        .partial { color: var(--gold); font-size: 12px; font-weight: 600; }
+
+        /* Info Grid (USP & Roadmap) */
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .info-card { background: var(--bg-panel); border: var(--border); border-radius: 16px; padding: 25px; }
+        .info-title { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+
+        .list-modern li {
+            list-style: none; margin-bottom: 14px; padding-right: 24px; position: relative;
+            font-size: 14px; line-height: 1.5; color: var(--text-muted);
+        }
+        .list-modern li::before {
+            content: '✓'; position: absolute; right: 0; color: var(--accent); font-weight: 800;
+        }
+
+        .roadmap-step { display: flex; gap: 15px; margin-bottom: 15px; }
+        .step-num {
+            min-width: 28px; height: 28px; background: rgba(255,255,255,0.05); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-family: var(--font-num); color: var(--primary); font-size: 12px;
+        }
+        .step-content { font-size: 14px; color: var(--text-muted); }
+        .step-content strong { color: #fff; display: block; margin-bottom: 2px; }
+
+        /* Market Size Card */
+        .market-size-card {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(14, 165, 233, 0.1));
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 16px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .market-stat {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+        .market-stat-value {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--gold);
+            font-family: var(--font-num);
+            display: block;
+            margin-bottom: 8px;
+        }
+        .market-stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Competitive Advantage Cards */
+        .advantage-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .advantage-card {
+            background: var(--bg-panel);
+            border: var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .advantage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+            border-color: var(--primary);
+        }
+        .advantage-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .advantage-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .advantage-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Animated Metrics */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .live-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            margin-left: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        /* Score Badge */
+        .score-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--success), #059669);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: white;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 1000px) {
+            .sidebar { display: none; }
+            .hero-section { flex-direction: column; align-items: flex-start; }
+            .kpi-group { width: 100%; justify-content: space-between; }
+            .info-row { grid-template-columns: 1fr; }
+            .advantage-grid { grid-template-columns: 1fr; }
+            .market-size-card { grid-template-columns: 1fr; }
+            .table-card { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+    <div class="brand">SMART<span>SPORTS</span></div>
+    <div class="nav-list">
+        <a href="index.html" class="nav-link"><i class="fa-solid fa-house"></i> דף הבית</a>
+        <a href="predictions.html" class="nav-link"><i class="fa-solid fa-brain"></i> טרמינל AI</a>
+        <a href="live.html" class="nav-link"><i class="fa-solid fa-bolt"></i> תוצאות Live</a>
+        <a href="stats.html" class="nav-link"><i class="fa-solid fa-chart-pie"></i> סטטיסטיקות</a>
+        <a href="differentiation.html" class="nav-link active"><i class="fa-solid fa-scale-balanced"></i> השוואת שוק</a>
+        <a href="chat.html" class="nav-link"><i class="fa-solid fa-comments"></i> בוט ספורט</a>
+        <a href="about.html" class="nav-link"><i class="fa-solid fa-info-circle"></i> אודות</a>
+    </div>
+
+    <div style="padding: 20px; font-size: 11px; color: #475569; text-align: center;">
+        SmartSports Pro v2.4
+    </div>
+</nav>
+
+<!-- MAIN WORKSPACE -->
+<div class="workspace">
+
+    <!-- Top Bar -->
+    <div class="header-bar">
+        <div class="page-title">
+            <i class="fa-solid fa-briefcase" style="color:var(--gold)"></i>
+            סקירת שוק ומשקיעים
+        </div>
+        <div class="investor-badge">
+            <i class="fa-solid fa-rocket"></i> INVESTOR READY
+        </div>
+    </div>
+
+    <div class="content-scroll">
+        <div class="main-grid">
+
+            <!-- Hero -->
+            <div class="hero-section">
+                <div class="hero-text">
+                    <h1>
+                        <span class="score-badge">97/100</span>
+                        למה SmartSports Pro מנצחת?
+                    </h1>
+                    <p>השילוב היחיד בשוק של תחזיות AI הסתברותיות, הסברים מילוליים (Explainability) וחווית משתמש ברמה של אפליקציית בנקאות.</p>
+
+                    <div style="margin-top:20px; display:flex; gap:10px;">
+                        <button class="btn btn-primary" onclick="scrollToTable()"><i class="fa-solid fa-table"></i> טבלת השוואה</button>
+                        <button class="btn btn-ghost" onclick="downloadReport()"><i class="fa-solid fa-download"></i> הורד דוח</button>
+                    </div>
+                </div>
+                <div class="kpi-group">
+                    <div class="kpi-card" onclick="showDetail('simulations')">
+                        <span class="kpi-val">10K</span>
+                        <span class="kpi-lbl">סימולציות</span>
+                    </div>
+                    <div class="kpi-card" onclick="showDetail('features')">
+                        <span class="kpi-val">12</span>
+                        <span class="kpi-lbl">תכונות ייחודיות</span>
+                    </div>
+                    <div class="kpi-card" onclick="showDetail('dimensions')">
+                        <span class="kpi-val">5</span>
+                        <span class="kpi-lbl">מימדי ניתוח</span>
+                    </div>
+                    <div class="kpi-card" style="border-color:var(--success)" onclick="showDetail('live')">
+                        <span class="kpi-val" style="color:var(--success)">Live<span class="live-indicator"></span></span>
+                        <span class="kpi-lbl">עדכון חי</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Size -->
+            <div class="market-size-card">
+                <div class="market-stat">
+                    <span class="market-stat-value">$85B</span>
+                    <span class="market-stat-label">שוק AI בספורט (2025)</span>
+                </div>
+                <div class="market-stat">
+                    <span class="market-stat-value">3.5B</span>
+                    <span class="market-stat-label">משתמשי ספורט דיגיטל</span>
+                </div>
+                <div class="market-stat">
+                    <span class="market-stat-value">24%</span>
+                    <span class="market-stat-label">צמיחה שנתית (CAGR)</span>
+                </div>
+            </div>
+
+            <!-- Why Now Section -->
+            <div class="info-card" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05)); border: 1px solid rgba(251, 191, 36, 0.3);">
+                <div class="info-title" style="margin-bottom: 25px;">
+                    <i class="fa-solid fa-clock" style="color:var(--gold)"></i>
+                    Why Now? למה עכשיו זה הזמן?
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px; border-right: 3px solid var(--primary);">
+                        <div style="font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+                            <i class="fa-solid fa-rocket"></i> מהפכת AI
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                            ChatGPT והתפוצצות ה-AI (2023-2025) יצרו ציפייה לכלים חכמים בכל תחום. המשתמשים מוכנים ל-AI בספורט.
+                        </div>
+                    </div>
+                    <div style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px; border-right: 3px solid var(--danger);">
+                        <div style="font-size: 14px; font-weight: 700; color: var(--danger); margin-bottom: 8px;">
+                            <i class="fa-solid fa-shield-halved"></i> ירידה באמון בענף
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                            רגולציה מחמירה וסקנדלים בענף הניתוח הספורטיבי יצרו ביקוש למידע שקוף ואובייקטיבי ללא ניגודי עניינים.
+                        </div>
+                    </div>
+                    <div style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px; border-right: 3px solid var(--accent);">
+                        <div style="font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 8px;">
+                            <i class="fa-solid fa-graduation-cap"></i> עליית חינוך דיגיטלי
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                            אוהדים היום מחפשים להבין לעומק - לא רק לצפות. הם רוצים ללמוד סטטיסטיקות, טקטיקות ותחזיות מבוססות נתונים.
+                        </div>
+                    </div>
+                    <div style="padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px; border-right: 3px solid var(--success);">
+                        <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 8px;">
+                            <i class="fa-solid fa-users"></i> דור חדש של אוהדים
+                        </div>
+                        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                            Gen-Z וMillennials מצפים לחוויה דיגיטלית מושלמת, פרסונליזציה ואינטראקציה - בדיוק מה שאנחנו מציעים.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competitive Advantages -->
+            <div class="advantage-grid">
+                <div class="advantage-card">
+                    <i class="fa-solid fa-brain advantage-icon" style="color:var(--primary)"></i>
+                    <div class="advantage-title">AI מתקדם + 7500 API Calls/Day</div>
+                    <div class="advantage-desc">שילוב OpenAI GPT-4o-mini עם Premium API-Sports (7500 קריאות ליום!) - ניתוח ברמה שאפילו bet365 אין</div>
+                </div>
+                <div class="advantage-card">
+                    <i class="fa-solid fa-shield-halved advantage-icon" style="color:var(--gold)"></i>
+                    <div class="advantage-title">ניהול סיכונים</div>
+                    <div class="advantage-desc">מערכת Risk Tiers מובנית המבדילה בין תחזיות בסיכון נמוך, בינוני וגבוה</div>
+                </div>
+                <div class="advantage-card">
+                    <i class="fa-solid fa-rocket advantage-icon" style="color:var(--accent)"></i>
+                    <div class="advantage-title">UX מהדור הבא</div>
+                    <div class="advantage-desc">ממשק "כמו טסלה" - נקי, אינטואיטיבי ומהיר עם אנימציות מתקדמות</div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div id="comparison" class="table-card">
+                <div class="table-header">
+                    <h3>השוואה טכנולוגית מול מובילי שוק</h3>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>תכונה / פלטפורמה</th>
+                        <th class="col-highlight">SmartSports Pro</th>
+                        <th>SofaScore</th>
+                        <th>FlashScore</th>
+                        <th>Opta / Stats</th>
+                        <th>365Scores</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>ניתוח משחקים AI מתקדם (OpenAI + API-Sports)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> 350+ נקודות data</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                    </tr>
+                    <tr>
+                        <td>תחזיות AI מוסברות (Explainability)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> 5 זוויות + טקסט</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                    </tr>
+                    <tr>
+                        <td>סימולציות Monte Carlo</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> 10,000 הרצות</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td class="partial">B2B בלבד</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                    </tr>
+                    <tr>
+                        <td>בוט ספורט יועץ (AI Coach)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> אינטראקטיבי מלא</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                    </tr>
+                    <tr>
+                        <td>משחקים אינטראקטיביים (Gaming)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> 3 משחקים מובנים</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td class="partial">חידונים בסיסיים</td>
+                    </tr>
+                    <tr>
+                        <td>דשבורד סטטיסטיקות AI מתקדם</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> ויזואליזציות מלאות</td>
+                        <td class="partial">טבלאות סטנדרטיות</td>
+                        <td class="partial">נתונים בסיסיים</td>
+                        <td><i class="fa-solid fa-check check"></i> מקצועי</td>
+                        <td class="partial">בסיסי</td>
+                    </tr>
+                    <tr>
+                        <td>חדשות AI בזמן אמת</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> עורך וכותב אוטומטי</td>
+                        <td class="partial">RSS ידני</td>
+                        <td class="partial">פידים חיצוניים</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td class="partial">חדשות בסיסיות</td>
+                    </tr>
+                    <tr>
+                        <td>ניתוח כתבות AI (NLP)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> תמצות + סנטימנט</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                    </tr>
+                    <tr>
+                        <td>דשבורד משחק LIVE (מומנטום)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> xG + Heatmaps</td>
+                        <td><i class="fa-solid fa-check check"></i></td>
+                        <td class="partial">בסיסי</td>
+                        <td class="partial">API</td>
+                        <td><i class="fa-solid fa-check check"></i></td>
+                    </tr>
+                    <tr>
+                        <td>ניהול סיכונים (Risk Tiers)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> מובנה במערכת</td>
+                        <td class="partial">הצבעות גולשים</td>
+                        <td class="partial">יחסי ניצחון</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td class="partial">יחסים</td>
+                    </tr>
+                    <tr>
+                        <td>התאמה אישית (Personalization)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> AI לומד העדפות</td>
+                        <td class="partial">בחירת קבוצות</td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td><i class="fa-solid fa-xmark cross"></i></td>
+                        <td class="partial">מועדפים</td>
+                    </tr>
+                    <tr>
+                        <td>חווית משתמש (UX)</td>
+                        <td class="col-highlight"><i class="fa-solid fa-check check"></i> דור 4 ("טסלה")</td>
+                        <td class="partial">עמוס</td>
+                        <td class="partial">מיושן</td>
+                        <td class="partial">Enterprise</td>
+                        <td class="partial">סטנדרטי</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Business Model -->
+            <div class="info-card" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(14, 165, 233, 0.05)); border: 1px solid rgba(59, 130, 246, 0.3); margin-bottom: 30px;">
+                <div class="info-title" style="margin-bottom: 25px;">
+                    <i class="fa-solid fa-chart-line" style="color:var(--primary)"></i>
+                    Business Model - מודל עסקי בר-קיימא
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 25px;">
+                    <div style="text-align: center; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border-top: 3px solid var(--primary);">
+                        <i class="fa-solid fa-crown" style="font-size: 32px; color: var(--gold); display: block; margin-bottom: 12px;"></i>
+                        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px;">פרימיום</div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">תחזיות מתקדמות, ניתוחים עמוקים, גישה לדשבורדים בזמן אמת</div>
+                        <div style="margin-top: 12px; padding: 6px 12px; background: rgba(251, 191, 36, 0.2); border-radius: 6px; font-size: 11px; color: var(--gold); font-weight: 700;">$9.99/חודש</div>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border-top: 3px solid var(--accent);">
+                        <i class="fa-solid fa-graduation-cap" style="font-size: 32px; color: var(--accent); display: block; margin-bottom: 12px;"></i>
+                        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px;">קורסים</div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">קורסי וידאו על ניתוח ספורט, הבנת סטטיסטיקות, טקטיקות</div>
+                        <div style="margin-top: 12px; padding: 6px 12px; background: rgba(14, 165, 233, 0.2); border-radius: 6px; font-size: 11px; color: var(--accent); font-weight: 700;">$49-299/קורס</div>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border-top: 3px solid var(--success);">
+                        <i class="fa-solid fa-users" style="font-size: 32px; color: var(--success); display: block; margin-bottom: 12px;"></i>
+                        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px;">קהילה</div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">מינוי VIP לקהילה סגורה, אירועים, טורנירים, תחרויות תחזיות</div>
+                        <div style="margin-top: 12px; padding: 6px 12px; background: rgba(16, 185, 129, 0.2); border-radius: 6px; font-size: 11px; color: var(--success); font-weight: 700;">$19.99/חודש</div>
+                    </div>
+                    <div style="text-align: center; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 12px; border-top: 3px solid var(--danger);">
+                        <i class="fa-solid fa-building" style="font-size: 32px; color: var(--danger); display: block; margin-bottom: 12px;"></i>
+                        <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 8px;">B2B</div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">רישוי API למדיה, אתרי ספורט, אפליקציות, White Label</div>
+                        <div style="margin-top: 12px; padding: 6px 12px; background: rgba(239, 68, 68, 0.2); border-radius: 6px; font-size: 11px; color: var(--danger); font-weight: 700;">Custom Pricing</div>
+                    </div>
+                </div>
+                <div style="padding: 20px; background: rgba(16, 185, 129, 0.1); border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.3);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="font-size: 12px; color: var(--success); font-weight: 700; margin-bottom: 5px;">תחזית הכנסות שנה 1</div>
+                            <div style="font-size: 14px; color: var(--text-muted);">
+                                <strong style="color: #fff;">100K משתמשים</strong> × <strong style="color: #fff;">3.5% המרה</strong> = <strong style="color: var(--success);">3,500 מנויים משלמים</strong>
+                            </div>
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="font-size: 24px; font-weight: 900; color: var(--gold); font-family: var(--font-num);">$420K</div>
+                            <div style="font-size: 11px; color: var(--text-muted);">ARR שנתי</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Grid -->
+            <div class="info-row">
+                <!-- USP -->
+                <div class="info-card">
+                    <div class="info-title"><i class="fa-solid fa-star" style="color:var(--warning)"></i> הצעת ערך ייחודית (USP)</div>
+                    <ul class="list-modern">
+                        <li><strong>שקיפות רדיקלית:</strong> אנחנו לא קופסה שחורה. המשתמש רואה בדיוק למה המודל המליץ על תוצאה מסוימת.</li>
+                        <li><strong>אוטומציה מלאה:</strong> אין מפעיל אנושי. המערכת רצה 24/7 על שרתים מבוססי Python ו-OpenAI.</li>
+                        <li><strong>פרסונליזציה:</strong> ה-AI לומד את הקבוצות שהמשתמש אוהב ומציף מידע רלוונטי (לא עוד ספאם).</li>
+                        <li><strong>All-in-One:</strong> סטטיסטיקה, חדשות, תחזיות וקהילה במקום אחד.</li>
+                    </ul>
+                </div>
+
+                <!-- Roadmap -->
+                <div class="info-card">
+                    <div class="info-title"><i class="fa-solid fa-route" style="color:var(--accent)"></i> Roadmap - 6 חודשים</div>
+                    <div class="roadmap-step">
+                        <div class="step-num">1</div>
+                        <div class="step-content"><strong>חודש 1-2 (POC):</strong> חיבור נתונים בזמן אמת (Lineups, Odds) והשקת בטא סגורה.</div>
+                    </div>
+                    <div class="roadmap-step">
+                        <div class="step-num">2</div>
+                        <div class="step-content"><strong>חודש 3-4 (Growth):</strong> השקת הבוט האינטגרטיבי המלא + מודול המלצות פרימיום בתשלום.</div>
+                    </div>
+                    <div class="roadmap-step">
+                        <div class="step-num">3</div>
+                        <div class="step-content"><strong>חודש 5-6 (Scale):</strong> שותפויות B2B ראשונות עם גופי מדיה וספורט והשקה גלובלית.</div>
+                    </div>
+
+                    <div style="margin-top:20px; background:rgba(16,185,129,0.1); padding:12px; border-radius:8px; border:1px solid rgba(16,185,129,0.2);">
+                        <div style="font-size:11px; color:var(--success); font-weight:700;">יעדים עסקיים (KPI)</div>
+                        <div style="font-size:13px; color:#fff;">משתמשים: <strong>100,000</strong> | המרה: <strong>3.5%</strong></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Sources Strategy -->
+            <div class="info-card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(124, 58, 237, 0.05)); border: 1px solid rgba(139, 92, 246, 0.3);">
+                <div class="info-title" style="margin-bottom: 25px;">
+                    <i class="fa-solid fa-database" style="color:#8b5cf6"></i>
+                    Data Sources Strategy - אסטרטגיית מקורות נתונים
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px;">
+                    <div style="padding: 18px; background: rgba(0,0,0,0.3); border-radius: 12px; border-right: 3px solid #10b981;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                            <i class="fa-solid fa-plug" style="font-size: 24px; color: #10b981;"></i>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 700; color: #10b981;">API-Sports</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">Primary Source</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            ✓ 890+ ליגות<br>
+                            ✓ Real-time scores<br>
+                            ✓ Squad lineups<br>
+                            ✓ 99.9% uptime
+                        </div>
+                    </div>
+                    <div style="padding: 18px; background: rgba(0,0,0,0.3); border-radius: 12px; border-right: 3px solid #3b82f6;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                            <i class="fa-solid fa-futbol" style="font-size: 24px; color: #3b82f6;"></i>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 700; color: #3b82f6;">GoalServe</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">Backup Source</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            ✓ Live commentary<br>
+                            ✓ Match events<br>
+                            ✓ Historical data<br>
+                            ✓ Fast updates
+                        </div>
+                    </div>
+                    <div style="padding: 18px; background: rgba(0,0,0,0.3); border-radius: 12px; border-right: 3px solid #f59e0b;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                            <i class="fa-solid fa-chart-line" style="font-size: 24px; color: #f59e0b;"></i>
+                            <div>
+                                <div style="font-size: 13px; font-weight: 700; color: #f59e0b;">MySportFeeds</div>
+                                <div style="font-size: 11px; color: var(--text-muted);">Analytics Source</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            ✓ Advanced stats<br>
+                            ✓ xG data<br>
+                            ✓ Player metrics<br>
+                            ✓ Season archives
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 20px; background: rgba(239, 68, 68, 0.1); border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.3);">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-shield-halved" style="font-size: 28px; color: var(--danger);"></i>
+                        <div style="flex: 1;">
+                            <div style="font-size: 13px; font-weight: 700; color: var(--danger); margin-bottom: 5px;">
+                                Fallback Mode - מצב גיבוי אוטומטי
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                                במקרה של נפילת API ראשי, המערכת עוברת אוטומטית למקור משני תוך <strong style="color: #fff;">3 שניות</strong>.
+                                Cache חכם שומר נתונים קריטיים עד <strong style="color: #fff;">24 שעות</strong>. אפס downtime למשתמש הקצה.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div style="padding: 8px 14px; background: rgba(59, 130, 246, 0.15); border-radius: 6px; font-size: 11px; color: var(--primary);">
+                        <i class="fa-solid fa-check"></i> Multi-source redundancy
+                    </div>
+                    <div style="padding: 8px 14px; background: rgba(16, 185, 129, 0.15); border-radius: 6px; font-size: 11px; color: var(--success);">
+                        <i class="fa-solid fa-check"></i> 99.99% data availability
+                    </div>
+                    <div style="padding: 8px 14px; background: rgba(251, 191, 36, 0.15); border-radius: 6px; font-size: 11px; color: var(--gold);">
+                        <i class="fa-solid fa-check"></i> Smart caching layer
+                    </div>
+                    <div style="padding: 8px 14px; background: rgba(139, 92, 246, 0.15); border-radius: 6px; font-size: 11px; color: #8b5cf6;">
+                        <i class="fa-solid fa-check"></i> Real-time monitoring
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Safety & Transparency -->
+            <div class="info-card" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.05)); border: 1px solid rgba(16, 185, 129, 0.3); margin-top: 30px;">
+                <div class="info-title" style="margin-bottom: 25px;">
+                    <i class="fa-solid fa-shield-halved" style="color:var(--success)"></i>
+                    AI Safety, Bias & Transparency - בטיחות, הטיה ושקיפות
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div style="padding: 18px; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 15px;">
+                            <div style="font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-eye"></i> Explainable AI (XAI)
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                                כל תחזית מלווה בהסבר מפורט: "למה המודל חושב כך?". המשתמש רואה את <strong style="color: #fff;">5 הגורמים המשפיעים</strong>
+                                (Form, H2H, Squad, Momentum, xG) ואת <strong style="color: #fff;">המשקל</strong> של כל אחד בהחלטה. אין "קופסה שחורה".
+                            </div>
+                        </div>
+                        <div style="padding: 18px; background: rgba(0,0,0,0.3); border-radius: 12px;">
+                            <div style="font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-balance-scale"></i> Bias Detection
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                                מערכת ניטור אוטומטית זיהוי הטיות: האם המודל מעדיף קבוצות ביתיות? ליגות מסוימות?
+                                <strong style="color: #fff;">אזהרה אוטומטית</strong> כאשר נמצאה הטיה מעל <strong style="color: #fff;">5%</strong>.
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="padding: 18px; background: rgba(0,0,0,0.3); border-radius: 12px; margin-bottom: 15px;">
+                            <div style="font-size: 14px; font-weight: 700; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-chart-simple"></i> Confidence Levels
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                                המערכת מדרגת כל תחזית ב-<strong style="color: #fff;">3 רמות ביטחון</strong>: נמוכה, בינונית, גבוהה.
+                                תחזיות מתחת ל-<strong style="color: #fff;">65% ביטחון</strong> מסומנות כ"ספקולטיביות" ולא מומלצות לבסיס החלטות.
+                            </div>
+                        </div>
+                        <div style="padding: 18px; background: rgba(0,0,0,0.3); border-radius: 12px;">
+                            <div style="font-size: 14px; font-weight: 700; color: var(--success); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-code"></i> Open Methodology
+                            </div>
+                            <div style="font-size: 12px; color: var(--text-muted); line-height: 1.6;">
+                                מתודולוגיה פומבית בדף "אודות": אילו משתנים נכנסים למודל, איך הוא מאומן, על איזה דאטה.
+                                שקיפות מלאה = אמון מקסימלי.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: rgba(59, 130, 246, 0.1); border-radius: 10px; border: 1px solid rgba(59, 130, 246, 0.3); text-align: center;">
+                    <div style="font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 5px;">AI ETHICS COMMITMENT</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">
+                        אנחנו מחויבים לפיתוח AI אחראי, שקוף והוגן. כל עדכון מודל עובר <strong style="color: #fff;">ביקורת הטיות</strong> לפני הפצה לייצור.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function scrollToTable(){
+        document.getElementById('comparison').scrollIntoView({behavior:'smooth'});
+    }
+
+    function showDetail(type) {
+        const messages = {
+            simulations: '🎲 10,000 סימולציות Monte Carlo לכל משחק\n• חישוב הסתברויות מדויק\n• התחשבות בשונות סטטיסטית\n• תוצאה: רמת ביטחון אמיתית',
+            features: '🚀 12 תכונות שאין למתחרים:\n1. ניתוח AI מתקדם (OpenAI + 7500 API calls/day)\n2. תחזיות AI מוסברות\n3. סימולציות Monte Carlo\n4. בוט ספורט יועץ\n5. 3 משחקים אינטראקטיביים\n6. סטטיסטיקות AI מתקדמות\n7. חדשות AI אוטומטיות\n8. ניתוח כתבות NLP\n9. דשבורד LIVE\n10. ניהול סיכונים\n11. התאמה אישית AI\n12. UX דור 4',
+            dimensions: '📊 5 מימדי ניתוח מתקדמים:\n1. Form - טופס אחרון\n2. H2H - עבר ישיר\n3. Squad - הרכבים\n4. Momentum - מומנטום\n5. xG - Expected Goals',
+            live: '⚡ עדכון בזמן אמת:\n• נתוני API כל 30 שניות\n• עדכון אוטומטי של תחזיות\n• Heatmaps דינמיים\n• מומנטום חי'
+        };
+        alert(messages[type]);
+    }
+
+    function downloadReport() {
+        const confirmation = confirm('האם להוריד דוח השוואת מתחרים מלא (PDF)?');
+        if (confirmation) {
+            alert('מוריד קובץ: SmartSports_Competitive_Analysis_2025.pdf\n\n📄 הדוח כולל:\n✓ השוואה מפורטת מול 12 מתחרים\n✓ ניתוח SWOT מלא\n✓ תחזית שוק ל-5 שנים\n✓ המלצות אסטרטגיות');
+            // כאן היה קורה download אמיתי
+        }
+    }
+
+    // אנימציה של מספרים בטעינה
+    window.addEventListener('load', () => {
+        const kpiValues = document.querySelectorAll('.kpi-val');
+        kpiValues.forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                el.style.transition = 'all 0.6s ease';
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 200);
+        });
+
+        // אנימציה של Market Stats
+        const marketValues = document.querySelectorAll('.market-stat-value');
+        marketValues.forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'scale(0.8)';
+            setTimeout(() => {
+                el.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                el.style.opacity = '1';
+                el.style.transform = 'scale(1)';
+            }, 400 + i * 150);
+        });
+    });
+
+    // הוספת Tooltip לשורות בטבלה
+    document.addEventListener('DOMContentLoaded', () => {
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('mouseenter', function() {
+                this.style.transition = 'all 0.2s';
+                this.style.transform = 'scale(1.01)';
+            });
+            row.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+            });
+        });
+    });
+</script>
+</body>
+</html>
