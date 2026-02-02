@@ -1,0 +1,6 @@
+﻿
+coverage==7.13.1
+pytest==9.0.2
+pytest-cov==7.0.0
+
+

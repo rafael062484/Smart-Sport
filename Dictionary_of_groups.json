@@ -1,0 +1,160 @@
+{
+  "version": "1.0",
+  "lastUpdated": "2025-12-03",
+  "leagues": {
+    "england": {
+      "name": "אנגליה",
+      "country": "England",
+      "competitions": [
+        {
+          "id": "premier-league",
+          "name": "ליגת העל האנגלית",
+          "englishName": "Premier League",
+          "teams": [
+            "Arsenal", "Aston Villa", "AFC Bournemouth", "Brentford", "Brighton & Hove Albion",
+            "Burnley", "Chelsea", "Crystal Palace", "Everton", "Fulham",
+            "Liverpool", "Manchester City", "Manchester United", "Newcastle United",
+            "Nottingham Forest", "Sunderland", "Tottenham Hotspur", "West Ham United", "Wolverhampton Wanderers"
+          ]
+        },
+        {
+          "id": "championship",
+          "name": "צ'מפיונשיפ",
+          "englishName": "Championship",
+          "teams": [
+            "Birmingham City", "Blackburn Rovers", "Bristol City", "Cardiff City", "Coventry City",
+            "Derby County", "Hull City", "Ipswich Town", "Leicester City", "Middlesbrough", "Leeds United",
+            "Millwall", "Norwich City", "Plymouth Argyle", "Preston North End", "Queens Park Rangers",
+            "Rotherham United", "Sheffield Wednesday", "Southampton", "Stoke City", "Swansea City",
+            "Watford", "West Bromwich Albion", "Wrexham", "Charlton Athletic", "Oxford United", "Portsmouth"
+          ]
+        }
+      ]
+    },
+    "spain": {
+      "name": "ספרד",
+      "country": "Spain",
+      "competitions": [
+        {
+          "id": "la-liga",
+          "name": "לה ליגה",
+          "englishName": "La Liga",
+          "teams": [
+            "Athletic Bilbao", "Atlético Madrid", "Barcelona", "Cádiz", "Celta Vigo",
+            "Deportivo Alavés", "Getafe", "Girona", "Granada", "Las Palmas",
+            "Mallorca", "Osasuna", "Rayo Vallecano", "Real Betis", "Real Madrid",
+            "Real Sociedad", "Sevilla", "Valencia", "Villarreal", "Levante",
+            "Elche", "Espanyol", "Real Oviedo"
+          ]
+        }
+      ]
+    },
+    "germany": {
+      "name": "גרמניה",
+      "country": "Germany",
+      "competitions": [
+        {
+          "id": "bundesliga",
+          "name": "בונדסליגה",
+          "englishName": "Bundesliga",
+          "teams": [
+            "FC Augsburg", "Union Berlin", "VfL Bochum", "Werder Bremen", "Borussia Dortmund",
+            "Eintracht Frankfurt", "SC Freiburg", "1. FC Heidenheim", "TSG Hoffenheim", "1. FC Köln",
+            "RB Leipzig", "Bayer Leverkusen", "Mainz 05", "Borussia Mönchengladbach", "Bayern München",
+            "VfB Stuttgart", "VfL Wolfsburg", "Hamburger SV", "FC St. Pauli"
+          ]
+        }
+      ]
+    },
+    "italy": {
+      "name": "איטליה",
+      "country": "Italy",
+      "competitions": [
+        {
+          "id": "serie-a",
+          "name": "סרייה A",
+          "englishName": "Serie A",
+          "teams": [
+            "Atalanta", "Bologna", "Cagliari", "Empoli", "Fiorentina",
+            "Genoa", "Inter", "Juventus", "Lazio", "AC Milan",
+            "Monza", "Napoli", "Roma", "Sassuolo", "Torino",
+            "Udinese", "Verona", "Como", "Parma", "Pisa", "Cremonese"
+          ]
+        }
+      ]
+    },
+    "france": {
+      "name": "צרפת",
+      "country": "France",
+      "competitions": [
+        {
+          "id": "ligue-1",
+          "name": "ליג 1",
+          "englishName": "Ligue 1",
+          "teams": [
+            "AJ Auxerre", "Angers SCO", "AS Monaco", "FC Lorient", "FC Metz",
+            "FC Nantes", "Le Havre AC", "OGC Nice", "Olympique de Marseille", "Olympique Lyonnais",
+            "OSC Lille", "Paris FC", "Paris Saint-Germain", "Racing Strasbourg", "RC Lens",
+            "Stade Brestois", "Stade Rennais", "Toulouse FC"
+          ]
+        }
+      ]
+    },
+    "israel": {
+      "name": "ישראל",
+      "country": "Israel",
+      "competitions": [
+        {
+          "id": "ligat-haal",
+          "name": "Israeli Premier League",
+          "englishName": "Israeli Premier League",
+          "teams": [
+            "Maccabi Tel Aviv", "Hapoel Tel Aviv", "Hapoel Beer Sheva", "Maccabi Haifa", "Bnei Sakhnin",
+            "Hapoel Haifa", "Maccabi Netanya", "Hapoel Jerusalem", "Beitar Jerusalem", "Ashdod",
+            "Hapoel Hadera", "Maccabi Bnei Reina", "Irony Kiryat Shmona", "Hapoel Petah Tikva", "Irony Tiberias"
+          ]
+        }
+      ]
+    },
+    "champions-league": {
+      "name": "אירופה",
+      "country": "Europe",
+      "competitions": [
+        {
+          "id": "ucl",
+          "name": "ליגת האלופות",
+          "englishName": "UEFA Champions League",
+          "teams": [
+            "Liverpool", "Arsenal", "Manchester City", "Chelsea", "Tottenham", "Newcastle",
+            "Barcelona", "Real Madrid", "Atlético Madrid", "Athletic Bilbao", "Villarreal",
+            "Napoli", "Inter", "Juventus", "Atalanta",
+            "Bayern München", "Bayer Leverkusen", "Eintracht Frankfurt",
+            "Paris Saint-Germain", "Marseille",
+            "Benfica", "Porto", "Sporting CP",
+            "Ajax", "PSV Eindhoven", "Feyenoord",
+            "Celtic", "Rangers","Aston Villa",
+            "Galatasaray", "Fenerbahçe",
+            "Monaco", "Union Saint-Gilloise", "Kairat", "Pafos", "Bodø/Glimt"
+          ]
+        },
+        {
+          "id": "europa-league",
+          "name": "ליגה האירופית",
+          "englishName": "UEFA Europa League",
+          "teams": [
+            "Aston Villa", "Nottingham Forest", "Roma", "Bologna",
+            "Real Betis", "Celta Vigo", "Feyenoord", "Go Ahead Eagles",
+            "Celtic", "Rangers", "Nice", "Braga", "Sturm Graz", "Crvena Zvezda",
+            "Dinamo Zagreb", "Ludogorets", "PAOK", "Ferencvaros", "Genk", "Midtjylland"
+          ]
+        }
+      ]
+    }
+  },
+  "customMatch": {
+    "enabled": true,
+    "allowFreeText": true,
+    "description": "ניתן להזין שם קבוצה חופשי למשחקי ידידות או קבוצות שאינן ברשימה"
+  }
+}
+

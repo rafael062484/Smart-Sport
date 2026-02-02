@@ -1,0 +1,138 @@
+# ============================================
+# SmartSports - .gitignore
+# ============================================
+# קובץ זה אומר ל-Git אילו קבצים לא לשמור
+# Created: 2025-10-11
+# ============================================
+
+# ============================================
+# Python - קבצים זמניים של Python
+# ============================================
+__pycache__/              # קבצי cache מקומפלים
+*.py[cod]                 # קבצים מקומפלים (.pyc, .pyo, .pyd)
+*$py.class                # Java class files
+*.so                      # Shared libraries
+.Python                   # Python symlinks
+*.egg-info/               # Egg metadata
+dist/                     # Distribution files
+build/                    # Build files
+
+# ============================================
+# Virtual Environment - סביבה וירטואלית
+# ============================================
+.venv/                    # הסביבה שלנו!
+venv/                     # שמות נוספים
+ENV/
+env/
+virtualenv/
+
+# ============================================
+# IDEs - עורכי קוד
+# ============================================
+.idea/                    # PyCharm settings
+.vscode/                  # VS Code settings
+*.swp                     # Vim temporary files
+*.swo
+*.swn
+.DS_Store                 # macOS folder settings
+Thumbs.db                 # Windows thumbnail cache
+
+# ============================================
+# Environment Variables - משתני סביבה
+# ============================================
+.env                      # סיסמאות וסודות - חשוב מאוד!
+.env.local
+.env.*.local
+secrets/                  # תיקיית סודות
+*.key                     # קבצי מפתחות
+*.pem                     # תעודות
+
+# ============================================
+# Database - מסד נתונים
+# ============================================
+*.db                      # SQLite databases
+*.sqlite
+*.sqlite3
+data/*.db                 # DBs in data folder
+db.json                   # JSON database
+
+# ============================================
+# Logs - קבצי לוג
+# ============================================
+*.log                     # כל קבצי הלוג
+logs/                     # תיקיית logs
+*.out
+*.err
+
+# ============================================
+# Testing - בדיקות
+# ============================================
+.pytest_cache/            # Pytest cache
+.coverage                 # Coverage reports
+htmlcov/                  # HTML coverage reports
+.tox/                     # Tox testing
+.nox/                     # Nox testing
+coverage.xml
+*.cover
+
+# ============================================
+# Project Specific - ספציפי לפרויקט שלנו
+# ============================================
+# נתונים זמניים
+temp/
+tmp/
+*.tmp
+
+# דוחות בדיקת תקינות
+doctor_reports/
+
+# קבצים גדולים
+*.mp4
+*.avi
+*.zip
+*.tar.gz
+
+# גיבויים
+*.bak
+*.backup
+*~
+
+# ============================================
+# OS Specific - מערכת הפעלה
+# ============================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# ============================================
+# Documentation Build - תיעוד
+# ============================================
+docs/_build/
+site/
+
+# ============================================
+# Frontend Build - בנייה של Frontend
+# ============================================
+node_modules/             # אם נוסיף Node.js בעתיד
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ============================================
+# Personal Notes - הערות אישיות
+# ============================================
+TODO.txt
+NOTES.txt
+scratch/
+personal/

@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="be975cf4-d433-42e0-a4f4-c00766f723c0" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="7665" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="package" />
+        <option value="Python Script" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="true" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Programs/Python/Python314/Doc/html/about.html" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/.env" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/.gitignore" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/README.md" root0="SKIP_INSPECTION" root1="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/STATUS.md" root0="SKIP_INSPECTION" root1="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/ai_predictor.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/ai_predictor_titan.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/app.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/db.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/game_engine.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/models.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/predictions.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/security.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/session_manager.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/sports_api.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/backend/static/css/global.css" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/data/teams_data.json" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/Contact_us.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/about.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/ai_popup_interactive.js" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/arena.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/articles/gostvo_bokoli.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/articles/livrpol.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/articles/yorolig.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/chat.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/config.js" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/differentiation.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/game_arena.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/help_center.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/index.html" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/login.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/manifest.json" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/news.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/predictions.html" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/profile.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/start_up.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/stats.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/streak_tracker.js" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/frontend/style.css" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/frontend/subscribe.html" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/requirements.txt" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="yebx2WCD" />
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="2" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="33ug2Jrj7wHwtFgsTmOXtiXOCWI" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;HTTP Request.All in generated-requests.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #1.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #2.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.run.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;SQL Inserts&quot;,
+    &quot;database.data.extractors.current.id&quot;: &quot;SQL Inserts&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/osher/OneDrive/Desktop/smart_sport&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecapSpentCounter">
+    <option name="endsOfQuotaMs" value="1768129241498" />
+    <option name="spentUsd" value="0.07133905" />
+  </component>
+  <component name="RecapUselessUpdatesCounter">
+    <option name="suspendCountdown" value="0" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject\backend" />
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject\videos" />
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject\videos\my_smart_sport.mp4" />
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject\frontend" />
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject\data" />
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject\data\teams_data.json" />
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject\frontend\data" />
+      <recent name="C:\Users\osher\OneDrive\Desktop\PythonProject" />
+    </key>
+  </component>
+  <component name="RubyModuleManagerSettings">
+    <option name="blackListedRootsPaths">
+      <list>
+        <option value="$PROJECT_DIR$" />
+      </list>
+    </option>
+  </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="def greet(name):     print(f&quot;Hello {name}&quot;)" />
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.run">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="SmartSport" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="SmartSport" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="SmartSport" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="SmartSport" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="SmartSport" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="SmartSport" />
+      <working_directory value="$PROJECT_DIR$" />
+      <go_parameters value="-i" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <configuration name="All in generated-requests" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="All in generated-requests" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #1" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#1" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#2" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="generated-requests | #2" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#2" index="2" runType="Run single request">
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SmartSport" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="RUN_TOOL" value="" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/backend/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="SmartSport" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/backend" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <EXTENSION ID="net.ashald.envfile">
+        <option name="IS_ENABLED" value="false" />
+        <option name="IS_SUBST" value="false" />
+        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
+        <option name="IS_IGNORE_MISSING_FILES" value="false" />
+        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
+        <ENTRIES>
+          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
+        </ENTRIES>
+      </EXTENSION>
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/backend/run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.30387.90" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="be975cf4-d433-42e0-a4f4-c00766f723c0" name="Changes" comment="" />
+      <created>1760172163253</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760172163253</updated>
+      <workItem from="1760549149304" duration="12984000" />
+      <workItem from="1760568652216" duration="836000" />
+      <workItem from="1760569837503" duration="272000" />
+      <workItem from="1760570129223" duration="341000" />
+      <workItem from="1760570738880" duration="1561000" />
+      <workItem from="1760645885540" duration="150000" />
+      <workItem from="1760648609071" duration="6822000" />
+      <workItem from="1760778029742" duration="396000" />
+      <workItem from="1760778543683" duration="308000" />
+      <workItem from="1760813582409" duration="106000" />
+      <workItem from="1760813714264" duration="9600000" />
+      <workItem from="1760988567879" duration="236000" />
+      <workItem from="1760988836035" duration="3902000" />
+      <workItem from="1760992788357" duration="24000" />
+      <workItem from="1760992837128" duration="6249000" />
+      <workItem from="1761149447599" duration="1180000" />
+      <workItem from="1761163812717" duration="5729000" />
+      <workItem from="1761169604785" duration="8279000" />
+      <workItem from="1761178059525" duration="2142000" />
+      <workItem from="1761316288243" duration="239000" />
+      <workItem from="1761316579035" duration="1085000" />
+      <workItem from="1761401231653" duration="1809000" />
+      <workItem from="1761409637642" duration="4679000" />
+      <workItem from="1761414415159" duration="43000" />
+      <workItem from="1761414481964" duration="5125000" />
+      <workItem from="1761419902259" duration="5504000" />
+      <workItem from="1761425844515" duration="9201000" />
+      <workItem from="1761435225810" duration="4801000" />
+      <workItem from="1761440106766" duration="862000" />
+      <workItem from="1761500967685" duration="5803000" />
+      <workItem from="1761522107864" duration="312000" />
+      <workItem from="1761585507972" duration="219000" />
+      <workItem from="1761585760326" duration="688000" />
+      <workItem from="1761586852278" duration="22000" />
+      <workItem from="1761587026835" duration="18000" />
+      <workItem from="1761587526990" duration="1023000" />
+      <workItem from="1761588837412" duration="671000" />
+      <workItem from="1761590466084" duration="798000" />
+      <workItem from="1761591476746" duration="461000" />
+      <workItem from="1761593281327" duration="27000" />
+      <workItem from="1761593479075" duration="10251000" />
+      <workItem from="1761606210599" duration="52000" />
+      <workItem from="1761606290568" duration="4947000" />
+      <workItem from="1761635813687" duration="30775000" />
+      <workItem from="1761671951470" duration="7557000" />
+      <workItem from="1761680451590" duration="5868000" />
+      <workItem from="1761686525933" duration="11154000" />
+      <workItem from="1761767806737" duration="554000" />
+      <workItem from="1761768392290" duration="21457000" />
+      <workItem from="1761835193489" duration="12031000" />
+      <workItem from="1761851239457" duration="16001000" />
+      <workItem from="1761869779210" duration="209000" />
+      <workItem from="1761902333212" duration="20572000" />
+      <workItem from="1761942137295" duration="2786000" />
+      <workItem from="1761987573565" duration="29026000" />
+      <workItem from="1762108417144" duration="35000" />
+      <workItem from="1762108499579" duration="3000" />
+      <workItem from="1762112233769" duration="32000" />
+      <workItem from="1762119017101" duration="630000" />
+      <workItem from="1762127999282" duration="617000" />
+      <workItem from="1762196193961" duration="29715000" />
+      <workItem from="1762276248114" duration="1920000" />
+      <workItem from="1762278220007" duration="1500000" />
+      <workItem from="1762279777516" duration="2631000" />
+      <workItem from="1762282707404" duration="6901000" />
+      <workItem from="1762289716992" duration="2488000" />
+      <workItem from="1762296382886" duration="6642000" />
+      <workItem from="1762362590588" duration="40705000" />
+      <workItem from="1762442281961" duration="15989000" />
+      <workItem from="1762463222690" duration="25653000" />
+      <workItem from="1762534546823" duration="1561000" />
+      <workItem from="1762536148255" duration="2097000" />
+      <workItem from="1762546782507" duration="6148000" />
+      <workItem from="1762556616388" duration="8000" />
+      <workItem from="1762593470388" duration="867000" />
+      <workItem from="1762611651506" duration="27115000" />
+      <workItem from="1762701530104" duration="30702000" />
+      <workItem from="1762799728493" duration="147000" />
+      <workItem from="1762799913022" duration="17138000" />
+      <workItem from="1762892598622" duration="5246000" />
+      <workItem from="1762897941327" duration="109000" />
+      <workItem from="1762978550352" duration="1229000" />
+      <workItem from="1762980539393" duration="13166000" />
+      <workItem from="1763064095684" duration="236000" />
+      <workItem from="1763064355494" duration="3419000" />
+      <workItem from="1763067924119" duration="11792000" />
+      <workItem from="1763134075364" duration="8049000" />
+      <workItem from="1763142362891" duration="206000" />
+      <workItem from="1763209412975" duration="30612000" />
+      <workItem from="1763327287307" duration="4000" />
+      <workItem from="1763406072559" duration="11451000" />
+      <workItem from="1763422136207" duration="10125000" />
+      <workItem from="1763432499169" duration="69000" />
+      <workItem from="1763489548456" duration="14733000" />
+      <workItem from="1763574381979" duration="22735000" />
+      <workItem from="1763653186084" duration="18961000" />
+      <workItem from="1763735297375" duration="28517000" />
+      <workItem from="1763814451574" duration="9969000" />
+      <workItem from="1763831557307" duration="3466000" />
+      <workItem from="1763837685063" duration="23855000" />
+      <workItem from="1763931369215" duration="394000" />
+      <workItem from="1763931792101" duration="15271000" />
+      <workItem from="1764005424376" duration="19629000" />
+      <workItem from="1764025806013" duration="7436000" />
+      <workItem from="1764078303752" duration="1515000" />
+      <workItem from="1764088460366" duration="20040000" />
+      <workItem from="1764114930965" duration="677000" />
+      <workItem from="1764176702532" duration="1584000" />
+      <workItem from="1764178352595" duration="22720000" />
+      <workItem from="1764265499711" duration="30577000" />
+      <workItem from="1764350219942" duration="1622000" />
+      <workItem from="1764444135936" duration="14096000" />
+      <workItem from="1764515691877" duration="14594000" />
+      <workItem from="1764576649458" duration="1491000" />
+      <workItem from="1764612136570" duration="11304000" />
+      <workItem from="1764629705188" duration="2828000" />
+      <workItem from="1764632596368" duration="2680000" />
+      <workItem from="1764695376990" duration="658000" />
+      <workItem from="1764696095447" duration="12731000" />
+      <workItem from="1764710071030" duration="15686000" />
+      <workItem from="1764776688279" duration="926000" />
+      <workItem from="1764785832942" duration="18279000" />
+      <workItem from="1764805246485" duration="8030000" />
+      <workItem from="1764847853820" duration="1084000" />
+      <workItem from="1764849082464" duration="7915000" />
+      <workItem from="1764866952721" duration="17765000" />
+      <workItem from="1764887519530" duration="11304000" />
+      <workItem from="1764945333346" duration="3413000" />
+      <workItem from="1764949067576" duration="25485000" />
+      <workItem from="1765039832034" duration="17686000" />
+      <workItem from="1765129404083" duration="26258000" />
+      <workItem from="1765209673230" duration="4921000" />
+      <workItem from="1765228322896" duration="1394000" />
+      <workItem from="1765229886963" duration="15183000" />
+      <workItem from="1765298737378" duration="27949000" />
+      <workItem from="1765358996972" duration="20986000" />
+      <workItem from="1765383656228" duration="8864000" />
+      <workItem from="1765397024001" duration="7961000" />
+      <workItem from="1765405257392" duration="4646000" />
+      <workItem from="1765410041469" duration="1601000" />
+      <workItem from="1765411690576" duration="4510000" />
+      <workItem from="1765486922320" duration="1332000" />
+      <workItem from="1765490761904" duration="3616000" />
+      <workItem from="1765550615547" duration="10370000" />
+      <workItem from="1765615343700" duration="163000" />
+      <workItem from="1765615613184" duration="222000" />
+      <workItem from="1765637404049" duration="1391000" />
+      <workItem from="1765639337390" duration="46000" />
+      <workItem from="1765643710631" duration="17599000" />
+      <workItem from="1765663229719" duration="62000" />
+      <workItem from="1765663349484" duration="12247000" />
+      <workItem from="1765714420346" duration="4070000" />
+      <workItem from="1765730695463" duration="15771000" />
+      <workItem from="1765825596633" duration="4220000" />
+      <workItem from="1765830552290" duration="129000" />
+      <workItem from="1765830742826" duration="390000" />
+      <workItem from="1765831197079" duration="955000" />
+      <workItem from="1765832423453" duration="4802000" />
+      <workItem from="1765919531047" duration="3036000" />
+      <workItem from="1765923186292" duration="7286000" />
+      <workItem from="1765983045358" duration="13875000" />
+      <workItem from="1766164265986" duration="3192000" />
+      <workItem from="1766255450395" duration="9915000" />
+      <workItem from="1766266742567" duration="6059000" />
+      <workItem from="1766612034326" duration="2421000" />
+      <workItem from="1766616186647" duration="13000" />
+      <workItem from="1766616599437" duration="15000" />
+      <workItem from="1766619396175" duration="19649000" />
+      <workItem from="1766761221316" duration="1753000" />
+      <workItem from="1766763109871" duration="9383000" />
+      <workItem from="1766839321061" duration="294000" />
+      <workItem from="1766839669893" duration="9675000" />
+      <workItem from="1766861849735" duration="7076000" />
+      <workItem from="1766870112805" duration="1345000" />
+      <workItem from="1766874441207" duration="6943000" />
+      <workItem from="1766882865408" duration="370000" />
+      <workItem from="1766943534643" duration="2989000" />
+      <workItem from="1767042916113" duration="2652000" />
+      <workItem from="1767123247761" duration="11544000" />
+      <workItem from="1767221034144" duration="2653000" />
+      <workItem from="1767282845277" duration="11167000" />
+      <workItem from="1767297886961" duration="13422000" />
+      <workItem from="1767464191279" duration="12891000" />
+      <workItem from="1767541667883" duration="670000" />
+      <workItem from="1767543388241" duration="5478000" />
+      <workItem from="1767557147246" duration="18053000" />
+      <workItem from="1767644329969" duration="13485000" />
+      <workItem from="1767729058902" duration="115000" />
+      <workItem from="1767733106354" duration="10595000" />
+      <workItem from="1767748372895" duration="667000" />
+      <workItem from="1767821326977" duration="3174000" />
+      <workItem from="1767824574651" duration="4297000" />
+      <workItem from="1767964886579" duration="66000" />
+      <workItem from="1767965069064" duration="27376000" />
+      <workItem from="1768089222181" duration="13000" />
+      <workItem from="1768089278726" duration="1331000" />
+      <workItem from="1768152984842" duration="5904000" />
+      <workItem from="1768161561996" duration="17933000" />
+      <workItem from="1768227344065" duration="53000" />
+      <workItem from="1768227439193" duration="3453000" />
+      <workItem from="1768230961267" duration="410000" />
+      <workItem from="1768231455777" duration="55000" />
+      <workItem from="1768231539333" duration="60000" />
+      <workItem from="1768232693224" duration="2493000" />
+      <workItem from="1768330747190" duration="279000" />
+      <workItem from="1768331097464" duration="93000" />
+      <workItem from="1768331249960" duration="222000" />
+      <workItem from="1768331516303" duration="811000" />
+      <workItem from="1768332629321" duration="264000" />
+      <workItem from="1768334345351" duration="401000" />
+      <workItem from="1768334775270" duration="278000" />
+      <workItem from="1768336546577" duration="928000" />
+      <workItem from="1768338029898" duration="73000" />
+      <workItem from="1768338140463" duration="55000" />
+      <workItem from="1768338573458" duration="71000" />
+      <workItem from="1768338680195" duration="178000" />
+      <workItem from="1768338885601" duration="1088000" />
+      <workItem from="1768404639800" duration="2561000" />
+      <workItem from="1768434654903" duration="5790000" />
+      <workItem from="1768516589339" duration="116000" />
+      <workItem from="1768676335579" duration="10324000" />
+      <workItem from="1768770334114" duration="3154000" />
+      <workItem from="1768835272078" duration="1541000" />
+      <workItem from="1768837812171" duration="271000" />
+      <workItem from="1768839129010" duration="339000" />
+      <workItem from="1768840034947" duration="513000" />
+      <workItem from="1768841173386" duration="5048000" />
+      <workItem from="1768850263475" duration="11000" />
+      <workItem from="1768852360119" duration="102000" />
+      <workItem from="1768852781754" duration="719000" />
+      <workItem from="1768854085898" duration="471000" />
+      <workItem from="1768855030498" duration="125000" />
+      <workItem from="1768857160785" duration="858000" />
+      <workItem from="1768908106467" duration="7998000" />
+      <workItem from="1768928447533" duration="550000" />
+      <workItem from="1768930187247" duration="167000" />
+      <workItem from="1768931132704" duration="1751000" />
+      <workItem from="1768934118060" duration="379000" />
+      <workItem from="1768947124509" duration="273000" />
+      <workItem from="1768948512131" duration="1075000" />
+      <workItem from="1769120352772" duration="122000" />
+      <workItem from="1769120534416" duration="504000" />
+      <workItem from="1769121085355" duration="99000" />
+      <workItem from="1769191332587" duration="1202000" />
+      <workItem from="1769272562488" duration="17603000" />
+      <workItem from="1769294139486" duration="4184000" />
+      <workItem from="1769539084698" duration="90000" />
+      <workItem from="1769539212708" duration="14516000" />
+      <workItem from="1769706518806" duration="192000" />
+      <workItem from="1769706737739" duration="413000" />
+      <workItem from="1769707195891" duration="19085000" />
+      <workItem from="1769786613514" duration="229000" />
+      <workItem from="1769786907062" duration="3607000" />
+      <workItem from="1770061675477" duration="3241000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.bat" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="nginx.conf" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>false</integration-enabled>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/backend/app.py</url>
+          <line>3571</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/backend/app.py</url>
+          <line>3449</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
+  </component>
+</project>
